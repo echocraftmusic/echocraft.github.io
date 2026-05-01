@@ -51,8 +51,8 @@
             background-size: cover;
             background-position: center;
             background-attachment: fixed;
-            filter: blur(15px) brightness(0.3);
-            opacity: 0.25;
+            filter: blur(15px) brightness(0.4);
+            opacity: 0.35;
             z-index: 0;
             pointer-events: none;
         }
@@ -65,7 +65,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: linear-gradient(135deg, rgba(10, 14, 26, 0.8) 0%, rgba(15, 19, 32, 0.8) 100%);
+            background: linear-gradient(135deg, rgba(10, 14, 26, 0.65) 0%, rgba(15, 19, 32, 0.65) 100%);
             z-index: 1;
             pointer-events: none;
         }
@@ -830,47 +830,28 @@
     </div>
 
     <script>
-        // YOUTUBE CHANNEL API - Auto-fetch videos
-        const CHANNEL_ID = 'UCIk7A0W4pW8E6R_dVKFdFqA'; // Echo Craft channel ID
-        const API_KEY = 'AIzaSyDaiGdqo7F0r4BXZrz_uf7rADr9aJHQ1xY'; // Public API key
-
-        async function loadYouTubeVideos() {
-            try {
-                const response = await fetch(
-                    `https://www.googleapis.com/youtube/v3/search?` +
-                    `key=${API_KEY}&` +
-                    `channelId=${CHANNEL_ID}&` +
-                    `part=snippet&` +
-                    `order=date&` +
-                    `maxResults=12&` +
-                    `type=video`
-                );
-
-                const data = await response.json();
-                const container = document.getElementById('videosContainer');
-
-                if (data.items && data.items.length > 0) {
-                    container.innerHTML = data.items.map(item => `
-                        <div class="video-card">
-                            <iframe 
-                                src="https://www.youtube.com/embed/${item.id.videoId}" 
-                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-                                allowfullscreen>
-                            </iframe>
-                        </div>
-                    `).join('');
-                }
-            } catch (error) {
-                console.error('Error loading YouTube videos:', error);
-                // Fallback: show channel embed
-                document.getElementById('videosContainer').innerHTML = `
-                    <div class="video-card" style="grid-column: 1/-1;">
-                        <iframe src="https://www.youtube.com/embed/@EchoCraft-ai7/videos" 
-                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-                                allowfullscreen>
-                        </iframe>
-                    </div>
-                `;
+        // LOAD YOUTUBE PLAYLIST
+        function loadYouTubeVideos() {
+            const playlistId = 'PL6S7l6z0yyycW1SGazPcATIizl1NEOuoh'; // Stinking Overthinking playlist
+            const containerHtml = `
+                <div class="video-card" style="grid-column: 1/-1; aspect-ratio: 16/9;">
+                    <iframe 
+                        width="100%" 
+                        height="100%" 
+                        src="https://www.youtube.com/embed/videoseries?list=${playlistId}" 
+                        frameborder="0" 
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                        allowfullscreen>
+                    </iframe>
+                </div>
+                <p style="margin-top: 2rem; color: var(--text-secondary); text-align: center;">
+                    🎧 Full MIDNIGHT STUDIES & Echo Craft catalog on YouTube
+                </p>
+            `;
+            
+            const container = document.getElementById('videosContainer');
+            if (container) {
+                container.innerHTML = containerHtml;
             }
         }
 
