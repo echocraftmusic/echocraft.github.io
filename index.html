@@ -830,25 +830,22 @@
     </div>
 
     <script>
-        // LOAD YOUTUBE CHANNEL LATEST VIDEOS (Most Recent Auto-Updates)
-        // NO API KEY IN CODE — Uses YouTube embed fallback
-        
+        // LOAD LATEST ECHO CRAFT VIDEO
         function loadYouTubeVideos() {
-            const channelId = 'UCIk7A0W4pW8E6R_dVKFdFqA'; // Echo Craft channel
+            const videoId = 'cBk7lGKq4tI'; // Latest Echo Craft video
             
-            // Display latest uploads via channel embed (no API key required)
             const containerHtml = `
                 <div class="video-card" style="grid-column: 1/-1; aspect-ratio: 16/9;">
                     <iframe 
                         width="100%" 
                         height="100%" 
-                        src="https://www.youtube.com/embed/@EchoCraft-ai7/videos" 
+                        src="https://www.youtube.com/embed/${videoId}" 
                         frameborder="0" 
                         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
                         allowfullscreen>
                     </iframe>
                 </div>
-                <div style="margin-top: 2rem; text-align: center;">
+                <div style="margin-top: 2rem; text-align: center; display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
                     <a href="https://www.youtube.com/@EchoCraft-ai7" target="_blank" style="
                         display: inline-block;
                         padding: 0.9rem 2rem;
@@ -861,7 +858,21 @@
                         transition: all 0.3s ease;
                         box-shadow: 0 0 20px rgba(0, 217, 255, 0.3);
                     " onmouseover="this.style.boxShadow='0 0 30px rgba(0, 217, 255, 0.6)'" onmouseout="this.style.boxShadow='0 0 20px rgba(0, 217, 255, 0.3)'">
-                        Go to Echo Craft YouTube
+                        See All Videos
+                    </a>
+                    <a href="https://www.youtube.com/@EchoCraft-ai7/videos" target="_blank" style="
+                        display: inline-block;
+                        padding: 0.9rem 2rem;
+                        background: linear-gradient(135deg, #0099cc, #006699);
+                        color: #fff;
+                        text-decoration: none;
+                        border-radius: 6px;
+                        font-weight: 600;
+                        font-size: 1rem;
+                        transition: all 0.3s ease;
+                        box-shadow: 0 0 20px rgba(0, 153, 204, 0.3);
+                    " onmouseover="this.style.boxShadow='0 0 30px rgba(0, 153, 204, 0.6)'" onmouseout="this.style.boxShadow='0 0 20px rgba(0, 153, 204, 0.3)'">
+                        Subscribe on YouTube
                     </a>
                 </div>
             `;
@@ -872,7 +883,7 @@
             }
         }
 
-        // Load videos on page load
+        // Load video on page load
         window.addEventListener('load', loadYouTubeVideos);
 
         // SMOOTH NAV HIGHLIGHTING
