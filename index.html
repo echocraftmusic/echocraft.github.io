@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Echo Craft - Lo-Fi Hip Hop & Music Production</title>
+    <title>Echo Craft - All Genres. All Music. All Together.</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Outfit:wght@100;400;600;700;800&display=swap" rel="stylesheet">
@@ -42,7 +42,7 @@
             background: rgba(10, 14, 39, 0.95);
             backdrop-filter: blur(10px);
             border-bottom: 1px solid var(--border);
-            padding: 1.5rem 2rem;
+            padding: 1rem 2rem;
         }
 
         nav {
@@ -53,9 +53,29 @@
             align-items: center;
         }
 
-        .logo {
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .logo-image {
+            width: 50px;
+            height: 50px;
+            border-radius: 8px;
+            overflow: hidden;
+            border: 2px solid var(--accent-cyan);
+        }
+
+        .logo-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .logo-text {
             font-family: 'Space Mono', monospace;
-            font-size: 1.5rem;
+            font-size: 1.3rem;
             font-weight: 700;
             background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
             -webkit-background-clip: text;
@@ -103,17 +123,28 @@
             .nav-links {
                 display: none;
             }
+
+            .logo-text {
+                font-size: 1rem;
+            }
+
+            .logo-image {
+                width: 40px;
+                height: 40px;
+            }
         }
 
         /* HERO SECTION */
         .hero {
             min-height: 100vh;
             display: flex;
+            flex-direction: column;
             align-items: center;
             justify-content: center;
-            padding: 6rem 2rem 4rem;
+            padding: 8rem 2rem 4rem;
             position: relative;
             overflow: hidden;
+            text-align: center;
         }
 
         .hero::before {
@@ -148,9 +179,38 @@
             50% { transform: translateY(-30px); }
         }
 
+        .hero-logo {
+            width: 200px;
+            height: 200px;
+            margin-bottom: 2rem;
+            border-radius: 20px;
+            overflow: hidden;
+            border: 3px solid var(--accent-cyan);
+            box-shadow: 0 20px 60px rgba(0, 217, 255, 0.3);
+            animation: fadeInDown 1s ease-out;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero-logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-40px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
         .hero-content {
             max-width: 900px;
-            text-align: center;
             position: relative;
             z-index: 1;
             animation: fadeInUp 1s ease-out;
@@ -169,25 +229,33 @@
 
         .hero h1 {
             font-family: 'Space Mono', monospace;
-            font-size: clamp(2.5rem, 8vw, 5rem);
+            font-size: clamp(2.5rem, 8vw, 4rem);
             font-weight: 700;
-            margin-bottom: 1.5rem;
+            margin-bottom: 1rem;
             letter-spacing: -1px;
-            line-height: 1.1;
+            line-height: 1.2;
             background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple), var(--accent-pink));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
         }
 
-        .hero p {
-            font-size: 1.25rem;
+        .hero .tagline {
+            font-size: 1.3rem;
             color: var(--text-secondary);
             margin-bottom: 2rem;
-            max-width: 600px;
+            font-style: italic;
+            font-weight: 300;
+        }
+
+        .hero p {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            margin-bottom: 1.5rem;
+            line-height: 1.8;
+            max-width: 700px;
             margin-left: auto;
             margin-right: auto;
-            line-height: 1.8;
         }
 
         .cta-buttons {
@@ -238,6 +306,8 @@
             justify-content: center;
             margin-top: 2rem;
             animation: bounce 2s infinite;
+            position: relative;
+            z-index: 1;
         }
 
         @keyframes bounce {
@@ -273,7 +343,7 @@
             margin: 1rem auto 0;
         }
 
-        /* MUSIC SECTION - TOP PRIORITY */
+        /* MUSIC SECTION */
         #music {
             background: linear-gradient(180deg, rgba(139, 92, 246, 0.1), transparent);
         }
@@ -381,35 +451,40 @@
 
         .about-text p {
             color: var(--text-secondary);
-            margin-bottom: 1rem;
-            line-height: 1.8;
+            margin-bottom: 1.5rem;
+            line-height: 1.9;
+            font-size: 1.05rem;
         }
 
-        .about-stats {
+        .about-highlights {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 2rem;
+            gap: 1.5rem;
             margin-top: 2rem;
         }
 
-        .stat-box {
+        .highlight {
             background: rgba(139, 92, 246, 0.1);
-            border: 1px solid var(--border);
+            border-left: 3px solid var(--accent-cyan);
             padding: 1.5rem;
             border-radius: 8px;
-            text-align: center;
         }
 
-        .stat-number {
+        .highlight-emoji {
             font-size: 2rem;
-            font-weight: 700;
-            color: var(--accent-cyan);
             margin-bottom: 0.5rem;
         }
 
-        .stat-label {
+        .highlight-title {
+            color: var(--accent-cyan);
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .highlight-text {
             color: var(--text-secondary);
-            font-size: 0.9rem;
+            font-size: 0.95rem;
+            line-height: 1.6;
         }
 
         .about-image {
@@ -421,7 +496,13 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 5rem;
+            overflow: hidden;
+        }
+
+        .about-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
         }
 
         @media (max-width: 768px) {
@@ -429,7 +510,7 @@
                 grid-template-columns: 1fr;
             }
 
-            .about-stats {
+            .about-highlights {
                 grid-template-columns: 1fr;
             }
         }
@@ -544,6 +625,15 @@
             margin-bottom: 1rem;
         }
 
+        footer a {
+            color: var(--accent-cyan);
+            text-decoration: none;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+
         @media (max-width: 768px) {
             header {
                 padding: 1rem;
@@ -553,20 +643,21 @@
                 padding: 0;
             }
 
-            .logo {
-                font-size: 1.2rem;
-            }
-
             section {
                 padding: 3rem 1.5rem;
             }
 
             .hero {
-                padding: 4rem 1.5rem 2rem;
+                padding: 6rem 1.5rem 2rem;
             }
 
             .hero h1 {
                 font-size: 2rem;
+            }
+
+            .hero-logo {
+                width: 150px;
+                height: 150px;
             }
 
             .cta-buttons {
@@ -584,7 +675,12 @@
     <!-- HEADER -->
     <header>
         <nav>
-            <div class="logo">ECHO CRAFT</div>
+            <div class="logo-container">
+                <div class="logo-image">
+                    <img src="data:image/svg+xml,%3Csvg viewBox='0 0 800 800' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='400' cy='400' r='400' fill='%230a0e27'/%3E%3Ccircle cx='400' cy='400' r='380' fill='none' stroke='%2300d9ff' stroke-width='2' opacity='0.5'/%3E%3Ccircle cx='400' cy='400' r='280' fill='none' stroke='%2300d9ff' stroke-width='2' opacity='0.3'/%3E%3Ccircle cx='400' cy='400' r='240' fill='none' stroke='%238b5cf6' stroke-width='2' opacity='0.3'/%3E%3Ccircle cx='400' cy='400' r='200' fill='none' stroke='%23ff006e' stroke-width='1.5' opacity='0.3'/%3E%3Ccircle cx='400' cy='400' r='8' fill='%2300d9ff'/%3E%3C/svg%3E" alt="Echo Craft">
+                </div>
+                <div class="logo-text">ECHO CRAFT</div>
+            </div>
             <ul class="nav-links">
                 <li><a href="#hero" class="nav-link active">Home</a></li>
                 <li><a href="#music" class="nav-link">Music</a></li>
@@ -596,11 +692,18 @@
 
     <!-- HERO SECTION -->
     <section class="hero" id="hero">
+        <div class="hero-logo">
+            <img src="data:image/svg+xml,%3Csvg viewBox='0 0 800 800' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='400' cy='400' r='400' fill='%230a0e27'/%3E%3Ccircle cx='400' cy='400' r='380' fill='none' stroke='%2300d9ff' stroke-width='2' opacity='0.5'/%3E%3Ccircle cx='400' cy='400' r='280' fill='none' stroke='%2300d9ff' stroke-width='2' opacity='0.3'/%3E%3Ccircle cx='400' cy='400' r='240' fill='none' stroke='%238b5cf6' stroke-width='2' opacity='0.3'/%3E%3Ccircle cx='400' cy='400' r='200' fill='none' stroke='%23ff006e' stroke-width='1.5' opacity='0.3'/%3E%3Ccircle cx='400' cy='400' r='8' fill='%2300d9ff'/%3E%3C/svg%3E" alt="Echo Craft Logo">
+        </div>
         <div class="hero-content">
             <h1>ECHO CRAFT</h1>
-            <p>Multi-genre AI-assisted music production. Lo-fi soundscapes, rock anthems, and beats designed for focus, sleep, and inspiration.</p>
+            <p class="tagline">All Genres. All Music. All Together.</p>
+            <p>This isn't just music… it's an experience.</p>
+            <p style="margin-bottom: 2rem;">Echo Craft is a world where sound meets story — from high-energy anthems to cinematic journeys and soul-driven rhythms. Every lyric comes from real emotion. Every track is crafted with intention.</p>
+            <p style="margin-bottom: 3rem; color: var(--accent-cyan); font-style: italic;">AI is just the instrument. The voice, the vision, the message? That's all human.</p>
+            
             <div class="cta-buttons">
-                <a href="#music" class="btn btn-primary">🎵 Listen to Music</a>
+                <a href="#music" class="btn btn-primary">🎵 Listen Now</a>
                 <a href="#signup" class="btn btn-secondary">Join Newsletter</a>
             </div>
             <div class="scroll-indicator">
@@ -609,7 +712,7 @@
         </div>
     </section>
 
-    <!-- MUSIC SECTION - TOP PRIORITY -->
+    <!-- MUSIC SECTION -->
     <section id="music">
         <h2 class="section-title">Latest Music</h2>
         <div class="music-container">
@@ -618,7 +721,7 @@
                 <div class="youtube-player">
                     <iframe src="https://www.youtube.com/embed/@EchoCraft-ai7/videos" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                 </div>
-                <p style="color: var(--text-secondary); margin-top: 1rem; text-align: center;">Subscribe to our YouTube for new releases every week</p>
+                <p style="color: var(--text-secondary); margin-top: 1rem; text-align: center;">New drops every Tuesday & Friday</p>
             </div>
 
             <!-- Streaming Links -->
@@ -629,7 +732,7 @@
                 
                 <div class="streaming-section">
                     <h3>Stream Everywhere</h3>
-                    <span class="streaming-label">All platforms available via HyperFollow ↑</span>
+                    <span class="streaming-label">Available on all platforms</span>
                     
                     <a href="https://open.spotify.com/artist/4tIlaQ5ajpZLuUyImDFT92" class="music-link-btn">
                         Spotify
@@ -661,33 +764,39 @@
 
     <!-- ABOUT SECTION -->
     <section id="about">
-        <h2 class="section-title">About Echo Craft</h2>
+        <h2 class="section-title">What is Echo Craft?</h2>
         <div class="about-content">
             <div class="about-text">
-                <h3>Independent Artist & Producer</h3>
-                <p>Troy creates multi-genre music using Suno and FL Studio, releasing through DistroKid under the label 12103955 Records DK. Published through V33POGRAPHY (ASCAP IPI: 1243360680).</p>
-                <p>Specializing in lo-fi hip hop soundscapes, rock/metal albums, Afrobeats, dancehall, and genre-blending beats. Music designed for studying, sleeping, working, and creative inspiration.</p>
-                <p>Every track is original, crafted with intention, and distributed across Spotify, Apple Music, YouTube, and beyond.</p>
-                <div class="about-stats">
-                    <div class="stat-box">
-                        <div class="stat-number">222+</div>
-                        <div class="stat-label">YouTube Subscribers</div>
+                <p>Echo Craft is more than a music project—it's a universe. We specialize in Lo-Fi Hip Hop, but that's just where we started. Inside this world you'll find:</p>
+                
+                <div class="about-highlights">
+                    <div class="highlight">
+                        <div class="highlight-emoji">⚔️</div>
+                        <div class="highlight-title">Cinematic & Epic</div>
+                        <div class="highlight-text">Soundscapes crafted for heroes, battles, and legends</div>
                     </div>
-                    <div class="stat-box">
-                        <div class="stat-number">100K+</div>
-                        <div class="stat-label">Total Streams</div>
+                    <div class="highlight">
+                        <div class="highlight-emoji">🌍</div>
+                        <div class="highlight-title">Global Vibes</div>
+                        <div class="highlight-text">Afrobeats, Riddims, movement music & cultural fusion</div>
                     </div>
-                    <div class="stat-box">
-                        <div class="stat-number">80+</div>
-                        <div class="stat-label">Original Tracks</div>
+                    <div class="highlight">
+                        <div class="highlight-emoji">🔥</div>
+                        <div class="highlight-title">Energy-Driven</div>
+                        <div class="highlight-text">Anthems & emotional records that hit different</div>
                     </div>
-                    <div class="stat-box">
-                        <div class="stat-number">6</div>
-                        <div class="stat-label">Genres</div>
+                    <div class="highlight">
+                        <div class="highlight-emoji">🎨</div>
+                        <div class="highlight-title">Original Vision</div>
+                        <div class="highlight-text">AI-assisted production, human-crafted emotion</div>
                     </div>
                 </div>
+
+                <p style="margin-top: 2rem; font-style: italic; color: var(--accent-cyan);">Step into the full experience at echocraftmusic.com</p>
             </div>
-            <div class="about-image">🎵</div>
+            <div class="about-image">
+                <img src="data:image/svg+xml,%3Csvg viewBox='0 0 800 800' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='400' cy='400' r='400' fill='%230a0e27'/%3E%3Ctext x='400' y='450' text-anchor='middle' font-size='200' fill='%2300d9ff'%3E🎵%3C/text%3E%3C/svg%3E" alt="Music">
+            </div>
         </div>
     </section>
 
@@ -712,8 +821,8 @@
     <!-- FOOTER -->
     <footer>
         <p>&copy; 2026 Echo Craft. All rights reserved.</p>
-        <p>Published by V33POGRAPHY | Distributed via DistroKid</p>
-        <p><a href="https://echocraftmusic.com" style="color: var(--accent-cyan); text-decoration: none;">echocraftmusic.com</a></p>
+        <p>Business: <a href="mailto:listening@echocraftmusic.com">listening@echocraftmusic.com</a></p>
+        <p>Full experience: <a href="https://www.echocraftmusic.com/">echocraftmusic.com</a></p>
     </footer>
 
     <script>
