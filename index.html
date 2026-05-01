@@ -830,15 +830,19 @@
     </div>
 
     <script>
-        // LOAD YOUTUBE PLAYLIST
+        // LOAD YOUTUBE CHANNEL LATEST VIDEOS (Most Recent Auto-Updates)
+        // NO API KEY IN CODE — Uses YouTube embed fallback
+        
         function loadYouTubeVideos() {
-            const playlistId = 'PL6S7l6z0yyycW1SGazPcATIizl1NEOuoh'; // Stinking Overthinking playlist
+            const channelId = 'UCIk7A0W4pW8E6R_dVKFdFqA'; // Echo Craft channel
+            
+            // Display latest uploads via channel embed (no API key required)
             const containerHtml = `
                 <div class="video-card" style="grid-column: 1/-1; aspect-ratio: 16/9;">
                     <iframe 
                         width="100%" 
                         height="100%" 
-                        src="https://www.youtube.com/embed/videoseries?list=${playlistId}" 
+                        src="https://www.youtube.com/embed/@EchoCraft-ai7/videos" 
                         frameborder="0" 
                         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
                         allowfullscreen>
