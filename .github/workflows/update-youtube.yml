@@ -11,9 +11,57 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       
-      - name: Fetch YouTube Videos
+      - name: Fetch and Filter YouTube Videos by Aspect Ratio
         run: |
-          curl -s "https://www.googleapis.com/youtube/v3/search?key=${{ secrets.YOUTUBE_API_KEY }}&channelId=UC1OkdmI61L1GJ6GuO9fRaDQ&part=snippet&order=date&maxResults=10&type=video&videoDuration=medium,long" > videos.json
+          # Get videos from channel
+          curl -s "https://www.googleapis.com/youtube/v3/search?key=${{ secrets.YOUTUBE_API_KEY }}&channelId=UC1OkdmI61L1GJ6GuO9fRaDQ&part=snippet&order=date&maxResults=30&type=video" > all_videos.json
+          
+          # Use Node.js to filter by aspect ratio (16:9 only)
+          node << 'EOF'
+          const fs = require('fs');
+          const https = require('https');
+          
+          const data = JSON.parse(fs.readFileSync('all_videos.json', 'utf8'));
+          const apiKey = process.env.YOUTUBE_API_KEY;
+          
+          let videoIds = data.items.map(item => item.id.videoId).join(',');
+          
+          const url = `https://www.googleapis.com/youtube/v3/videos?key=${apiKey}&id=${videoIds}&part=fileDetails,processingDetails`;
+          
+          https.get(url, (res) => {
+            let body = '';
+            res.on('data', chunk => body += chunk);
+            res.on('end', () => {
+              const videos = JSON.parse(body);
+              
+              // Filter videos with 16:9 aspect ratio (exclude 9:16 shorts)
+              const filtered = {
+                items: data.items.filter(item => {
+                  const vid = videos.items.find(v => v.id === item.id.videoId);
+                  if (!vid) return false;
+                  
+                  // Check if video has fileDetails with width/height
+                  if (vid.fileDetails && vid.fileDetails.videoStreams && vid.fileDetails.videoStreams.length > 0) {
+                    const stream = vid.fileDetails.videoStreams[0];
+                    const width = stream.widthPixels;
+                    const height = stream.heightPixels;
+                    
+                    // Calculate aspect ratio
+                    const aspectRatio = width / height;
+                    
+                    // 16:9 = 1.777, 9:16 = 0.5625
+                    // Accept 16:9 videos (ratio > 1.5)
+                    return aspectRatio > 1.5;
+                  }
+                  
+                  return true; // If no file details, include it (assume it's a regular video)
+                })
+              };
+              
+              fs.writeFileSync('videos.json', JSON.stringify(filtered, null, 2));
+            });
+          });
+          EOF
         env:
           YOUTUBE_API_KEY: ${{ secrets.YOUTUBE_API_KEY }}
       
