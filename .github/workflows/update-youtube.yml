@@ -9,58 +9,143 @@ jobs:
   update-videos:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       
-      - name: Fetch and Filter YouTube Videos by Aspect Ratio
+      - name: Fetch and Filter YouTube Videos
         run: |
-          # Get videos from channel
-          curl -s "https://www.googleapis.com/youtube/v3/search?key=${{ secrets.YOUTUBE_API_KEY }}&channelId=UC1OkdmI61L1GJ6GuO9fRaDQ&part=snippet&order=date&maxResults=30&type=video" > all_videos.json
-          
-          # Use Node.js to filter by aspect ratio (16:9 only)
           node << 'EOF'
-          const fs = require('fs');
           const https = require('https');
+          const fs = require('fs');
           
-          const data = JSON.parse(fs.readFileSync('all_videos.json', 'utf8'));
           const apiKey = process.env.YOUTUBE_API_KEY;
+          const channelId = 'UC1OkdmI61L1GJ6GuO9fRaDQ';
           
-          let videoIds = data.items.map(item => item.id.videoId).join(',');
-          
-          const url = `https://www.googleapis.com/youtube/v3/videos?key=${apiKey}&id=${videoIds}&part=fileDetails,processingDetails`;
-          
-          https.get(url, (res) => {
-            let body = '';
-            res.on('data', chunk => body += chunk);
-            res.on('end', () => {
-              const videos = JSON.parse(body);
-              
-              // Filter videos with 16:9 aspect ratio (exclude 9:16 shorts)
-              const filtered = {
-                items: data.items.filter(item => {
-                  const vid = videos.items.find(v => v.id === item.id.videoId);
-                  if (!vid) return false;
-                  
-                  // Check if video has fileDetails with width/height
-                  if (vid.fileDetails && vid.fileDetails.videoStreams && vid.fileDetails.videoStreams.length > 0) {
-                    const stream = vid.fileDetails.videoStreams[0];
-                    const width = stream.widthPixels;
-                    const height = stream.heightPixels;
-                    
-                    // Calculate aspect ratio
-                    const aspectRatio = width / height;
-                    
-                    // 16:9 = 1.777, 9:16 = 0.5625
-                    // Accept 16:9 videos (ratio > 1.5)
-                    return aspectRatio > 1.5;
+          // Wrap https.get in a Promise
+          function makeRequest(url) {
+            return new Promise((resolve, reject) => {
+              https.get(url, (res) => {
+                let body = '';
+                res.on('data', chunk => body += chunk);
+                res.on('end', () => {
+                  try {
+                    resolve(JSON.parse(body));
+                  } catch (error) {
+                    reject(new Error(`Failed to parse JSON: ${error.message}`));
                   }
-                  
-                  return true; // If no file details, include it (assume it's a regular video)
-                })
+                });
+              }).on('error', (error) => {
+                reject(new Error(`HTTP request failed: ${error.message}`));
+              });
+            });
+          }
+          
+          // Safe ISO 8601 duration parser
+          function parseDuration(duration) {
+            if (!duration) {
+              console.log('Warning: Empty duration string');
+              return 0;
+            }
+            
+            const hoursMatch = duration.match(/(\d+)H/);
+            const minutesMatch = duration.match(/(\d+)M/);
+            const secondsMatch = duration.match(/(\d+)S/);
+            
+            const hours = hoursMatch ? parseInt(hoursMatch[1], 10) : 0;
+            const minutes = minutesMatch ? parseInt(minutesMatch[1], 10) : 0;
+            const seconds = secondsMatch ? parseInt(secondsMatch[1], 10) : 0;
+            
+            const totalSeconds = hours * 3600 + minutes * 60 + seconds;
+            console.log(`Parsed duration "${duration}" = ${totalSeconds} seconds`);
+            
+            return totalSeconds;
+          }
+          
+          // Main async function
+          async function updateVideos() {
+            try {
+              console.log('Starting YouTube video fetch...');
+              
+              // Step 1: Get recent videos from channel
+              const searchUrl = `https://www.googleapis.com/youtube/v3/search?key=${apiKey}&channelId=${channelId}&part=snippet&order=date&maxResults=50&type=video`;
+              
+              console.log('Fetching videos from YouTube API...');
+              const searchData = await makeRequest(searchUrl);
+              
+              if (!searchData.items || searchData.items.length === 0) {
+                throw new Error('No videos found in search results');
+              }
+              
+              console.log(`Found ${searchData.items.length} videos in search results`);
+              
+              const videoIds = searchData.items.map(item => item.id.videoId).join(',');
+              
+              // Step 2: Get video details (duration)
+              const detailsUrl = `https://www.googleapis.com/youtube/v3/videos?key=${apiKey}&id=${videoIds}&part=contentDetails,snippet`;
+              
+              console.log('Fetching video details...');
+              const detailsData = await makeRequest(detailsUrl);
+              
+              if (!detailsData.items) {
+                throw new Error('No items in details response');
+              }
+              
+              console.log(`Received details for ${detailsData.items.length} videos`);
+              
+              // Get current date
+              const now = new Date();
+              const thirtyDaysAgo = new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000);
+              
+              console.log(`Filtering videos from last 30 days (since ${thirtyDaysAgo.toISOString()})`);
+              
+              // Filter: Only videos over 60 seconds, published in last 30 days
+              let filtered = detailsData.items.filter(item => {
+                const duration = parseDuration(item.contentDetails.duration);
+                const publishedAt = new Date(item.snippet.publishedAt);
+                
+                const isLongEnough = duration > 60;
+                const isRecent = publishedAt > thirtyDaysAgo;
+                
+                if (isLongEnough && isRecent) {
+                  console.log(`✓ Keep: "${item.snippet.title}" (${duration}s, ${publishedAt.toISOString()})`);
+                  return true;
+                } else {
+                  console.log(`✗ Skip: "${item.snippet.title}" (${duration}s, ${publishedAt.toISOString()})`);
+                  return false;
+                }
+              });
+              
+              // Sort by publish date descending (newest first)
+              filtered.sort((a, b) => {
+                return new Date(b.snippet.publishedAt) - new Date(a.snippet.publishedAt);
+              });
+              
+              // Keep only 5 most recent
+              const topFive = filtered.slice(0, 5);
+              
+              console.log(`Final result: ${topFive.length} videos selected (newest 5)`);
+              
+              // Format for website
+              const output = {
+                items: topFive.map(item => ({
+                  id: { videoId: item.id },
+                  snippet: item.snippet
+                }))
               };
               
-              fs.writeFileSync('videos.json', JSON.stringify(filtered, null, 2));
-            });
-          });
+              // Write to file
+              fs.writeFileSync('videos.json', JSON.stringify(output, null, 2));
+              console.log('videos.json written successfully');
+              
+              process.exit(0);
+              
+            } catch (error) {
+              console.error('Error:', error.message);
+              process.exit(1);
+            }
+          }
+          
+          // Run the main function
+          updateVideos();
           EOF
         env:
           YOUTUBE_API_KEY: ${{ secrets.YOUTUBE_API_KEY }}
