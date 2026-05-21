@@ -1,0 +1,26 @@
+name: Update YouTube Videos
+
+on:
+  schedule:
+    - cron: '0 12 * * *'
+  workflow_dispatch:
+
+jobs:
+  update-videos:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: Fetch YouTube Videos
+        run: |
+          curl -s "https://www.googleapis.com/youtube/v3/search?key=${{ secrets.YOUTUBE_API_KEY }}&channelId=UC1OkdmI61L1GJ6GuO9fRaDQ" > videos.json
+        env:
+          YOUTUBE_API_KEY: ${{ secrets.YOUTUBE_API_KEY }}
+      
+      - name: Commit changes
+        run: |
+          git config user.name "GitHub Actions"
+          git config user.email "actions@github.com"
+          git add videos.json
+          git commit -m "Update YouTube videos" || echo "No changes to commit"
+          git push
