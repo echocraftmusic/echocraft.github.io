@@ -13,7 +13,7 @@ jobs:
       
       - name: Fetch YouTube Videos
         run: |
-          curl -s "https://www.googleapis.com/youtube/v3/search?key=${{ secrets.YOUTUBE_API_KEY }}&channelId=UC1OkdmI61L1GJ6GuO9fRaDQ" > videos.json
+          curl -s "https://www.googleapis.com/youtube/v3/search?key=${{ secrets.YOUTUBE_API_KEY }}&channelId=UC1OkdmI61L1GJ6GuO9fRaDQ&part=snippet&order=date&maxResults=10&type=video&videoDuration=medium,long" > videos.json
         env:
           YOUTUBE_API_KEY: ${{ secrets.YOUTUBE_API_KEY }}
       
