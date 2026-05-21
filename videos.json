@@ -1,24 +1,360 @@
 {
-  "error": {
-    "code": 400,
-    "message": "Invalid value at 'video_duration' (type.googleapis.com/youtube.api.v3.SearchListRequest.VideoDurationWrapper.VideoDuration), \"medium,long\"",
-    "errors": [
-      {
-        "message": "Invalid value at 'video_duration' (type.googleapis.com/youtube.api.v3.SearchListRequest.VideoDurationWrapper.VideoDuration), \"medium,long\"",
-        "reason": "invalid"
-      }
-    ],
-    "status": "INVALID_ARGUMENT",
-    "details": [
-      {
-        "@type": "type.googleapis.com/google.rpc.BadRequest",
-        "fieldViolations": [
-          {
-            "field": "video_duration",
-            "description": "Invalid value at 'video_duration' (type.googleapis.com/youtube.api.v3.SearchListRequest.VideoDurationWrapper.VideoDuration), \"medium,long\""
+  "items": [
+    {
+      "id": {
+        "videoId": "FwqyrrTNGFA"
+      },
+      "snippet": {
+        "publishedAt": "2026-05-21T16:00:21Z",
+        "channelId": "UC1OkdmI61L1GJ6GuO9fRaDQ",
+        "title": "Ecclesiastes Lo-Fi 📖 Deep Scripture Meditation & Relaxing Bible Audio | Word-Fi",
+        "description": "Ecclesiastes Lo-Fi is an immersive 42-minute scripture meditation experience blending atmospheric boom bap textures, soulful instrumentals, and reflective Bible narration. Designed to slow the mind down and allow biblical wisdom to breathe, this Christian chillhop project provides a peaceful environment for deep thought, study, prayer, and sleep. \n\nWord Fi: Ecclesiastes is inspired by the timeless wisdom of scripture. Whether you are resting, driving, journaling, or searching for peace in a noisy world, let these ambient soundscapes guide your reflection.\n\nThis is not parody, mockery, or an attempt to diminish the Word of God. Word-Fi was created from a place of reverence, creativity, and deep respect for scripture. The goal is to create an atmosphere where biblical truths can be experienced in a calming and emotionally resonant way through music and sound.\n\n━━━━━━━━━━━━━━━\nTRACKLIST (Chapters)\n00:00 — Ecclesiastes 1: Everything is Vapor\n04:12 — Ecclesiastes 2: The Futility of Pleasure\n08:37 — Ecclesiastes 3: A Time for Everything\n13:24 — Ecclesiastes 4: Hard Work and Loneliness\n17:40 — Ecclesiastes 5: Life Under the Sun\n22:11 — Ecclesiastes 7: Wisdom for Living\n26:53 — Ecclesiastes 8: Obeying the King\n31:18 — Ecclesiastes 9: A Common Destiny\n36:02 — Ecclesiastes 11: Invest in Life\n39:44 — Ecclesiastes 12: Remember Your Creator\n━━━━━━━━━━━━━━━\nSCRIPTURE ACKNOWLEDGMENT\nScripture excerpts featured in this presentation are adapted from The Message translation by Eugene H. Peterson.\nThe Message © 1993, 1994, 1995, 1996, 2000, 2001, 2002 by Eugene H. Peterson.\nUsed in this project for reflective, artistic, and inspirational presentation purposes. All rights to the biblical translation remain with the respective copyright holders.\n━━━━━━━━━━━━━━━\n🎧 Created for:\n• Bible Study & Journaling\n• Christian Meditation & Relaxation\n• Peaceful Prayer Atmosphere\n• Deep Sleep & Insomnia Relief\n━━━━━━━━━━━━━━━\n#Ecclesiastes #LoFiBible #ScriptureMeditation #ChristianLoFi #WordFi",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/FwqyrrTNGFA/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/FwqyrrTNGFA/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/FwqyrrTNGFA/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          },
+          "standard": {
+            "url": "https://i.ytimg.com/vi/FwqyrrTNGFA/sddefault.jpg",
+            "width": 640,
+            "height": 480
+          },
+          "maxres": {
+            "url": "https://i.ytimg.com/vi/FwqyrrTNGFA/maxresdefault.jpg",
+            "width": 1280,
+            "height": 720
           }
-        ]
+        },
+        "channelTitle": "Echo Craft",
+        "tags": [
+          "Word Fi",
+          "Word-Fi",
+          "Ecclesiastes",
+          "Bible meditation",
+          "Christian lo fi",
+          "scripture meditation",
+          "lo fi Bible study",
+          "peaceful Bible reading",
+          "Christian chillhop",
+          "relaxing Bible audio",
+          "Bible ambience",
+          "meditative scripture",
+          "Eugene Peterson",
+          "The Message Bible",
+          "Christian meditation music",
+          "late night scripture",
+          "reflective scripture",
+          "Bible relaxation",
+          "spiritual lo fi",
+          "peaceful Christian music",
+          "ambient Bible reading",
+          "sleep scripture",
+          "study music Christian",
+          "meditative boom bap"
+        ],
+        "categoryId": "10",
+        "liveBroadcastContent": "none",
+        "defaultLanguage": "en",
+        "localized": {
+          "title": "Ecclesiastes Lo-Fi 📖 Deep Scripture Meditation & Relaxing Bible Audio | Word-Fi",
+          "description": "Ecclesiastes Lo-Fi is an immersive 42-minute scripture meditation experience blending atmospheric boom bap textures, soulful instrumentals, and reflective Bible narration. Designed to slow the mind down and allow biblical wisdom to breathe, this Christian chillhop project provides a peaceful environment for deep thought, study, prayer, and sleep. \n\nWord Fi: Ecclesiastes is inspired by the timeless wisdom of scripture. Whether you are resting, driving, journaling, or searching for peace in a noisy world, let these ambient soundscapes guide your reflection.\n\nThis is not parody, mockery, or an attempt to diminish the Word of God. Word-Fi was created from a place of reverence, creativity, and deep respect for scripture. The goal is to create an atmosphere where biblical truths can be experienced in a calming and emotionally resonant way through music and sound.\n\n━━━━━━━━━━━━━━━\nTRACKLIST (Chapters)\n00:00 — Ecclesiastes 1: Everything is Vapor\n04:12 — Ecclesiastes 2: The Futility of Pleasure\n08:37 — Ecclesiastes 3: A Time for Everything\n13:24 — Ecclesiastes 4: Hard Work and Loneliness\n17:40 — Ecclesiastes 5: Life Under the Sun\n22:11 — Ecclesiastes 7: Wisdom for Living\n26:53 — Ecclesiastes 8: Obeying the King\n31:18 — Ecclesiastes 9: A Common Destiny\n36:02 — Ecclesiastes 11: Invest in Life\n39:44 — Ecclesiastes 12: Remember Your Creator\n━━━━━━━━━━━━━━━\nSCRIPTURE ACKNOWLEDGMENT\nScripture excerpts featured in this presentation are adapted from The Message translation by Eugene H. Peterson.\nThe Message © 1993, 1994, 1995, 1996, 2000, 2001, 2002 by Eugene H. Peterson.\nUsed in this project for reflective, artistic, and inspirational presentation purposes. All rights to the biblical translation remain with the respective copyright holders.\n━━━━━━━━━━━━━━━\n🎧 Created for:\n• Bible Study & Journaling\n• Christian Meditation & Relaxation\n• Peaceful Prayer Atmosphere\n• Deep Sleep & Insomnia Relief\n━━━━━━━━━━━━━━━\n#Ecclesiastes #LoFiBible #ScriptureMeditation #ChristianLoFi #WordFi"
+        },
+        "defaultAudioLanguage": "en"
       }
-    ]
-  }
+    },
+    {
+      "id": {
+        "videoId": "b-hbBqOsgqA"
+      },
+      "snippet": {
+        "publishedAt": "2026-05-18T11:06:20Z",
+        "channelId": "UC1OkdmI61L1GJ6GuO9fRaDQ",
+        "title": "Floating Through Static | Ambient Frequency Music for Sleep, Relaxation & Deep Focus | Echo Craft",
+        "description": "Step into the calm.\n\nFloating Through Static is a cinematic ambient frequency experience created to help you relax, reflect, sleep, study, meditate, or simply breathe for a moment in a noisy world.\n\nFeaturing:\n🌧️ Rain ambience\n🌃 Night city atmosphere\n🎧 Deep ambient textures\n🕯️ Warm cinematic soundscapes\n🌙 Emotional nighttime frequencies\n\nThis project was designed as an immersive sonic environment — a peaceful space between silence and sound.\n\nWhether you���re:\n• studying\n• sleeping\n• decompressing\n• journaling\n• meditating\n• driving at night\n• fighting anxiety\n• or simply needing stillness...\n\nWelcome to the atmosphere.\n\nCreated by Echo Craft.\n\n⸻\n\nTRACKLIST\n\n00:00 Midnight Haze\n03:13 Night Drift\n06:31 Rain Against Neon\n09:55 Neon Reflections\n13:19 Cloud Memory\n16:38 Fading Clouds\n19:36 Signal From Below\n23:24 Below the Static\n26:53 Ocean of Sleep\n30:09 Tides of Silence\n34:13 Empty Train Home\n37:57 Last Train Through Midnight\n41:41 Breathing Lights\n45:52 Electric Sleepwalk\n48:11 Static Horizon\n52:00 Signals in the Fog\n56:09 Sleep Beneath the City\n1:00:02 City Lights in Silence\n1:04:02 Floating Through Static\n1:07:35 Echoes After Rain\n\n#ambientmusic #sleepmusic #rainambience #meditationmusic #EchoCraft",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/b-hbBqOsgqA/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/b-hbBqOsgqA/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/b-hbBqOsgqA/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          },
+          "standard": {
+            "url": "https://i.ytimg.com/vi/b-hbBqOsgqA/sddefault.jpg",
+            "width": 640,
+            "height": 480
+          },
+          "maxres": {
+            "url": "https://i.ytimg.com/vi/b-hbBqOsgqA/maxresdefault.jpg",
+            "width": 1280,
+            "height": 720
+          }
+        },
+        "channelTitle": "Echo Craft",
+        "tags": [
+          "ambient music",
+          "sleep music",
+          "meditation music",
+          "relaxing music",
+          "calming frequencies",
+          "atmospheric ambience",
+          "cinematic ambient",
+          "rain ambience",
+          "study music",
+          "deep focus music",
+          "nighttime ambience",
+          "peaceful music",
+          "relaxing soundscape",
+          "anxiety relief music",
+          "stress relief ambience",
+          "ambient frequencies",
+          "rain sounds for sleep",
+          "lo fi ambience",
+          "dark ambient relaxation",
+          "city rain ambience",
+          "Echo Craft",
+          "immersive ambient music",
+          "meditation ambience",
+          "sleep ambience",
+          "tinnitus relief"
+        ],
+        "categoryId": "10",
+        "liveBroadcastContent": "none",
+        "defaultLanguage": "en",
+        "localized": {
+          "title": "Floating Through Static | Ambient Frequency Music for Sleep, Relaxation & Deep Focus | Echo Craft",
+          "description": "Step into the calm.\n\nFloating Through Static is a cinematic ambient frequency experience created to help you relax, reflect, sleep, study, meditate, or simply breathe for a moment in a noisy world.\n\nFeaturing:\n🌧️ Rain ambience\n🌃 Night city atmosphere\n🎧 Deep ambient textures\n🕯️ Warm cinematic soundscapes\n🌙 Emotional nighttime frequencies\n\nThis project was designed as an immersive sonic environment — a peaceful space between silence and sound.\n\nWhether you’re:\n• studying\n• sleeping\n• decompressing\n• journaling\n• meditating\n• driving at night\n• fighting anxiety\n• or simply needing stillness...\n\nWelcome to the atmosphere.\n\nCreated by Echo Craft.\n\n⸻\n\nTRACKLIST\n\n00:00 Midnight Haze\n03:13 Night Drift\n06:31 Rain Against Neon\n09:55 Neon Reflections\n13:19 Cloud Memory\n16:38 Fading Clouds\n19:36 Signal From Below\n23:24 Below the Static\n26:53 Ocean of Sleep\n30:09 Tides of Silence\n34:13 Empty Train Home\n37:57 Last Train Through Midnight\n41:41 Breathing Lights\n45:52 Electric Sleepwalk\n48:11 Static Horizon\n52:00 Signals in the Fog\n56:09 Sleep Beneath the City\n1:00:02 City Lights in Silence\n1:04:02 Floating Through Static\n1:07:35 Echoes After Rain\n\n#ambientmusic #sleepmusic #rainambience #meditationmusic #EchoCraft"
+        }
+      }
+    },
+    {
+      "id": {
+        "videoId": "W-kZPTWmp_o"
+      },
+      "snippet": {
+        "publishedAt": "2026-05-17T00:00:29Z",
+        "channelId": "UC1OkdmI61L1GJ6GuO9fRaDQ",
+        "title": "Echo Craft – HEAVY & CHUNKY (Full Album Visualizer | Rock & Metal)",
+        "description": "Welcome to HEAVY & CHUNKY — a full rock and metal visual album experience from Echo Craft.\n\nThis project combines powerful riffs, cinematic energy, heavy atmospheres, and immersive visuals into one continuous experience.\n\nEach track features rotating album artwork and dynamic visual presentation designed to match the intensity and emotion of the music.\n\nThis release also includes two YouTube-exclusive tracks not available on streaming platforms.\n\n━━━━━━━━━━━━━━━\n\nTRACKLIST\n\n00:00 – STORM OF THE BARBARIAN\n06:49 – I Am The Paladin [I Do Not Tire]\n12:25 – Rogue [I’m Not Like You]\n17:46 – Unstoppable [Say My Name]\n22:28 – The Darkest Knight\n30:02 – The Man Without Fear\n36:10 – The Mask I Wear\n40:29 – Don’t Make Me Angry\n46:06 – Faster [Ultimate Version]\n50:35 – Don’t Judge Me\n55:27 – Metal & Glass [YouTube Exclusive]\n1:00:26 – Crosshair Of Noise [YouTube Exclusive]\n\n━━━━━━━━━━━━━━━\n\n🎧 STREAM ECHO CRAFT:\nWebsite - https://www.echocraftmusic.com/\n\nHave an requests or comments?\nEmail - listening@echocraftmusic.com\n\n📺 Explore more Echo Craft music, visuals, and exclusive releases on this channel.\n\n━━━━━━━━━━━━━━━\n\n#EchoCraft #MetalMusic #RockMusic #VisualAlbum #HeavyAndChunky",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/W-kZPTWmp_o/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/W-kZPTWmp_o/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/W-kZPTWmp_o/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          },
+          "standard": {
+            "url": "https://i.ytimg.com/vi/W-kZPTWmp_o/sddefault.jpg",
+            "width": 640,
+            "height": 480
+          },
+          "maxres": {
+            "url": "https://i.ytimg.com/vi/W-kZPTWmp_o/maxresdefault.jpg",
+            "width": 1280,
+            "height": 720
+          }
+        },
+        "channelTitle": "Echo Craft",
+        "categoryId": "10",
+        "liveBroadcastContent": "none",
+        "defaultLanguage": "en",
+        "localized": {
+          "title": "Echo Craft – HEAVY & CHUNKY (Full Album Visualizer | Rock & Metal)",
+          "description": "Welcome to HEAVY & CHUNKY — a full rock and metal visual album experience from Echo Craft.\n\nThis project combines powerful riffs, cinematic energy, heavy atmospheres, and immersive visuals into one continuous experience.\n\nEach track features rotating album artwork and dynamic visual presentation designed to match the intensity and emotion of the music.\n\nThis release also includes two YouTube-exclusive tracks not available on streaming platforms.\n\n━━━━━━━━━━━━━━━\n\nTRACKLIST\n\n00:00 – STORM OF THE BARBARIAN\n06:49 – I Am The Paladin [I Do Not Tire]\n12:25 – Rogue [I’m Not Like You]\n17:46 – Unstoppable [Say My Name]\n22:28 – The Darkest Knight\n30:02 – The Man Without Fear\n36:10 – The Mask I Wear\n40:29 – Don’t Make Me Angry\n46:06 – Faster [Ultimate Version]\n50:35 – Don’t Judge Me\n55:27 – Metal & Glass [YouTube Exclusive]\n1:00:26 – Crosshair Of Noise [YouTube Exclusive]\n\n━━━━━━━━━━━━━━━\n\n🎧 STREAM ECHO CRAFT:\nWebsite - https://www.echocraftmusic.com/\n\nHave an requests or comments?\nEmail - listening@echocraftmusic.com\n\n📺 Explore more Echo Craft music, visuals, and exclusive releases on this channel.\n\n━━━━━━━━━━━━━━━\n\n#EchoCraft #MetalMusic #RockMusic #VisualAlbum #HeavyAndChunky"
+        },
+        "defaultAudioLanguage": "en"
+      }
+    },
+    {
+      "id": {
+        "videoId": "WcA3pHguBYU"
+      },
+      "snippet": {
+        "publishedAt": "2026-05-15T17:00:46Z",
+        "channelId": "UC1OkdmI61L1GJ6GuO9fRaDQ",
+        "title": "Midnight Studies Vol. 3: Think In Space | LoFi Hip Hop Beats for Study, Focus & Creative Thinking",
+        "description": "Welcome to **Midnight Studies Vol. 3 — Think In Space** 🌌☁️\n\nA carefully crafted lo-fi hip hop instrumental journey designed for:\n📚 studying\n🧠 deep focus\n💻 productivity\n☕ creative thinking\n🌤️ daytime reflection\n\nThis volume shifts the Midnight Studies series into a brighter mental atmosphere — warm jazz textures, boom bap grooves, flowing basslines, airy melodies, and spacious rhythms built to help your mind breathe and focus.\n\n🎧 Best experienced with headphones.\n\n━━━━━━━━━━━━━━━\n\n⏱️ TRACKLIST\n\n00:00 — Clear Mind\n06:36 — Float Theory\n12:36 — Processing…\n18:13 — Windowlight\n24:13 — City Walk\n31:19 — Mental Air\n38:26 — Open Tabs\n44:23 — Noon Reflection\n51:03 — Static Thought\n57:39 — Think In Space\n\n━━━━━━━━━━━━━━━\n\n🌌 ABOUT THE ALBUM\n\n“Think In Space” is about finding mental clarity in a noisy world.\n\nNot sleepy lo-fi.\nNot background noise.\n\nThis is atmospheric hip hop for:\n\n* thinkers\n* creators\n* students\n* dreamers\n* late workers\n* early risers\n\nMusic designed to create room for your thoughts.\n\n━━━━━━━━━━━━━━━\n\n🎹 SOUND & INFLUENCES\n• LoFi Hip Hop\n• Jazz Fusion\n• Boom Bap Influence\n• Warm Rhodes Piano\n• Vinyl Texture\n• Airy Atmospheric Production\n• Deep Focus Instrumentals\n\n━━━━━━━━━━━━━━━\n\n🎧 Echo Craft — Midnight Studies Series\n\nThank you for listening and supporting independent creativity.\n\nIf this helped your focus, creativity, or peace of mind:\n👍 Like\n💬 Comment\n🔔 Subscribe\n📌 Save for your next study/work session\n\n━━━━━━━━━━━━━━━\n\n#LofiHipHop #StudyMusic #ThinkInSpace #MidnightStudies #LoFiBeats #FocusMusic #JazzHop #BoomBap #InstrumentalHipHop #StudyBeats #ChillHop #CreativeFocus #DeepFocus #LofiStudy #BackgroundMusic",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/WcA3pHguBYU/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/WcA3pHguBYU/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/WcA3pHguBYU/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          },
+          "standard": {
+            "url": "https://i.ytimg.com/vi/WcA3pHguBYU/sddefault.jpg",
+            "width": 640,
+            "height": 480
+          },
+          "maxres": {
+            "url": "https://i.ytimg.com/vi/WcA3pHguBYU/maxresdefault.jpg",
+            "width": 1280,
+            "height": 720
+          }
+        },
+        "channelTitle": "Echo Craft",
+        "tags": [
+          "lofi hip hop",
+          "lofi beats",
+          "study music",
+          "focus music",
+          "deep focus",
+          "jazz hop",
+          "instrumental hip hop",
+          "boom bap instrumental",
+          "study beats",
+          "coding music",
+          "work music",
+          "relaxing beats",
+          "background music",
+          "mellow beats",
+          "rhodes piano",
+          "jazz influenced lofi",
+          "calm beats",
+          "atmospheric lofi",
+          "creative thinking music",
+          "concentration music",
+          "instrumental beats",
+          "midnight studies",
+          "echo craft",
+          "chill study beats",
+          "daytime lofi",
+          "lofi playlist",
+          "smooth jazz hip hop",
+          "focus playlist",
+          "peaceful beats"
+        ],
+        "categoryId": "10",
+        "liveBroadcastContent": "none",
+        "defaultLanguage": "en",
+        "localized": {
+          "title": "Midnight Studies Vol. 3: Think In Space | LoFi Hip Hop Beats for Study, Focus & Creative Thinking",
+          "description": "Welcome to **Midnight Studies Vol. 3 — Think In Space** 🌌☁️\n\nA carefully crafted lo-fi hip hop instrumental journey designed for:\n📚 studying\n🧠 deep focus\n💻 productivity\n☕ creative thinking\n🌤️ daytime reflection\n\nThis volume shifts the Midnight Studies series into a brighter mental atmosphere — warm jazz textures, boom bap grooves, flowing basslines, airy melodies, and spacious rhythms built to help your mind breathe and focus.\n\n🎧 Best experienced with headphones.\n\n━━━━━━━━━━━━━━━\n\n⏱️ TRACKLIST\n\n00:00 — Clear Mind\n06:36 — Float Theory\n12:36 — Processing…\n18:13 — Windowlight\n24:13 — City Walk\n31:19 — Mental Air\n38:26 — Open Tabs\n44:23 — Noon Reflection\n51:03 — Static Thought\n57:39 — Think In Space\n\n━━━━━━━━━━━━━━━\n\n🌌 ABOUT THE ALBUM\n\n“Think In Space” is about finding mental clarity in a noisy world.\n\nNot sleepy lo-fi.\nNot background noise.\n\nThis is atmospheric hip hop for:\n\n* thinkers\n* creators\n* students\n* dreamers\n* late workers\n* early risers\n\nMusic designed to create room for your thoughts.\n\n━━━━━━━━━━━━━━━\n\n🎹 SOUND & INFLUENCES\n• LoFi Hip Hop\n• Jazz Fusion\n• Boom Bap Influence\n• Warm Rhodes Piano\n• Vinyl Texture\n• Airy Atmospheric Production\n• Deep Focus Instrumentals\n\n━━━━━━━━━━━━��━━\n\n🎧 Echo Craft — Midnight Studies Series\n\nThank you for listening and supporting independent creativity.\n\nIf this helped your focus, creativity, or peace of mind:\n👍 Like\n💬 Comment\n🔔 Subscribe\n📌 Save for your next study/work session\n\n━━━━━━━━━━━━━━━\n\n#LofiHipHop #StudyMusic #ThinkInSpace #MidnightStudies #LoFiBeats #FocusMusic #JazzHop #BoomBap #InstrumentalHipHop #StudyBeats #ChillHop #CreativeFocus #DeepFocus #LofiStudy #BackgroundMusic"
+        }
+      }
+    },
+    {
+      "id": {
+        "videoId": "ntLVuS2iM_A"
+      },
+      "snippet": {
+        "publishedAt": "2026-05-12T17:00:58Z",
+        "channelId": "UC1OkdmI61L1GJ6GuO9fRaDQ",
+        "title": "7 Hours of Word-Fi: Psalms 📖 Lo-Fi Hip Hop for Prayer, Meditation & Deep Focus",
+        "description": "Hours of Word-Fi: Psalms 📖 Lo-Fi Hip Hop for Prayer, Meditation & Deep Focus\n\n🙏 Welcome to Word-Fi: Psalms 🙏\n\nThis 8-hour lo-fi journey combines the sacred words of the Psalms with beautiful, soulful beats. Each track features a full chapter of the Holy Bible, sung to a lo-fi rhythm—creating the perfect atmosphere for prayer, meditation, deep study, or peaceful sleep.\n\nExperience the Word in a brand new way.\n\n⏳ Timestamps & Track list (The First Hour)\nYouTube will automatically turn these into chapters on your video player:\n\n0:00 — Psalm 19\n\n4:12 — Psalm 37\n\n9:11 — Psalm 34\n\n12:40 — Psalm 42\n\n16:05 — Psalm 46\n\n19:15 — Psalm 78\n\n25:10 — Psalm 90\n\n28:24 — Psalm 104\n\n33:15 — Psalm 139\n\n37:22 — Psalm 119\n\n44:41 — Psalm 19 (Loop 2)\n\n48:53 — Psalm 37\n\n53:52 — Psalm 34\n\n57:21 — Psalm 42\n\n1:00:46 — Psalm 46\n\n✨ Highlights\n📖 Scripture Meets Beats: Word-for-word Psalms sung over premium lo-fi.  Translated from the Message Bible\n\n🎧 Deep Focus: Rhythms designed to help you stay in the flow.\n\n😴 Ideal for Rest: A peaceful soundscape to help you decompress.\n\n🕯️ Spiritual Atmosphere: Elevate your morning routine or reflection time.\n\n🎵 Support Echo Craft\nThank you for being part of the Echo Craft family. If this music brings you peace, please consider subscribing and sharing it with someone who needs it.\n\nStream the Full Album:\n\nSpotify: https://open.spotify.com/artist/4tIlaQ5ajpZLuUyImDFT92?si=fuFbx_-nSI2iJBK-P5Uq1A\n\nApple Music: https://music.apple.com/us/artist/echo-craft/1883626659\n\nYouTube Music: https://music.youtube.com/channel/UCHXLIiSigNZnLD910zmXSyg\n\nWebsite: EchoCraftMusic.com\n\nDrop a comment: Which Psalm resonates with you the most today? We’d love to hear how you are using Word-Fi! 👇",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/ntLVuS2iM_A/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/ntLVuS2iM_A/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/ntLVuS2iM_A/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          },
+          "standard": {
+            "url": "https://i.ytimg.com/vi/ntLVuS2iM_A/sddefault.jpg",
+            "width": 640,
+            "height": 480
+          },
+          "maxres": {
+            "url": "https://i.ytimg.com/vi/ntLVuS2iM_A/maxresdefault.jpg",
+            "width": 1280,
+            "height": 720
+          }
+        },
+        "channelTitle": "Echo Craft",
+        "tags": [
+          "lofi music",
+          "psalms",
+          "meditation",
+          "prayer",
+          "lofi beats",
+          "study music",
+          "sleep music",
+          "lofi beats study",
+          "sleep beats",
+          "focus music",
+          "calm music",
+          "spiritual music",
+          "word of god",
+          "bible verses",
+          "scripture",
+          "lofi ambient",
+          "ambient music",
+          "relaxing music",
+          "peaceful music",
+          "echocraft",
+          "independent music",
+          "music producer",
+          "7 hours",
+          "lo-fi hip hop",
+          "lo-fi beats",
+          "studying",
+          "sleeping",
+          "late night",
+          "deep focus",
+          "mindfulness",
+          "spirituality",
+          "faith",
+          "Meditation sounds",
+          "Power of prayer",
+          "Jesus",
+          "Jesus loves you",
+          "jesus saves"
+        ],
+        "categoryId": "10",
+        "liveBroadcastContent": "none",
+        "defaultLanguage": "en",
+        "localized": {
+          "title": "7 Hours of Word-Fi: Psalms 📖 Lo-Fi Hip Hop for Prayer, Meditation & Deep Focus",
+          "description": "Hours of Word-Fi: Psalms 📖 Lo-Fi Hip Hop for Prayer, Meditation & Deep Focus\n\n🙏 Welcome to Word-Fi: Psalms 🙏\n\nThis 8-hour lo-fi journey combines the sacred words of the Psalms with beautiful, soulful beats. Each track features a full chapter of the Holy Bible, sung to a lo-fi rhythm—creating the perfect atmosphere for prayer, meditation, deep study, or peaceful sleep.\n\nExperience the Word in a brand new way.\n\n⏳ Timestamps & Track list (The First Hour)\nYouTube will automatically turn these into chapters on your video player:\n\n0:00 — Psalm 19\n\n4:12 — Psalm 37\n\n9:11 — Psalm 34\n\n12:40 — Psalm 42\n\n16:05 — Psalm 46\n\n19:15 — Psalm 78\n\n25:10 — Psalm 90\n\n28:24 — Psalm 104\n\n33:15 — Psalm 139\n\n37:22 — Psalm 119\n\n44:41 — Psalm 19 (Loop 2)\n\n48:53 — Psalm 37\n\n53:52 — Psalm 34\n\n57:21 — Psalm 42\n\n1:00:46 — Psalm 46\n\n✨ Highlights\n📖 Scripture Meets Beats: Word-for-word Psalms sung over premium lo-fi.  Translated from the Message Bible\n\n🎧 Deep Focus: Rhythms designed to help you stay in the flow.\n\n😴 Ideal for Rest: A peaceful soundscape to help you decompress.\n\n🕯️ Spiritual Atmosphere: Elevate your morning routine or reflection time.\n\n🎵 Support Echo Craft\nThank you for being part of the Echo Craft family. If this music brings you peace, please consider subscribing and sharing it with someone who needs it.\n\nStream the Full Album:\n\nSpotify: https://open.spotify.com/artist/4tIlaQ5ajpZLuUyImDFT92?si=fuFbx_-nSI2iJBK-P5Uq1A\n\nApple Music: https://music.apple.com/us/artist/echo-craft/1883626659\n\nYouTube Music: https://music.youtube.com/channel/UCHXLIiSigNZnLD910zmXSyg\n\nWebsite: EchoCraftMusic.com\n\nDrop a comment: Which Psalm resonates with you the most today? We’d love to hear how you are using Word-Fi! 👇"
+        },
+        "defaultAudioLanguage": "en"
+      }
+    }
+  ]
 }
