@@ -1,0 +1,137 @@
+name: Update Music Tracks
+
+on:
+  schedule:
+    - cron: '0 5 * * *'  # Daily at 5 AM UTC (midnight EDT)
+  workflow_dispatch:
+
+jobs:
+  update-music:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Fetch and Process Playlist Items
+        run: |
+          node << 'EOFJS'
+          const https = require('https');
+          const fs = require('fs');
+          
+          const apiKey = process.env.YOUTUBE_API_KEY;
+          const playlistId = process.env.MUSIC_PLAYLIST_ID;
+          
+          // Wrap https.get in a Promise
+          function makeRequest(url) {
+            return new Promise((resolve, reject) => {
+              https.get(url, (res) => {
+                let body = '';
+                res.on('data', chunk => body += chunk);
+                res.on('end', () => {
+                  try {
+                    resolve(JSON.parse(body));
+                  } catch (error) {
+                    reject(new Error(`Failed to parse JSON: ${error.message}`));
+                  }
+                });
+              }).on('error', (error) => {
+                reject(new Error(`HTTP request failed: ${error.message}`));
+              });
+            });
+          }
+          
+          // Main async function
+          async function updateMusic() {
+            try {
+              console.log('Starting music playlist fetch...');
+              console.log(`Playlist ID: ${playlistId}`);
+              
+              // Step 1: Fetch playlist items
+              const playlistUrl = `https://www.googleapis.com/youtube/v3/playlistItems?key=${apiKey}&playlistId=${playlistId}&part=snippet&maxResults=50&order=date`;
+              
+              console.log('Fetching playlist items from YouTube API...');
+              const playlistData = await makeRequest(playlistUrl);
+              
+              if (!playlistData.items || playlistData.items.length === 0) {
+                throw new Error('No items found in playlist');
+              }
+              
+              console.log(`Found ${playlistData.items.length} items in playlist`);
+              
+              // Step 2: Extract video IDs from playlist items
+              const videoIds = playlistData.items
+                .map(item => item.snippet.resourceId.videoId)
+                .filter(id => id)
+                .join(',');
+              
+              if (!videoIds) {
+                throw new Error('No valid video IDs found in playlist');
+              }
+              
+              // Step 3: Fetch full video details (for high-quality thumbnails)
+              const detailsUrl = `https://www.googleapis.com/youtube/v3/videos?key=${apiKey}&id=${videoIds}&part=snippet,contentDetails`;
+              
+              console.log('Fetching video details for high-quality thumbnails...');
+              const detailsData = await makeRequest(detailsUrl);
+              
+              if (!detailsData.items) {
+                throw new Error('No items in video details response');
+              }
+              
+              console.log(`Received details for ${detailsData.items.length} videos`);
+              
+              // Step 4: Process and prepare output
+              const musicItems = detailsData.items.map(item => {
+                const duration = item.contentDetails?.duration || 'PT0S';
+                const publishedAt = item.snippet.publishedAt;
+                
+                console.log(`✓ ${item.snippet.title} (${duration}, ${publishedAt})`);
+                
+                return {
+                  id: { videoId: item.id },
+                  snippet: item.snippet,
+                  contentDetails: {
+                    duration: duration
+                  }
+                };
+              });
+              
+              // Step 5: Sort by publish date descending (newest first)
+              musicItems.sort((a, b) => {
+                return new Date(b.snippet.publishedAt) - new Date(a.snippet.publishedAt);
+              });
+              
+              // Step 6: Create output JSON
+              const output = {
+                playlistId: playlistId,
+                lastUpdated: new Date().toISOString(),
+                totalItems: musicItems.length,
+                items: musicItems
+              };
+              
+              // Write to file
+              fs.writeFileSync('music.json', JSON.stringify(output, null, 2));
+              console.log(`\nmusic.json written successfully (${musicItems.length} tracks)`);
+              console.log(`Last updated: ${output.lastUpdated}`);
+              
+              process.exit(0);
+              
+            } catch (error) {
+              console.error('Error:', error.message);
+              process.exit(1);
+            }
+          }
+          
+          // Run the main function
+          updateMusic();
+          EOFJS
+        env:
+          YOUTUBE_API_KEY: ${{ secrets.YOUTUBE_API_KEY }}
+          MUSIC_PLAYLIST_ID: ${{ secrets.MUSIC_PLAYLIST_ID }}
+      
+      - name: Commit changes
+        run: |
+          git config user.name "GitHub Actions"
+          git config user.email "actions@github.com"
+          git add music.json
+          git commit -m "Update music tracks from playlist" || echo "No changes to commit"
+          git push
