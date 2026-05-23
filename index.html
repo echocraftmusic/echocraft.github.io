@@ -411,17 +411,11 @@
 
         .videos-grid {
             display: grid;
-            grid-template-columns: repeat(2, 1fr);
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 2rem;
             width: 100%;
             max-width: 1400px;
             z-index: 3;
-        }
-        
-        @media (max-width: 768px) {
-            .videos-grid {
-                grid-template-columns: 1fr;
-            }
         }
 
         .video-card {
@@ -484,6 +478,132 @@
         .music-btn:hover {
             transform: scale(1.05) translateY(-3px);
             box-shadow: 0 15px 40px rgba(0, 217, 255, 0.4);
+        }
+
+        /* MUSIC GRID STYLES */
+        .music-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            width: 100%;
+            max-width: 1400px;
+            z-index: 3;
+            margin-bottom: 2rem;
+        }
+
+        .music-card {
+            aspect-ratio: 1/1;
+            border-radius: 12px;
+            overflow: hidden;
+            border: 2px solid rgba(0, 217, 255, 0.2);
+            transition: all 0.3s ease;
+            background: rgba(20, 24, 41, 0.5);
+            cursor: pointer;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .music-card:hover {
+            border-color: var(--accent-cyan);
+            box-shadow: 0 10px 30px rgba(0, 217, 255, 0.2);
+            transform: translateY(-5px);
+        }
+
+        .music-thumbnail {
+            position: relative;
+            width: 100%;
+            flex: 1;
+            overflow: hidden;
+            background: var(--dark-secondary);
+        }
+
+        .music-thumbnail img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .music-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .music-card:hover .music-overlay {
+            opacity: 1;
+        }
+
+        .play-icon {
+            width: 60px;
+            height: 60px;
+            background: var(--accent-cyan);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--dark-bg);
+            font-size: 1.5rem;
+            box-shadow: 0 0 20px rgba(0, 217, 255, 0.4);
+        }
+
+        .music-info {
+            padding: 1.5rem 1rem;
+            background: linear-gradient(135deg, rgba(22, 33, 62, 0.8), rgba(26, 26, 46, 0.8));
+            backdrop-filter: blur(10px);
+            flex: 0 0 auto;
+        }
+
+        .music-title {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--text-primary);
+            line-height: 1.3;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            min-height: 2.6em;
+        }
+
+        .music-meta {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+
+        .music-footer {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: 2rem;
+        }
+
+        /* RESPONSIVE MUSIC GRID */
+        @media (max-width: 1024px) {
+            .music-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .music-grid {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+
+            .music {
+                padding: 4rem 1rem;
+            }
         }
 
         /* INFO SECTION */
@@ -767,16 +887,38 @@
             <!-- MUSIC SECTION -->
             <section class="music" id="music">
                 <h2 class="section-title">MUSIC</h2>
-                <div class="music-container">
-                    <p class="music-description">
-                        Stream all your favorite Echo Craft tracks across every platform. New drops every Tuesday & Friday.
-                    </p>
-                    <a href="https://hyperfollow.com/echocraft7" target="_blank" class="music-btn">
-                        🎵 GET ALL MUSIC
+                <div class="music-grid" id="musicContainer">
+                    <!-- Auto-populated from music.json -->
+                </div>
+                <div class="music-footer">
+                    <a href="https://hyperfollow.com/echocraft7" target="_blank" style="
+                        display: inline-block;
+                        padding: 0.9rem 2rem;
+                        background: linear-gradient(135deg, #00d9ff, #0099cc);
+                        color: #000;
+                        text-decoration: none;
+                        border-radius: 6px;
+                        font-weight: 600;
+                        font-size: 1rem;
+                        transition: all 0.3s ease;
+                        box-shadow: 0 0 20px rgba(0, 217, 255, 0.3);
+                    " onmouseover="this.style.boxShadow='0 0 30px rgba(0, 217, 255, 0.6)'" onmouseout="this.style.boxShadow='0 0 20px rgba(0, 217, 255, 0.3)'">
+                        🎵 Stream All Music
                     </a>
-                    <p style="color: var(--text-secondary); margin-top: 2rem; font-size: 0.95rem;">
-                        Available on Spotify • Apple Music • iHeart • Tidal • YouTube Music & more
-                    </p>
+                    <a href="https://www.youtube.com/@EchoCraft-ai7/videos" target="_blank" style="
+                        display: inline-block;
+                        padding: 0.9rem 2rem;
+                        background: linear-gradient(135deg, #0099cc, #006699);
+                        color: #fff;
+                        text-decoration: none;
+                        border-radius: 6px;
+                        font-weight: 600;
+                        font-size: 1rem;
+                        transition: all 0.3s ease;
+                        box-shadow: 0 0 20px rgba(0, 153, 204, 0.3);
+                    " onmouseover="this.style.boxShadow='0 0 30px rgba(0, 153, 204, 0.6)'" onmouseout="this.style.boxShadow='0 0 20px rgba(0, 153, 204, 0.3)'">
+                        Subscribe on YouTube
+                    </a>
                 </div>
             </section>
 
@@ -828,40 +970,42 @@
     </div>
 
     <script>
-        // LOAD LATEST ECHO CRAFT VIDEOS FROM videos.json - DISPLAY 4 VIDEOS IN 2x2 GRID
+        // LOAD LATEST ECHO CRAFT VIDEOS FROM videos.json
         function loadYouTubeVideos() {
             fetch('videos.json')
                 .then(response => response.json())
                 .then(data => {
                     if (data && data.items && data.items.length > 0) {
-                        // Get first 4 videos from the data.items array
-                        const videosToDisplay = data.items.slice(0, 4);
+                        const videoItems = data.items.slice(0, 4);
                         
-                        // Build HTML for each video card in the grid
-                        let videosHtml = '';
-                        videosToDisplay.forEach((video) => {
+                        let videoHtml = '';
+                        videoItems.forEach((video) => {
                             const videoId = video.id.videoId;
                             const title = video.snippet.title || 'Untitled Video';
                             const thumbnail = video.snippet.thumbnails.high.url;
                             const publishedAt = new Date(video.snippet.publishedAt).toLocaleDateString();
                             
-                            videosHtml += `
-                                <a href="https://www.youtube.com/watch?v=${videoId}" target="_blank" style="text-decoration: none; color: inherit; display: block;">
-                                    <div class="video-card" style="position: relative; overflow: hidden;">
-                                        <img src="${thumbnail}" alt="${title}" style="width: 100%; height: 100%; object-fit: cover; display: block;">
-                                        <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.4); opacity: 0; transition: opacity 0.3s ease;" class="video-overlay"></div>
-                                        <div style="position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(to top, rgba(10, 14, 26, 0.9), transparent); padding: 1.5rem 1rem 1rem; color: white; z-index: 2;">
-                                            <div style="font-size: 0.95rem; font-weight: 600; line-height: 1.3; margin-bottom: 0.5rem; max-height: 2.6em; overflow: hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;">${title}</div>
-                                            <div style="font-size: 0.85rem; color: #b0b5c1;">${publishedAt}</div>
+                            videoHtml += `
+                                <a href="https://www.youtube.com/watch?v=${videoId}" target="_blank" style="text-decoration: none; color: inherit; display: block; height: 100%;">
+                                    <div class="video-card" style="height: 100%;">
+                                        <div class="music-thumbnail">
+                                            <img src="${thumbnail}" alt="${title}" loading="lazy">
+                                            <div class="music-overlay">
+                                                <div class="play-icon">▶</div>
+                                            </div>
+                                        </div>
+                                        <div class="music-info">
+                                            <div class="music-title">${title}</div>
+                                            <div class="music-meta">${publishedAt}</div>
                                         </div>
                                     </div>
                                 </a>
                             `;
                         });
                         
-                        const containerHtml = `
-                            ${videosHtml}
-                            <div style="margin-top: 2rem; text-align: center; display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; grid-column: 1/-1;">
+                        // Add buttons after grid
+                        videoHtml += `
+                            <div style="grid-column: 1/-1; display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; margin-top: 1rem;">
                                 <a href="https://www.youtube.com/@EchoCraft-ai7" target="_blank" style="
                                     display: inline-block;
                                     padding: 0.9rem 2rem;
@@ -895,28 +1039,62 @@
                         
                         const container = document.getElementById('videosContainer');
                         if (container) {
-                            container.innerHTML = containerHtml;
-                            
-                            // Add hover effect to video overlays
-                            document.querySelectorAll('.video-overlay').forEach(overlay => {
-                                const videoCard = overlay.parentElement;
-                                videoCard.addEventListener('mouseenter', () => {
-                                    overlay.style.opacity = '1';
-                                });
-                                videoCard.addEventListener('mouseleave', () => {
-                                    overlay.style.opacity = '0';
-                                });
-                            });
+                            container.innerHTML = videoHtml;
                         }
                     }
                 })
                 .catch(error => {
-                    console.log('Loading latest videos...');
+                    console.log('Loading videos...');
                 });
         }
 
         // Load video on page load
         window.addEventListener('load', loadYouTubeVideos);
+        window.addEventListener('load', loadMusicTracks);
+
+        // LOAD MUSIC TRACKS FROM music.json
+        function loadMusicTracks() {
+            fetch('music.json')
+                .then(response => response.json())
+                .then(data => {
+                    if (data && data.items && data.items.length > 0) {
+                        const musicItems = data.items.slice(0, 6);
+                        
+                        let musicHtml = '';
+                        musicItems.forEach((track) => {
+                            const videoId = track.id.videoId;
+                            const title = track.snippet.title || 'Untitled Track';
+                            const thumbnail = track.snippet.thumbnails.high.url;
+                            const publishedAt = new Date(track.snippet.publishedAt).toLocaleDateString();
+                            
+                            musicHtml += `
+                                <a href="https://www.youtube.com/watch?v=${videoId}" target="_blank" style="text-decoration: none; color: inherit; display: block; height: 100%;">
+                                    <div class="music-card" style="height: 100%;">
+                                        <div class="music-thumbnail">
+                                            <img src="${thumbnail}" alt="${title}" loading="lazy">
+                                            <div class="music-overlay">
+                                                <div class="play-icon">▶</div>
+                                            </div>
+                                        </div>
+                                        <div class="music-info">
+                                            <div class="music-title">${title}</div>
+                                            <div class="music-meta">${publishedAt}</div>
+                                        </div>
+                                    </div>
+                                </a>
+                            `;
+                        });
+                        
+                        const container = document.getElementById('musicContainer');
+                        if (container) {
+                            container.innerHTML = musicHtml;
+                        }
+                    }
+                })
+                .catch(error => {
+                    console.log('Loading music tracks...');
+                });
+        }
 
         // SMOOTH NAV HIGHLIGHTING
         const navLinks = document.querySelectorAll('.nav-link');
