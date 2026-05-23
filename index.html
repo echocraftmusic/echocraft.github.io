@@ -411,11 +411,17 @@
 
         .videos-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            grid-template-columns: repeat(2, 1fr);
             gap: 2rem;
             width: 100%;
             max-width: 1400px;
             z-index: 3;
+        }
+        
+        @media (max-width: 768px) {
+            .videos-grid {
+                grid-template-columns: 1fr;
+            }
         }
 
         .video-card {
@@ -822,26 +828,40 @@
     </div>
 
     <script>
-        // LOAD LATEST ECHO CRAFT VIDEOS FROM videos.json
+        // LOAD LATEST ECHO CRAFT VIDEOS FROM videos.json - DISPLAY 4 VIDEOS IN 2x2 GRID
         function loadYouTubeVideos() {
             fetch('videos.json')
                 .then(response => response.json())
                 .then(data => {
                     if (data && data.items && data.items.length > 0) {
-                        const videoId = data.items[0].id.videoId;
+                        // Get first 4 videos from the data.items array
+                        const videosToDisplay = data.items.slice(0, 4);
+                        
+                        // Build HTML for each video card in the grid
+                        let videosHtml = '';
+                        videosToDisplay.forEach((video) => {
+                            const videoId = video.id.videoId;
+                            const title = video.snippet.title || 'Untitled Video';
+                            const thumbnail = video.snippet.thumbnails.high.url;
+                            const publishedAt = new Date(video.snippet.publishedAt).toLocaleDateString();
+                            
+                            videosHtml += `
+                                <a href="https://www.youtube.com/watch?v=${videoId}" target="_blank" style="text-decoration: none; color: inherit; display: block;">
+                                    <div class="video-card" style="position: relative; overflow: hidden;">
+                                        <img src="${thumbnail}" alt="${title}" style="width: 100%; height: 100%; object-fit: cover; display: block;">
+                                        <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.4); opacity: 0; transition: opacity 0.3s ease;" class="video-overlay"></div>
+                                        <div style="position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(to top, rgba(10, 14, 26, 0.9), transparent); padding: 1.5rem 1rem 1rem; color: white; z-index: 2;">
+                                            <div style="font-size: 0.95rem; font-weight: 600; line-height: 1.3; margin-bottom: 0.5rem; max-height: 2.6em; overflow: hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;">${title}</div>
+                                            <div style="font-size: 0.85rem; color: #b0b5c1;">${publishedAt}</div>
+                                        </div>
+                                    </div>
+                                </a>
+                            `;
+                        });
                         
                         const containerHtml = `
-                            <div class="video-card" style="grid-column: 1/-1; aspect-ratio: 16/9;">
-                                <iframe 
-                                    width="100%" 
-                                    height="100%" 
-                                    src="https://www.youtube.com/embed/${videoId}" 
-                                    frameborder="0" 
-                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-                                    allowfullscreen>
-                                </iframe>
-                            </div>
-                            <div style="margin-top: 2rem; text-align: center; display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+                            ${videosHtml}
+                            <div style="margin-top: 2rem; text-align: center; display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; grid-column: 1/-1;">
                                 <a href="https://www.youtube.com/@EchoCraft-ai7" target="_blank" style="
                                     display: inline-block;
                                     padding: 0.9rem 2rem;
@@ -876,11 +896,22 @@
                         const container = document.getElementById('videosContainer');
                         if (container) {
                             container.innerHTML = containerHtml;
+                            
+                            // Add hover effect to video overlays
+                            document.querySelectorAll('.video-overlay').forEach(overlay => {
+                                const videoCard = overlay.parentElement;
+                                videoCard.addEventListener('mouseenter', () => {
+                                    overlay.style.opacity = '1';
+                                });
+                                videoCard.addEventListener('mouseleave', () => {
+                                    overlay.style.opacity = '0';
+                                });
+                            });
                         }
                     }
                 })
                 .catch(error => {
-                    console.log('Loading latest video...');
+                    console.log('Loading latest videos...');
                 });
         }
 
