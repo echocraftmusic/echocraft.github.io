@@ -1,0 +1,138 @@
+name: Update Music from Topic Channel
+
+on:
+  schedule:
+    - cron: '0 6 * * *'  # Daily at 6 AM UTC (1 AM EDT)
+  workflow_dispatch:
+
+jobs:
+  update-music:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Fetch and Process Topic Channel Videos
+        run: |
+          node << 'EOFJS'
+          const https = require('https');
+          const fs = require('fs');
+          
+          const apiKey = process.env.YOUTUBE_API_KEY;
+          const topicChannelId = process.env.TOPIC_CHANNEL_ID;
+          
+          // Wrap https.get in a Promise
+          function makeRequest(url) {
+            return new Promise((resolve, reject) => {
+              https.get(url, (res) => {
+                let body = '';
+                res.on('data', chunk => body += chunk);
+                res.on('end', () => {
+                  try {
+                    resolve(JSON.parse(body));
+                  } catch (error) {
+                    reject(new Error(`Failed to parse JSON: ${error.message}`));
+                  }
+                });
+              }).on('error', (error) => {
+                reject(new Error(`HTTP request failed: ${error.message}`));
+              });
+            });
+          }
+          
+          // Main async function
+          async function updateMusic() {
+            try {
+              console.log('Starting Topic channel music fetch...');
+              console.log(`Topic Channel ID: ${topicChannelId}`);
+              
+              // Step 1: Search for uploads in the Topic channel
+              const searchUrl = `https://www.googleapis.com/youtube/v3/search?key=${apiKey}&channelId=${topicChannelId}&part=snippet&order=date&type=video&maxResults=50`;
+              
+              console.log('Searching for videos in Topic channel...');
+              const searchData = await makeRequest(searchUrl);
+              
+              if (!searchData.items || searchData.items.length === 0) {
+                throw new Error('No videos found in Topic channel');
+              }
+              
+              console.log(`Found ${searchData.items.length} videos in Topic channel`);
+              
+              // Step 2: Extract video IDs from search results
+              const videoIds = searchData.items
+                .map(item => item.id.videoId)
+                .filter(id => id)
+                .join(',');
+              
+              if (!videoIds) {
+                throw new Error('No valid video IDs found');
+              }
+              
+              // Step 3: Fetch full video details (for high-quality thumbnails and metadata)
+              const detailsUrl = `https://www.googleapis.com/youtube/v3/videos?key=${apiKey}&id=${videoIds}&part=snippet,contentDetails`;
+              
+              console.log('Fetching video details for album art and metadata...');
+              const detailsData = await makeRequest(detailsUrl);
+              
+              if (!detailsData.items) {
+                throw new Error('No items in video details response');
+              }
+              
+              console.log(`Received details for ${detailsData.items.length} videos`);
+              
+              // Step 4: Process and prepare output
+              const musicItems = detailsData.items.map(item => {
+                const duration = item.contentDetails?.duration || 'PT0S';
+                const publishedAt = item.snippet.publishedAt;
+                
+                console.log(`✓ ${item.snippet.title} (${duration}, ${publishedAt})`);
+                
+                return {
+                  id: { videoId: item.id },
+                  snippet: item.snippet,
+                  contentDetails: {
+                    duration: duration
+                  }
+                };
+              });
+              
+              // Step 5: Sort by publish date descending (newest first)
+              musicItems.sort((a, b) => {
+                return new Date(b.snippet.publishedAt) - new Date(a.snippet.publishedAt);
+              });
+              
+              // Step 6: Create output JSON
+              const output = {
+                channelId: topicChannelId,
+                channelType: 'topic',
+                lastUpdated: new Date().toISOString(),
+                totalItems: musicItems.length,
+                items: musicItems
+              };
+              
+              // Write to file
+              fs.writeFileSync('music.json', JSON.stringify(output, null, 2));
+              console.log(`\nmusic.json written successfully (${musicItems.length} tracks)`);
+              console.log(`Last updated: ${output.lastUpdated}`);
+              
+              process.exit(0);
+              
+            } catch (error) {
+              console.error('Error:', error.message);
+              process.exit(1);
+            }
+          }
+          
+          // Run the main function
+          updateMusic();
+          EOFJS
+        env:
+          YOUTUBE_API_KEY: ${{ secrets.YOUTUBE_API_KEY }}
+          TOPIC_CHANNEL_ID: ${{ secrets.TOPIC_CHANNEL_ID }}
+      
+      - name: Commit changes
+        run: |
+          git config user.name "GitHub Actions"
+          git config user.email "actions@github.com"
+          git add music.json
+          git commit -m "Update music from Topic channel" || echo "No changes to commit"
+          git push
