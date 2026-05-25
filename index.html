@@ -602,6 +602,146 @@
             }
         }
 
+        /* MOBILE HAMBURGER MENU */
+        .hamburger-menu {
+            display: none;
+            flex-direction: column;
+            justify-content: space-around;
+            width: 30px;
+            height: 25px;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            position: fixed;
+            top: 1rem;
+            left: 1rem;
+            z-index: 1000;
+            padding: 0;
+        }
+
+        .hamburger-menu span {
+            width: 100%;
+            height: 2.5px;
+            background: var(--accent-cyan);
+            border-radius: 2px;
+            transition: all 0.3s ease;
+            display: block;
+        }
+
+        .hamburger-menu:hover span {
+            box-shadow: 0 0 10px rgba(0, 217, 255, 0.5);
+        }
+
+        .hamburger-menu.active span:nth-child(1) {
+            transform: rotate(45deg) translate(8px, 8px);
+        }
+
+        .hamburger-menu.active span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .hamburger-menu.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(7px, -7px);
+        }
+
+        /* MOBILE MENU OVERLAY */
+        .mobile-menu-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(4px);
+            z-index: 999;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .mobile-menu-overlay.active {
+            display: block;
+            opacity: 1;
+        }
+
+        /* MOBILE SIDEBAR POSITIONING */
+        .sidebar.mobile-open {
+            transform: translateX(0);
+        }
+
+        /* HERO SECTION MOBILE */
+        .hero section {
+            padding: 0 1.5rem;
+        }
+
+        @media (max-width: 768px) {
+            /* SHOW HAMBURGER ON MOBILE */
+            .hamburger-menu {
+                display: flex;
+            }
+
+            /* HIDE SIDEBAR BY DEFAULT, SLIDE IN WHEN OPEN */
+            .sidebar {
+                width: 280px;
+                position: fixed;
+                left: 0;
+                top: 0;
+                height: 100vh;
+                z-index: 999;
+                transform: translateX(-100%);
+                transition: transform 0.3s ease;
+                overflow-y: auto;
+            }
+
+            .sidebar.mobile-open {
+                transform: translateX(0);
+            }
+
+            /* REMOVE SIDEBAR MARGIN ON MOBILE */
+            .main-content {
+                margin-left: 0;
+                width: 100%;
+            }
+
+            /* HERO CONTENT CENTERING ON MOBILE */
+            .hero {
+                padding-top: 6rem;
+            }
+
+            .hero h1 {
+                font-size: 2rem;
+                margin-bottom: 1.5rem;
+            }
+
+            .hero p {
+                font-size: 1rem;
+                margin-bottom: 1.5rem;
+                line-height: 1.5;
+                max-width: 90%;
+                margin-left: auto;
+                margin-right: auto;
+            }
+
+            /* STACK BUTTONS VERTICALLY */
+            .home-cta {
+                display: flex;
+                flex-direction: column;
+                gap: 1.2rem;
+                max-width: 280px;
+                margin: 2rem auto 0;
+            }
+
+            .home-cta .btn {
+                width: 100%;
+                padding: 1rem 2rem !important;
+            }
+
+            /* VIDEOS GRID MOBILE */
+            .music {
+                padding: 3rem 1rem;
+            }
+        }
+
         @media (max-width: 768px) {
             .music-grid {
                 grid-template-columns: 1fr;
@@ -821,6 +961,16 @@
     </style>
 </head>
 <body>
+    <!-- HAMBURGER MENU BUTTON (Mobile Only) -->
+    <button class="hamburger-menu" id="hamburger">
+        <span></span>
+        <span></span>
+        <span></span>
+    </button>
+
+    <!-- MOBILE MENU OVERLAY (Mobile Only) -->
+    <div class="mobile-menu-overlay" id="menuOverlay"></div>
+
     <div class="container">
         <!-- LEFT SIDEBAR -->
         <aside class="sidebar">
@@ -1103,6 +1253,46 @@
                     console.log('Loading music from Topic channel...');
                 });
         }
+
+        // MOBILE HAMBURGER MENU
+        const hamburger = document.getElementById('hamburger');
+        const sidebar = document.querySelector('.sidebar');
+        const menuOverlay = document.getElementById('menuOverlay');
+        const navLinks = document.querySelectorAll('.nav-link');
+
+        // Toggle menu when hamburger is clicked
+        hamburger.addEventListener('click', () => {
+            hamburger.classList.toggle('active');
+            sidebar.classList.toggle('mobile-open');
+            menuOverlay.classList.toggle('active');
+        });
+
+        // Close menu when overlay is clicked
+        menuOverlay.addEventListener('click', () => {
+            hamburger.classList.remove('active');
+            sidebar.classList.remove('mobile-open');
+            menuOverlay.classList.remove('active');
+        });
+
+        // Close menu when nav link is clicked
+        navLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                if (window.innerWidth <= 768) {
+                    hamburger.classList.remove('active');
+                    sidebar.classList.remove('mobile-open');
+                    menuOverlay.classList.remove('active');
+                }
+            });
+        });
+
+        // Close menu on window resize if going back to desktop
+        window.addEventListener('resize', () => {
+            if (window.innerWidth > 768) {
+                hamburger.classList.remove('active');
+                sidebar.classList.remove('mobile-open');
+                menuOverlay.classList.remove('active');
+            }
+        });
 
         // SMOOTH NAV HIGHLIGHTING
         const navLinks = document.querySelectorAll('.nav-link');
