@@ -689,7 +689,7 @@
                 left: 0;
                 top: 0;
                 height: 100vh;
-                z-index: 999;
+                z-index: 1001;
                 transform: translateX(-100%);
                 transition: transform 0.3s ease;
                 overflow-y: auto;
@@ -887,6 +887,10 @@
             .videos-grid {
                 grid-template-columns: repeat(2, 1fr);
                 gap: 2rem;
+            }
+
+            .video-card {
+                min-height: 260px;
             }
 
             .btn {
