@@ -374,13 +374,32 @@
             box-shadow: 0 5px 20px rgba(0, 217, 255, 0.3);
         }
 
+        @keyframes subscribeMessageFadeIn {
+            0% {
+                opacity: 0;
+                transform: translateY(-6px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
         .subscribe-message {
             display: none;
             margin-top: 0.8rem;
             font-size: 0.85rem;
             text-align: center;
             opacity: 1;
-            transition: opacity 0.3s ease;
+            transition: opacity 0.4s ease;
+            animation: subscribeMessageFadeIn 0.4s ease-out forwards;
+            color: var(--accent-cyan);
+            font-weight: 500;
+            letter-spacing: 0.5px;
+        }
+
+        .subscribe-message.error {
+            color: #ff6b6b;
         }
 
         /* MAIN CONTENT */
@@ -1885,10 +1904,12 @@
             subscribeMessage.textContent = text;
             subscribeMessage.style.display = 'block';
             
-            if (type === 'success') {
-                subscribeMessage.style.color = 'var(--accent-cyan)';
-            } else if (type === 'error') {
-                subscribeMessage.style.color = '#ff6b6b';
+            // Remove any previous error class
+            subscribeMessage.classList.remove('error');
+            
+            // Add error class if error message
+            if (type === 'error') {
+                subscribeMessage.classList.add('error');
             }
         }
         
