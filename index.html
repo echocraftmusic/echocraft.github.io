@@ -55,6 +55,7 @@
             opacity: 0.35;
             z-index: 0;
             pointer-events: none;
+            animation: backgroundBreathe 50s ease-in-out infinite;
         }
 
         /* GRADIENT OVERLAY FOR DARK BLUE FADE */
@@ -480,6 +481,15 @@
             100% {
                 background-position: -100% -100%;
                 opacity: 0.02;
+            }
+        }
+
+        @keyframes backgroundBreathe {
+            0%, 100% {
+                filter: blur(15px) brightness(0.400);
+            }
+            50% {
+                filter: blur(15px) brightness(0.415);
             }
         }
 
