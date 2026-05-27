@@ -324,6 +324,13 @@
             overflow: hidden;
         }
 
+        /* MOBILE POSITIONING CONTEXT FOR TOAST */
+        @media (max-width: 768px) {
+            .subscribe-container {
+                position: relative;
+            }
+        }
+
         .subscribe-box::before {
             content: '';
             position: absolute;
@@ -472,13 +479,18 @@
         }
 
         /* MOBILE TOAST POSITIONING */
+        /* MOBILE TOAST POSITIONING - SIDEBAR ANCHORED */
         @media (max-width: 768px) {
             .subscribe-toast {
-                bottom: 1rem;
-                left: 1rem;
-                right: 1rem;
+                position: absolute;
+                bottom: auto;
+                top: -5.5rem;
+                left: 0.5rem;
+                right: 0.5rem;
                 transform: none;
-                max-width: calc(100vw - 2rem);
+                max-width: none;
+                width: calc(100% - 1rem);
+                z-index: 100;
             }
 
             .toast-text {
@@ -1589,18 +1601,20 @@
                         <i class="fas fa-envelope"></i>
                     </a>
                 </div>
-                <div class="subscribe-box">
-                    <p>Subscribe for updates</p>
-                    <form id="subscribeForm" method="POST" action="https://formspree.io/f/mgoqppve">
-                        <input type="email" name="email" placeholder="your@email.com" id="emailInput" required autocomplete="email">
-                        <input type="text" name="_gotcha" style="display:none;">
-                        <button type="submit" id="subscribeBtn">Subscribe</button>
-                    </form>
-                    <div class="subscribe-message" id="subscribeMessage"></div>
-                </div>
-                <div class="subscribe-toast" id="subscribeToast">
-                    <span class="toast-icon">✓</span>
-                    <span class="toast-text">Welcome to Echo Craft.</span>
+                <div class="subscribe-container">
+                    <div class="subscribe-box">
+                        <p>Subscribe for updates</p>
+                        <form id="subscribeForm" method="POST" action="https://formspree.io/f/mgoqppve">
+                            <input type="email" name="email" placeholder="your@email.com" id="emailInput" required autocomplete="email">
+                            <input type="text" name="_gotcha" style="display:none;">
+                            <button type="submit" id="subscribeBtn">Subscribe</button>
+                        </form>
+                        <div class="subscribe-message" id="subscribeMessage"></div>
+                    </div>
+                    <div class="subscribe-toast" id="subscribeToast">
+                        <span class="toast-icon">✓</span>
+                        <span class="toast-text">Welcome to Echo Craft.</span>
+                    </div>
                 </div>
             </div>
         </aside>
