@@ -374,6 +374,15 @@
             box-shadow: 0 5px 20px rgba(0, 217, 255, 0.3);
         }
 
+        .subscribe-message {
+            display: none;
+            margin-top: 0.8rem;
+            font-size: 0.85rem;
+            text-align: center;
+            opacity: 1;
+            transition: opacity 0.3s ease;
+        }
+
         /* MAIN CONTENT */
         .main-content {
             margin-left: 280px;
@@ -1479,8 +1488,12 @@
                 </div>
                 <div class="subscribe-box">
                     <p>Subscribe for updates</p>
-                    <input type="email" placeholder="your@email.com" id="emailInput">
-                    <button onclick="handleSubscribe()">Subscribe</button>
+                    <form id="subscribeForm" method="POST" action="https://formspree.io/f/mgoqppve">
+                        <input type="email" name="email" placeholder="your@email.com" id="emailInput" required autocomplete="email">
+                        <input type="text" name="_gotcha" style="display:none;">
+                        <button type="submit" id="subscribeBtn">Subscribe</button>
+                    </form>
+                    <div class="subscribe-message" id="subscribeMessage"></div>
                 </div>
             </div>
         </aside>
@@ -1796,21 +1809,93 @@
             });
         });
 
-        // SUBSCRIBE HANDLER
-        function handleSubscribe() {
-            const email = document.getElementById('emailInput').value;
-            if (email) {
-                alert(`Thanks for subscribing, ${email}! Check your inbox for confirmation.`);
-                document.getElementById('emailInput').value = '';
-            } else {
-                alert('Please enter a valid email address.');
+        // FORMSPREE SUBSCRIBE HANDLER
+        const subscribeForm = document.getElementById('subscribeForm');
+        const emailInput = document.getElementById('emailInput');
+        const subscribeMessage = document.getElementById('subscribeMessage');
+        
+        subscribeForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const email = emailInput.value.trim();
+            
+            // Validate email format
+            if (!email || !email.includes('@')) {
+                showMessage('Please enter a valid email address.', 'error');
+                return;
+            }
+            
+            // Check honeypot (anti-spam)
+            const honeypot = subscribeForm.querySelector('input[name="_gotcha"]');
+            if (honeypot && honeypot.value) {
+                // Bot detected, silently ignore
+                showMessage('Welcome to Echo Craft.', 'success');
+                emailInput.value = '';
+                return;
+            }
+            
+            try {
+                // Disable button during submission
+                const submitBtn = subscribeForm.querySelector('button[type="submit"]');
+                submitBtn.disabled = true;
+                submitBtn.style.opacity = '0.6';
+                
+                // Create FormData from form
+                const formData = new FormData(subscribeForm);
+                
+                // Send to Formspree
+                const response = await fetch(subscribeForm.action, {
+                    method: 'POST',
+                    body: formData,
+                    headers: {
+                        'Accept': 'application/json'
+                    }
+                });
+                
+                if (response.ok) {
+                    // Success - show message and clear
+                    showMessage('Welcome to Echo Craft.', 'success');
+                    emailInput.value = '';
+                    
+                    // Auto-hide message after 4 seconds
+                    setTimeout(() => {
+                        subscribeMessage.style.display = 'none';
+                    }, 4000);
+                } else {
+                    showMessage('Something went wrong. Please try again.', 'error');
+                }
+                
+                // Re-enable button
+                submitBtn.disabled = false;
+                submitBtn.style.opacity = '1';
+                
+            } catch (error) {
+                console.error('Subscription error:', error);
+                showMessage('Something went wrong. Please try again.', 'error');
+                
+                // Re-enable button
+                const submitBtn = subscribeForm.querySelector('button[type="submit"]');
+                submitBtn.disabled = false;
+                submitBtn.style.opacity = '1';
+            }
+        });
+        
+        // Helper function to show messages
+        function showMessage(text, type) {
+            subscribeMessage.textContent = text;
+            subscribeMessage.style.display = 'block';
+            
+            if (type === 'success') {
+                subscribeMessage.style.color = 'var(--accent-cyan)';
+            } else if (type === 'error') {
+                subscribeMessage.style.color = '#ff6b6b';
             }
         }
-
-        // Allow Enter key on email input
-        document.getElementById('emailInput').addEventListener('keypress', (e) => {
+        
+        // Allow Enter key submission (form element handles this natively now)
+        emailInput.addEventListener('keypress', (e) => {
             if (e.key === 'Enter') {
-                handleSubscribe();
+                subscribeForm.dispatchEvent(new Event('submit'));
             }
         });
     </script>
