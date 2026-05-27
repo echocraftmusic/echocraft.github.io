@@ -402,6 +402,90 @@
             color: #ff6b6b;
         }
 
+        /* FLOATING TOAST CONFIRMATION */
+        @keyframes toastSlideUp {
+            0% {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes toastSlideDown {
+            0% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+            100% {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+        }
+
+        .subscribe-toast {
+            position: fixed;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            display: none;
+            align-items: center;
+            gap: 0.8rem;
+            padding: 1rem 1.5rem;
+            background: rgba(10, 14, 26, 0.95);
+            border: 2px solid var(--accent-cyan);
+            border-radius: 12px;
+            z-index: 9999;
+            pointer-events: none;
+            backdrop-filter: blur(12px);
+            box-shadow: 
+                0 0 20px rgba(0, 217, 255, 0.3),
+                0 8px 32px rgba(0, 0, 0, 0.4),
+                inset 0 1px 0 rgba(0, 217, 255, 0.2);
+            animation: toastSlideUp 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+        }
+
+        .subscribe-toast.hidden {
+            animation: toastSlideDown 0.4s ease-in forwards;
+        }
+
+        .toast-icon {
+            color: var(--accent-cyan);
+            font-size: 1.2rem;
+            font-weight: bold;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 1.5rem;
+            height: 1.5rem;
+            flex-shrink: 0;
+        }
+
+        .toast-text {
+            color: var(--text-primary);
+            font-size: 0.95rem;
+            font-weight: 500;
+            white-space: nowrap;
+            letter-spacing: 0.3px;
+        }
+
+        /* MOBILE TOAST POSITIONING */
+        @media (max-width: 768px) {
+            .subscribe-toast {
+                bottom: 1rem;
+                left: 1rem;
+                right: 1rem;
+                transform: none;
+                max-width: calc(100vw - 2rem);
+            }
+
+            .toast-text {
+                font-size: 0.9rem;
+            }
+        }
+
         /* MAIN CONTENT */
         .main-content {
             margin-left: 280px;
@@ -1514,6 +1598,10 @@
                     </form>
                     <div class="subscribe-message" id="subscribeMessage"></div>
                 </div>
+                <div class="subscribe-toast" id="subscribeToast">
+                    <span class="toast-icon">✓</span>
+                    <span class="toast-text">Welcome to Echo Craft.</span>
+                </div>
             </div>
         </aside>
 
@@ -1872,13 +1960,13 @@
                 });
                 
                 if (response.ok) {
-                    // Success - show message and clear
-                    showMessage('Welcome to Echo Craft.', 'success');
+                    // Success - show floating toast and clear input
+                    showToast();
                     emailInput.value = '';
                     
-                    // Auto-hide message after 4 seconds
+                    // Auto-hide toast after 4 seconds
                     setTimeout(() => {
-                        subscribeMessage.style.display = 'none';
+                        hideToast();
                     }, 4000);
                 } else {
                     showMessage('Something went wrong. Please try again.', 'error');
@@ -1898,6 +1986,22 @@
                 submitBtn.style.opacity = '1';
             }
         });
+        
+        // Helper function to show floating toast
+        const subscribeToast = document.getElementById('subscribeToast');
+        
+        function showToast() {
+            subscribeToast.classList.remove('hidden');
+            subscribeToast.style.display = 'flex';
+        }
+        
+        function hideToast() {
+            subscribeToast.classList.add('hidden');
+            // Remove display after animation completes
+            setTimeout(() => {
+                subscribeToast.style.display = 'none';
+            }, 400);
+        }
         
         // Helper function to show messages
         function showMessage(text, type) {
