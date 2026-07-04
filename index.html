@@ -47,29 +47,26 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background-image: url('https://raw.githubusercontent.com/echocraftmusic/echocraft.github.io/main/echo-craft-banner.png');
+            background-image: url("assets/images/hero-city.png");
             background-size: cover;
-            background-position: center;
-            background-attachment: fixed;
-            filter: blur(15px) brightness(0.4);
-            opacity: 0.35;
+background-position: center center;
+            filter: blur(2px) brightness(0.62);
+           opacity: 0.65;
             z-index: 0;
             pointer-events: none;
             animation: backgroundBreathe 50s ease-in-out infinite;
         }
 
         /* GRADIENT OVERLAY FOR DARK BLUE FADE */
-        body::after {
-            content: '';
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(135deg, rgba(10, 14, 26, 0.65) 0%, rgba(15, 19, 32, 0.65) 100%);
-            z-index: 1;
-            pointer-events: none;
-        }
+
+   body::after {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background: rgba(10,14,26,.25);
+    z-index: 1;
+    pointer-events: none;
+}
 
         /* ATMOSPHERIC CYAN AMBIENT LIGHTING - DESKTOP ONLY */
         @media (min-width: 1025px) {
@@ -156,17 +153,67 @@
         }
 
         /* LEFT SIDEBAR */
-        .sidebar {
-            width: 280px;
-            background: rgba(20, 24, 41, 0.95);
-            border-right: 1px solid var(--border);
-            padding: 2rem 0;
-            position: fixed;
-            height: 100vh;
-            overflow-y: auto;
-            backdrop-filter: blur(10px);
-        }
+    .sidebar {
+    width: 280px;
+    padding: 2rem 0;
+    position: fixed;
+    height: 100vh;
+    overflow-y: auto;
 
+    background:
+    linear-gradient(
+        rgba(5,8,12,.15),
+        rgba(5,8,12,.20)
+    ),
+    url("assets/images/sidebar-city.png");
+
+    background-size: 110%;
+background-position: center center;
+
+    border-right: 1px solid rgba(0,217,255,.35);
+
+    backdrop-filter: blur(2px);
+
+    box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.05),
+    8px 0 35px rgba(0,0,0,.45),
+    10px 0 30px rgba(0,217,255,.15);
+}
+
+.sidebar::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+
+    background: linear-gradient(
+        180deg,
+        rgba(255,255,255,.08) 0%,
+        rgba(255,255,255,.02) 15%,
+        rgba(255,255,255,0) 35%
+    );
+}
+
+.sidebar::after {
+    content: "";
+    position: absolute;
+
+    top: 0;
+    right: 0;
+
+    width: 2px;
+    height: 100%;
+
+    background: linear-gradient(
+        transparent,
+        rgba(0,217,255,.9),
+        transparent
+    );
+
+    box-shadow: 0 0 20px rgba(0,217,255,.9);
+
+    pointer-events: none;
+}
         .sidebar-logo {
             padding: 0 2rem 2rem;
             text-align: center;
@@ -174,9 +221,9 @@
             margin-bottom: 2rem;
         }
 
-        .sidebar-logo-image {
-            width: 80px;
-            height: 80px;
+       .sidebar-logo-image {
+    width: 120px;
+    height: 120px;
             margin: 0 auto 1rem;
             border-radius: 12px;
             border: 2px solid var(--accent-cyan);
@@ -205,25 +252,26 @@
             pointer-events: none;
         }
 
-        .sidebar-logo-image img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
+    .sidebar-logo-image img {
+    width: 88%;
+    height: 88%;
+    object-fit: contain;
+}
 
-        .sidebar-logo h1 {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 1.5rem;
-            background: linear-gradient(90deg, var(--accent-cyan), var(--accent-purple), var(--accent-cyan));
-            background-size: 200% 100%;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            letter-spacing: 1px;
-            animation: cinemaShimmer 8s ease-in-out infinite;
-            text-shadow: 0 0 20px rgba(0, 217, 255, 0.3), 0 0 40px rgba(139, 92, 246, 0.2);
-            filter: drop-shadow(0 0 15px rgba(0, 217, 255, 0.2));
-        }
+  .sidebar-logo h1 {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 1.5rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+
+    color: #dffcff;
+
+    text-shadow:
+        0 0 8px rgba(0,217,255,.25),
+        0 0 18px rgba(0,217,255,.15);
+
+    animation: logoShimmer 10s ease-in-out infinite;
+}
 
         .sidebar-location {
             font-size: 0.85rem;
@@ -236,30 +284,48 @@
             padding: 0 1rem;
         }
 
-        .sidebar-nav li {
-            margin-bottom: 0.5rem;
-        }
+      .sidebar-nav li {
+    margin-top: 0;
+    margin-bottom: 14px;
+}
 
-        .sidebar-nav a {
-            display: block;
-            padding: 1rem;
-            color: var(--text-secondary);
-            text-decoration: none;
-            font-weight: 500;
-            border-radius: 8px;
-            transition: all 0.3s ease;
-            position: relative;
-            border-left: 3px solid transparent;
-            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.45), 0 0 1px rgba(255, 255, 255, 0.05);
-        }
+.sidebar-nav a {
+    display: block;
+    padding: 1rem;
+    color: rgba(255,255,255,.88);
+    text-decoration: none;
+    font-weight: 500;
+    letter-spacing: .6px;
+    border-radius: 8px;
+    transition: all .3s ease;
+    position: relative;
+    border-left: 3px solid transparent;
+    opacity: .96;
 
-        .sidebar-nav a:hover,
-        .sidebar-nav a.active {
-            color: var(--accent-cyan);
-            background: rgba(0, 217, 255, 0.1);
-            border-left-color: var(--accent-cyan);
-            transform: translateX(5px);
-        }
+    text-shadow:
+        0 1px 3px rgba(0,0,0,.75),
+        0 0 4px rgba(255,255,255,.05);
+}
+
+  .sidebar-nav a:hover,
+.sidebar-nav a.active {
+    color: #ffffff;
+    opacity: 1;
+
+    background: linear-gradient(
+        90deg,
+        rgba(0,217,255,.22),
+        rgba(0,217,255,.06)
+    );
+
+    border-left: 3px solid #00d9ff;
+
+    box-shadow:
+        inset 0 1px 0 rgba(255,255,255,.08),
+        0 0 20px rgba(0,217,255,.20);
+
+    transform: translateX(6px);
+}
 
         .sidebar-footer {
             position: absolute;
@@ -582,16 +648,20 @@
             }
         }
 
-        .home-logo {
-            width: 180px;
-            height: 180px;
-            margin: 0 auto 2rem;
-            border-radius: 20px;
-            border: 3px solid var(--accent-cyan);
-            overflow: hidden;
-            box-shadow: 0 0 40px rgba(0, 217, 255, 0.4);
-            animation: glow 3s ease-in-out infinite;
-        }
+.home-logo {
+    width: min(780px, 90%);
+    margin: 2rem auto 2rem;
+}
+
+.home-logo img {
+    width: 100%;
+    height: auto;
+    display: block;
+
+    filter:
+        drop-shadow(0 0 10px rgba(255,255,255,.15))
+        drop-shadow(0 0 30px rgba(0,217,255,.45));
+}
 
         @keyframes glow {
             0%, 100% { box-shadow: 0 0 40px rgba(0, 217, 255, 0.4); }
@@ -611,6 +681,30 @@
                 text-shadow: 0 0 20px rgba(0, 217, 255, 0.3), 0 0 40px rgba(139, 92, 246, 0.2);
             }
         }
+
+        @keyframes logoShimmer {
+    0% {
+        color: #dffcff;
+        text-shadow:
+            0 0 8px rgba(0,217,255,.25),
+            0 0 18px rgba(0,217,255,.15);
+    }
+
+    50% {
+        color: #ffffff;
+        text-shadow:
+            0 0 14px rgba(0,217,255,.45),
+            0 0 30px rgba(0,217,255,.25);
+    }
+
+    100% {
+        color: #dffcff;
+        text-shadow:
+            0 0 8px rgba(0,217,255,.25),
+            0 0 18px rgba(0,217,255,.15);
+    }
+
+}
 
         @keyframes ambientCyanDrift {
             0% {
@@ -640,14 +734,17 @@
             }
         }
 
-        @keyframes backgroundBreathe {
-            0%, 100% {
-                filter: blur(15px) brightness(0.400);
-            }
-            50% {
-                filter: blur(15px) brightness(0.415);
-            }
-        }
+    @keyframes backgroundBreathe {
+    0%, 100% {
+        filter: blur(2px) brightness(0.72);
+        transform: scale(1);
+    }
+
+    50% {
+        filter: blur(2px) brightness(0.76);
+        transform: scale(1.02);
+    }
+}
 
         @keyframes subtleZoom {
             0% {
@@ -713,19 +810,19 @@
         }
 
         .home-content .tagline {
-            font-size: 1.4rem;
-            color: var(--text-secondary);
-            margin-bottom: 2rem;
-            font-style: italic;
-            font-weight: 300;
-        }
+    font-size: 1.6rem;
+    color: rgba(255,255,255,.75);
+    margin: 1rem 0 1.2rem;
+    font-style: italic;
+    font-weight: 300;
+}
 
-        .home-content p {
-            font-size: 1.1rem;
-            color: var(--text-secondary);
-            margin-bottom: 1.5rem;
-            line-height: 1.8;
-        }
+       .home-content p {
+    font-size: 1.12rem;
+    color: rgba(255,255,255,.82);
+    margin-bottom: 1rem;
+    line-height: 1.75;
+}
 
         .home-cta {
             display: flex;
@@ -833,6 +930,7 @@
             aspect-ratio: 16/9;
             border-radius: 16px;
             overflow: hidden;
+            isolation: isolate;
             border: 2px solid var(--border);
             transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
             background: rgba(20, 24, 41, 0.6);
@@ -847,38 +945,70 @@
             position: relative;
         }
 
-        .video-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 1px;
-            background: linear-gradient(90deg, transparent, rgba(0, 217, 255, 0.3), transparent);
-            z-index: 1;
-            pointer-events: none;
-            transition: background 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-        }
+     .video-card::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 2;
 
-        .video-card:hover::before {
-            background: linear-gradient(90deg, transparent, rgba(0, 217, 255, 0.6), transparent);
-        }
+    background:
+        linear-gradient(
+            115deg,
+            transparent 20%,
+            rgba(255,255,255,.06) 38%,
+            rgba(255,255,255,.16) 50%,
+            rgba(255,255,255,.06) 62%,
+            transparent 80%
+        );
 
-        .video-card:hover {
-            border-color: var(--accent-cyan);
-            box-shadow: 
-                inset 0 1px 0 rgba(255, 255, 255, 0.15),
-                inset 0 -1px 0 rgba(0, 0, 0, 0.3),
-                0 15px 50px rgba(0, 217, 255, 0.25),
-                0 2px 8px rgba(0, 217, 255, 0.2);
-            transform: translateY(-6px);
-        }
+    transform: translateX(-160%);
+    transition: transform .8s cubic-bezier(.22,.61,.36,1);
+}
 
-        .video-card iframe {
-            width: 100%;
-            height: 100%;
-            border: none;
-        }
+.video-card::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 1;
+
+    background:
+        linear-gradient(
+            to top,
+            rgba(8,12,20,.78) 0%,
+            rgba(8,12,20,.35) 28%,
+            rgba(8,12,20,0) 58%
+        );
+
+    opacity: .85;
+    transition: opacity .45s ease;
+}
+
+       .video-card:hover::before {
+    transform: translateX(160%);
+}
+
+     .video-card:hover {
+    transform: translateY(-10px) scale(1.015);
+
+    border-color: rgba(0,217,255,.75);
+
+    box-shadow:
+        inset 0 1px 0 rgba(255,255,255,.18),
+        inset 0 -1px 0 rgba(0,0,0,.35),
+        0 18px 60px rgba(0,0,0,.45),
+        0 0 30px rgba(0,217,255,.18);
+
+    background: rgba(24,30,48,.72);
+    outline: 1px solid rgba(255,255,255,.08);
+    overflow: hidden;
+}
+
+     .video-card:hover iframe {
+    transform: scale(1.03);
+    filter: brightness(1.06) contrast(1.05) saturate(1.08);
+}
 
         /* MUSIC SECTION */
         .music-container {
@@ -1361,6 +1491,17 @@
         .info-content {
             max-width: 900px;
             text-align: center;
+            padding: 3rem;
+background: rgba(8, 12, 20, .55);
+backdrop-filter: blur(14px);
+-webkit-backdrop-filter: blur(14px);
+
+border: 1px solid rgba(255,255,255,.08);
+border-radius: 24px;
+
+box-shadow:
+    0 20px 60px rgba(0,0,0,.35),
+    inset 0 1px 0 rgba(255,255,255,.06);
             z-index: 3;
         }
 
@@ -1610,7 +1751,7 @@
         <aside class="sidebar">
             <div class="sidebar-logo">
                 <div class="sidebar-logo-image">
-                    <img src="echo-craft-profile.png" alt="Echo Craft">
+                   <img src="assets/images/ec-icon.png" alt="Echo Craft">
                 </div>
                 <h1>ECHO CRAFT</h1>
             </div>
@@ -1659,9 +1800,9 @@
             <section class="home" id="home">
                 <div class="home-content">
                     <div class="home-logo">
-                        <img src="echo-craft-profile.png" alt="Echo Craft Logo">
+                      <img src="assets/images/echo-craft-logo.png" alt="Echo Craft Logo">
                     </div>
-                    <h1>ECHO CRAFT</h1>
+                    
                     <p class="tagline">All Genres. All Music. All Together.</p>
                     <p>This isn't just music… it's an experience.</p>
                     <p>Echo Craft is a world where sound meets story — from high-energy anthems to cinematic journeys and soul-driven rhythms.</p>
