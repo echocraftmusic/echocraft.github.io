@@ -2203,10 +2203,1611 @@ box-shadow:
         0 0 30px rgba(0,217,255,.75);
 }
 
+/* ==========================================================
+   ECHO CRAFT PREMIUM MUSIC CATALOG
+   Music card beautification override
+========================================================== */
+
+/* Main music area */
+section.music {
+    padding-left: 2.2rem;
+    padding-right: 2.2rem;
+}
+
+.music-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 165px;
+    align-items: start;
+    gap: 34px;
+    width: 100%;
+    max-width: 1320px;
+    margin: 0 auto;
+}
+
+.music-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 28px;
+    width: 100%;
+    max-width: none;
+    margin: 0;
+    align-items: stretch;
+}
+
+/* Premium card shell */
+.music-card {
+    position: relative;
+    width: 100%;
+    min-width: 0;
+    min-height: 0;
+    aspect-ratio: auto;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+
+    border: 1px solid rgba(102, 219, 255, 0.24);
+    border-radius: 20px;
+
+    background:
+        linear-gradient(
+            155deg,
+            rgba(25, 35, 58, 0.90),
+            rgba(8, 14, 28, 0.95)
+        );
+
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+
+    box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.11),
+        inset 0 -1px 0 rgba(0, 0, 0, 0.35),
+        0 18px 42px rgba(0, 0, 0, 0.38),
+        0 0 0 1px rgba(0, 217, 255, 0.03);
+
+    isolation: isolate;
+
+    transition:
+        transform 0.4s cubic-bezier(.22, .61, .36, 1),
+        border-color 0.4s ease,
+        box-shadow 0.4s ease;
+}
+
+/* Refined illuminated top edge */
+.music-card::before {
+    content: "";
+    position: absolute;
+    inset: 0 14% auto;
+    height: 1px;
+    z-index: 5;
+    pointer-events: none;
+
+    background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(112, 231, 255, 0.82),
+        transparent
+    );
+
+    opacity: 0.72;
+}
+
+/* Low atmospheric glow */
+.music-card::after {
+    content: "";
+    position: absolute;
+    left: 12%;
+    right: 12%;
+    bottom: -30px;
+    height: 70px;
+    z-index: -1;
+    pointer-events: none;
+
+    background: radial-gradient(
+        ellipse,
+        rgba(0, 217, 255, 0.18),
+        transparent 70%
+    );
+
+    filter: blur(18px);
+    opacity: 0;
+    transition: opacity 0.4s ease;
+}
+
+.music-card:hover {
+    transform: translateY(-9px);
+
+    border-color: rgba(0, 217, 255, 0.76);
+
+    box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.16),
+        inset 0 -1px 0 rgba(0, 0, 0, 0.42),
+        0 24px 58px rgba(0, 0, 0, 0.5),
+        0 0 28px rgba(0, 217, 255, 0.18),
+        0 0 0 1px rgba(0, 217, 255, 0.12);
+}
+
+.music-card:hover::after {
+    opacity: 1;
+}
+
+/* A–Z destination flash */
+.music-card.letter-highlight {
+    border-color: #00d9ff;
+
+    box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.18),
+        0 0 0 1px rgba(0, 217, 255, 0.55),
+        0 0 30px rgba(0, 217, 255, 0.48),
+        0 22px 55px rgba(0, 0, 0, 0.5);
+}
+
+/* Large album artwork */
+.music-artwork {
+    position: relative;
+    width: calc(100% - 22px);
+    aspect-ratio: 1 / 1;
+    margin: 11px 11px 0;
+    overflow: hidden;
+
+    border-radius: 14px;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(21, 30, 52, 0.95),
+            rgba(7, 12, 23, 0.98)
+        );
+
+    box-shadow:
+        0 10px 28px rgba(0, 0, 0, 0.42),
+        inset 0 0 0 1px rgba(255, 255, 255, 0.07);
+}
+
+.music-cover {
+    width: 100%;
+    height: 100%;
+    display: block;
+    padding: 0;
+    object-fit: cover;
+    object-position: center;
+    background: transparent;
+
+    transition:
+        transform 0.65s cubic-bezier(.22, .61, .36, 1),
+        filter 0.5s ease;
+}
+
+.music-card:hover .music-cover {
+    transform: scale(1.045);
+    filter: brightness(1.06) saturate(1.06);
+}
+
+/* Subtle moving reflection over artwork */
+.music-artwork-shine {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+
+    background: linear-gradient(
+        112deg,
+        transparent 24%,
+        rgba(255, 255, 255, 0.03) 38%,
+        rgba(255, 255, 255, 0.13) 50%,
+        rgba(255, 255, 255, 0.03) 62%,
+        transparent 76%
+    );
+
+    transform: translateX(-150%);
+    transition: transform 0.85s cubic-bezier(.22, .61, .36, 1);
+}
+
+.music-card:hover .music-artwork-shine {
+    transform: translateX(150%);
+}
+
+/* Card information */
+.music-content {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    gap: 10px;
+
+    padding: 15px 15px 16px;
+
+    background:
+        linear-gradient(
+            180deg,
+            rgba(18, 27, 47, 0.18),
+            rgba(8, 14, 27, 0.72)
+        );
+}
+
+.music-title {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 44px;
+
+    margin: 0;
+    padding: 0 4px;
+
+    color: #f5fcff;
+    font-family: "Inter", sans-serif;
+    font-size: 1rem;
+    font-weight: 700;
+    line-height: 1.3;
+    letter-spacing: 0.1px;
+    text-align: center;
+
+    text-shadow:
+        0 1px 3px rgba(0, 0, 0, 0.85),
+        0 0 12px rgba(0, 217, 255, 0.08);
+}
+
+/* Hide any legacy artist line */
+.music-meta {
+    display: none !important;
+}
+
+/* Compact native audio player */
+.audio-wrap {
+    width: 100%;
+    min-height: 34px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    margin: 0;
+    padding: 0;
+}
+
+.audio-wrap audio,
+.music-card audio {
+    display: block;
+    width: 100%;
+    max-width: none;
+    height: 34px;
+    margin: 0;
+
+    border-radius: 999px;
+
+    filter:
+        invert(0.86)
+        hue-rotate(164deg)
+        saturate(1.25)
+        brightness(1.08);
+
+    opacity: 0.92;
+}
+
+.audio-unavailable {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 34px;
+
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 999px;
+
+    background: rgba(255, 255, 255, 0.035);
+    color: rgba(255, 255, 255, 0.52);
+
+    font-size: 0.77rem;
+    letter-spacing: 0.4px;
+}
+
+/* Buttons */
+.music-actions {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: stretch;
+    gap: 9px;
+    margin-top: auto;
+}
+
+.listen-everywhere-btn {
+    min-width: 0;
+    height: 43px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+
+    padding: 0 13px;
+
+    border: 1px solid rgba(0, 217, 255, 0.58);
+    border-radius: 11px;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(0, 217, 255, 0.94),
+            rgba(93, 92, 246, 0.92)
+        );
+
+    color: #ffffff;
+    text-decoration: none;
+    white-space: nowrap;
+
+    font-size: 0.78rem;
+    font-weight: 800;
+    letter-spacing: 0.25px;
+
+    box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.27),
+        0 7px 18px rgba(0, 217, 255, 0.17);
+
+    transition:
+        transform 0.3s ease,
+        filter 0.3s ease,
+        box-shadow 0.3s ease;
+}
+
+.listen-everywhere-btn i {
+    font-size: 0.9rem;
+}
+
+.listen-everywhere-btn:hover {
+    transform: translateY(-2px);
+    filter: brightness(1.1);
+
+    box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.32),
+        0 10px 25px rgba(0, 217, 255, 0.3);
+}
+
+.platform-buttons {
+    display: flex;
+    gap: 7px;
+}
+
+.platform-btn {
+    width: 43px;
+    height: 43px;
+    flex: 0 0 43px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 11px;
+
+    text-decoration: none;
+    font-size: 1.25rem;
+
+    box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.12),
+        0 6px 15px rgba(0, 0, 0, 0.25);
+
+    transition:
+        transform 0.3s ease,
+        border-color 0.3s ease,
+        box-shadow 0.3s ease,
+        background 0.3s ease;
+}
+
+.spotify-btn {
+    color: #1ed760;
+    background: rgba(30, 215, 96, 0.09);
+}
+
+.spotify-btn:hover {
+    transform: translateY(-3px);
+    border-color: rgba(30, 215, 96, 0.62);
+    background: rgba(30, 215, 96, 0.16);
+
+    box-shadow:
+        0 8px 20px rgba(30, 215, 96, 0.18),
+        inset 0 1px 0 rgba(255, 255, 255, 0.14);
+}
+
+.apple-btn {
+    color: #ffffff;
+    background:
+        linear-gradient(
+            145deg,
+            rgba(255, 52, 133, 0.14),
+            rgba(139, 92, 246, 0.15)
+        );
+}
+
+.apple-btn:hover {
+    transform: translateY(-3px);
+    border-color: rgba(255, 92, 166, 0.62);
+
+    box-shadow:
+        0 8px 20px rgba(255, 52, 133, 0.18),
+        inset 0 1px 0 rgba(255, 255, 255, 0.14);
+}
+
+/* Loading and error messages */
+.music-loading,
+.music-empty,
+.music-error {
+    grid-column: 1 / -1;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+
+    min-height: 220px;
+    padding: 2rem;
+
+    color: rgba(255, 255, 255, 0.78);
+    text-align: center;
+}
+
+.music-loading i {
+    color: #00d9ff;
+}
+
+.music-error i {
+    color: #ff6b86;
+}
+
+/* Browse Music alignment */
+.browse-music {
+    width: 165px;
+    position: sticky;
+    top: 100px;
+    align-self: start;
+
+    padding: 18px 10px 20px;
+
+    border: 1px solid rgba(0, 217, 255, 0.09);
+    border-radius: 18px;
+
+    background:
+        linear-gradient(
+            180deg,
+            rgba(13, 22, 39, 0.28),
+            rgba(7, 13, 25, 0.12)
+        );
+
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+
+    text-align: center;
+}
+
+.browse-music h3 {
+    margin-bottom: 20px;
+
+    color: #ffffff;
+    font-size: 1rem;
+    font-weight: 800;
+    letter-spacing: 1.4px;
+
+    text-shadow: 0 0 15px rgba(0, 217, 255, 0.18);
+}
+
+/* Tablet */
+@media (max-width: 1180px) {
+    .music-layout {
+        grid-template-columns: minmax(0, 1fr) 145px;
+        gap: 24px;
+    }
+
+    .music-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .browse-music {
+        width: 145px;
+    }
+
+    .letter-nav {
+        column-gap: 10px;
+        row-gap: 13px;
+    }
+
+    .letter-nav button {
+        width: 44px;
+        height: 44px;
+    }
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+    section.music {
+        padding: 3rem 1rem;
+    }
+
+    .music-layout {
+        display: flex;
+        flex-direction: column;
+        gap: 28px;
+    }
+
+    .music-grid {
+        order: 2;
+        grid-template-columns: 1fr;
+        gap: 22px;
+    }
+
+    .browse-music {
+        order: 1;
+        position: static;
+        width: 100%;
+        padding: 16px;
+    }
+
+    .letter-nav {
+        grid-template-columns: repeat(7, 1fr);
+        gap: 9px;
+    }
+
+    .letter-nav button {
+        width: 38px;
+        height: 38px;
+        font-size: 0.88rem;
+    }
+
+    .music-card {
+        width: min(100%, 390px);
+        margin: 0 auto;
+        aspect-ratio: auto;
+    }
+
+    .music-artwork {
+        width: calc(100% - 20px);
+        margin: 10px 10px 0;
+    }
+
+    .music-actions {
+        grid-template-columns: minmax(0, 1fr) auto;
+    }
+}
+
+/* Small phones */
+@media (max-width: 480px) {
+    .letter-nav {
+        grid-template-columns: repeat(6, 1fr);
+    }
+
+    .music-content {
+        padding: 14px;
+    }
+
+    .listen-everywhere-btn {
+        padding: 0 10px;
+        font-size: 0.73rem;
+    }
+
+    .platform-btn {
+        width: 41px;
+        height: 41px;
+        flex-basis: 41px;
+    }
+}
+
+/* ==========================================================
+   ECHO CRAFT MOBILE MUSIC CAROUSEL
+   Full-width swipe cards + alphabet dial
+========================================================== */
+
+.mobile-music-navigator {
+    display: none;
+}
+
+/* Mobile music experience */
+@media (max-width: 768px) {
+
+    section.music {
+        width: 100%;
+        overflow: hidden;
+        padding: 3rem 0 4rem;
+    }
+
+    section.music .section-title {
+        padding: 0 1rem;
+        margin-bottom: 2rem;
+    }
+
+    .music-layout {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        max-width: none;
+        gap: 0;
+        overflow: visible;
+    }
+
+    /*
+    --------------------------------------
+    Hide desktop Browse Music panel
+    --------------------------------------
+    */
+
+    .browse-music {
+        display: none !important;
+    }
+
+    /*
+    --------------------------------------
+    Horizontal music carousel
+    --------------------------------------
+    */
+
+    .music-grid {
+        order: 1;
+
+        display: flex;
+        grid-template-columns: none;
+
+        width: 100%;
+        max-width: none;
+
+        gap: 16px;
+        margin: 0;
+
+        padding:
+            10px
+            max(18px, calc((100vw - min(88vw, 390px)) / 2))
+            24px;
+
+        overflow-x: auto;
+        overflow-y: visible;
+
+        scroll-snap-type: x mandatory;
+        scroll-padding-inline:
+            max(18px, calc((100vw - min(88vw, 390px)) / 2));
+
+        overscroll-behavior-inline: contain;
+
+        -webkit-overflow-scrolling: touch;
+
+        scrollbar-width: none;
+    }
+
+    .music-grid::-webkit-scrollbar {
+        display: none;
+    }
+
+    /*
+    --------------------------------------
+    Full mobile card
+    --------------------------------------
+    */
+
+    .music-card {
+        flex:
+            0
+            0
+            min(88vw, 390px);
+
+        width: min(88vw, 390px);
+        max-width: 390px;
+
+        margin: 0;
+
+        scroll-snap-align: center;
+        scroll-snap-stop: always;
+
+        border-radius: 22px;
+
+        transform: none;
+    }
+
+    .music-card:hover {
+        transform: none;
+    }
+
+    .music-artwork {
+        width: calc(100% - 20px);
+        margin: 10px 10px 0;
+
+        border-radius: 16px;
+    }
+
+    .music-cover {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .music-content {
+        gap: 12px;
+        padding: 16px;
+    }
+
+    .music-title {
+        min-height: 48px;
+
+        font-size: 1.05rem;
+        line-height: 1.35;
+    }
+
+    /*
+    --------------------------------------
+    Mobile audio player
+    --------------------------------------
+    */
+
+    .audio-wrap,
+    .music-card audio {
+        width: 100%;
+    }
+
+    .audio-wrap audio,
+    .music-card audio {
+        height: 36px;
+    }
+
+    /*
+    --------------------------------------
+    Mobile buttons
+    --------------------------------------
+    */
+
+    .music-actions {
+        grid-template-columns: minmax(0, 1fr) auto;
+        gap: 9px;
+    }
+
+    .listen-everywhere-btn {
+        height: 45px;
+
+        padding: 0 12px;
+
+        font-size: 0.78rem;
+    }
+
+    .platform-btn {
+        width: 45px;
+        height: 45px;
+        flex-basis: 45px;
+
+        font-size: 1.3rem;
+    }
+
+    /*
+    --------------------------------------
+    Mobile alphabet navigator
+    --------------------------------------
+    */
+
+    .mobile-music-navigator {
+        order: 2;
+
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+
+        width: calc(100% - 32px);
+        max-width: 440px;
+
+        gap: 14px;
+
+        margin: 6px auto 0;
+        padding: 18px 16px 16px;
+
+        border: 1px solid rgba(0, 217, 255, 0.18);
+        border-radius: 22px;
+
+        background:
+            linear-gradient(
+                145deg,
+                rgba(17, 27, 47, 0.78),
+                rgba(7, 13, 25, 0.88)
+            );
+
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+
+        box-shadow:
+            inset 0 1px 0 rgba(255, 255, 255, 0.09),
+            0 18px 40px rgba(0, 0, 0, 0.34),
+            0 0 24px rgba(0, 217, 255, 0.08);
+    }
+
+    /*
+    --------------------------------------
+    Main letter dial
+    --------------------------------------
+    */
+
+    .mobile-letter-dial {
+        display: grid;
+        grid-template-columns: 54px 92px 54px;
+        align-items: center;
+        justify-content: center;
+
+        gap: 12px;
+    }
+
+    .mobile-letter-arrow,
+    .mobile-active-letter {
+        border: none;
+        cursor: pointer;
+
+        color: #ffffff;
+
+        transition:
+            transform 0.25s ease,
+            background 0.25s ease,
+            box-shadow 0.25s ease;
+    }
+
+    .mobile-letter-arrow {
+        width: 54px;
+        height: 54px;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        border: 1px solid rgba(0, 217, 255, 0.28);
+        border-radius: 50%;
+
+        background: rgba(0, 217, 255, 0.07);
+
+        color: #9ceeff;
+        font-size: 1rem;
+
+        box-shadow:
+            inset 0 1px 0 rgba(255, 255, 255, 0.08),
+            0 7px 18px rgba(0, 0, 0, 0.26);
+    }
+
+    .mobile-letter-arrow:active {
+        transform: scale(0.92);
+    }
+
+    .mobile-active-letter {
+        width: 92px;
+        height: 92px;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        border: 2px solid rgba(0, 217, 255, 0.86);
+        border-radius: 50%;
+
+        background:
+            radial-gradient(
+                circle at 35% 30%,
+                rgba(139, 92, 246, 0.55),
+                rgba(0, 217, 255, 0.24) 46%,
+                rgba(9, 16, 31, 0.96) 74%
+            );
+
+        color: #ffffff;
+
+        font-family: "Orbitron", sans-serif;
+        font-size: 2.1rem;
+        font-weight: 900;
+
+        text-shadow:
+            0 0 10px rgba(255, 255, 255, 0.4),
+            0 0 20px rgba(0, 217, 255, 0.65);
+
+        box-shadow:
+            inset 0 1px 0 rgba(255, 255, 255, 0.2),
+            0 0 18px rgba(0, 217, 255, 0.52),
+            0 0 40px rgba(139, 92, 246, 0.22);
+    }
+
+    .mobile-active-letter:active {
+        transform: scale(0.95);
+    }
+
+    /*
+    --------------------------------------
+    Available-letter strip
+    --------------------------------------
+    */
+
+    .mobile-letter-strip {
+        display: flex;
+        align-items: center;
+
+        width: 100%;
+        gap: 9px;
+
+        padding: 4px 2px 8px;
+
+        overflow-x: auto;
+        scrollbar-width: none;
+
+        scroll-snap-type: x proximity;
+
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .mobile-letter-strip::-webkit-scrollbar {
+        display: none;
+    }
+
+    .mobile-letter-option {
+        flex: 0 0 40px;
+
+        width: 40px;
+        height: 40px;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 50%;
+
+        background: rgba(255, 255, 255, 0.045);
+
+        color: rgba(255, 255, 255, 0.58);
+
+        font-size: 0.9rem;
+        font-weight: 800;
+
+        cursor: pointer;
+
+        scroll-snap-align: center;
+
+        transition:
+            color 0.25s ease,
+            background 0.25s ease,
+            border-color 0.25s ease,
+            box-shadow 0.25s ease,
+            transform 0.25s ease;
+    }
+
+    .mobile-letter-option.active {
+        color: #06111c;
+
+        border-color: #00d9ff;
+
+        background: #00d9ff;
+
+        transform: scale(1.08);
+
+        box-shadow:
+            0 0 12px rgba(0, 217, 255, 0.8),
+            0 0 28px rgba(0, 217, 255, 0.42);
+    }
+
+    /*
+    --------------------------------------
+    Swipe instruction
+    --------------------------------------
+    */
+
+    .mobile-swipe-note {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        gap: 8px;
+
+        color: rgba(255, 255, 255, 0.55);
+
+        font-size: 0.76rem;
+        font-weight: 600;
+        letter-spacing: 0.5px;
+        text-transform: uppercase;
+    }
+
+    .mobile-swipe-note i {
+        color: #00d9ff;
+
+        animation: musicSwipeHint 1.8s ease-in-out infinite;
+    }
+
+    /*
+    --------------------------------------
+    Loading/error inside horizontal layout
+    --------------------------------------
+    */
+
+    .music-loading,
+    .music-empty,
+    .music-error {
+        flex: 0 0 calc(100vw - 32px);
+
+        min-height: 280px;
+        margin: 0 auto;
+    }
+}
+
+/* Small phones */
+@media (max-width: 420px) {
+
+    .music-grid {
+        padding-left:
+            max(14px, calc((100vw - 90vw) / 2));
+
+        padding-right:
+            max(14px, calc((100vw - 90vw) / 2));
+    }
+
+    .music-card {
+        flex-basis: 90vw;
+        width: 90vw;
+    }
+
+    .mobile-music-navigator {
+        width: calc(100% - 24px);
+        padding: 16px 12px;
+    }
+
+    .mobile-letter-dial {
+        grid-template-columns: 48px 84px 48px;
+        gap: 10px;
+    }
+
+    .mobile-letter-arrow {
+        width: 48px;
+        height: 48px;
+    }
+
+    .mobile-active-letter {
+        width: 84px;
+        height: 84px;
+
+        font-size: 1.9rem;
+    }
+
+    .listen-everywhere-btn span {
+        font-size: 0.7rem;
+    }
+}
+
+/* Swipe hint movement */
+@keyframes musicSwipeHint {
+    0%,
+    100% {
+        transform: translateX(-3px);
+        opacity: 0.55;
+    }
+
+    50% {
+        transform: translateX(3px);
+        opacity: 1;
+    }
+}
+
+/* ==========================================================
+   ECHO CRAFT MOBILE MUSIC — COMPACT HEIGHT REFINEMENT
+========================================================== */
+
+@media (max-width: 768px) {
+
+    section.music {
+        padding-top: 2.4rem;
+        padding-bottom: 3rem;
+    }
+
+    section.music .section-title {
+        margin-bottom: 1.4rem;
+    }
+
+    /* Slightly narrower card so the entire experience fits better */
+    .music-card {
+        flex-basis: min(82vw, 350px);
+        width: min(82vw, 350px);
+        max-width: 350px;
+
+        border-radius: 19px;
+    }
+
+    .music-grid {
+        gap: 14px;
+
+        padding-left:
+            max(18px, calc((100vw - min(82vw, 350px)) / 2));
+
+        padding-right:
+            max(18px, calc((100vw - min(82vw, 350px)) / 2));
+
+        padding-bottom: 16px;
+
+        scroll-padding-inline:
+            max(18px, calc((100vw - min(82vw, 350px)) / 2));
+    }
+
+    /* Preserve large artwork, but reduce excess framing */
+    .music-artwork {
+        width: calc(100% - 16px);
+        margin: 8px 8px 0;
+
+        border-radius: 14px;
+    }
+
+    /* Compact lower card information */
+    .music-content {
+        gap: 8px;
+        padding: 11px 13px 13px;
+    }
+
+    .music-title {
+        min-height: 36px;
+
+        font-size: 0.98rem;
+        line-height: 1.25;
+    }
+
+    /* Slightly smaller audio player */
+    .audio-wrap {
+        min-height: 32px;
+    }
+
+    .audio-wrap audio,
+    .music-card audio {
+        height: 32px;
+    }
+
+    /* Compact buttons while keeping them easy to tap */
+    .listen-everywhere-btn {
+        height: 41px;
+
+        padding: 0 10px;
+
+        font-size: 0.73rem;
+    }
+
+    .listen-everywhere-btn i {
+        font-size: 0.84rem;
+    }
+
+    .platform-btn {
+        width: 41px;
+        height: 41px;
+        flex-basis: 41px;
+
+        font-size: 1.15rem;
+    }
+
+    .platform-buttons {
+        gap: 6px;
+    }
+
+    /* Compact alphabet panel */
+    .mobile-music-navigator {
+        width: calc(100% - 40px);
+
+        gap: 10px;
+
+        margin-top: 2px;
+        padding: 13px 13px 12px;
+
+        border-radius: 19px;
+    }
+
+    .mobile-letter-dial {
+        grid-template-columns: 46px 76px 46px;
+        gap: 10px;
+    }
+
+    .mobile-letter-arrow {
+        width: 46px;
+        height: 46px;
+
+        font-size: 0.9rem;
+    }
+
+    .mobile-active-letter {
+        width: 76px;
+        height: 76px;
+
+        font-size: 1.75rem;
+    }
+
+    /* Smaller letter strip */
+    .mobile-letter-strip {
+        gap: 7px;
+        padding-bottom: 4px;
+    }
+
+    .mobile-letter-option {
+        flex-basis: 35px;
+
+        width: 35px;
+        height: 35px;
+
+        font-size: 0.78rem;
+    }
+
+    .mobile-swipe-note {
+        font-size: 0.68rem;
+    }
+}
+
+@media (max-width: 420px) {
+
+    .music-card {
+        flex-basis: min(84vw, 340px);
+        width: min(84vw, 340px);
+    }
+
+    .music-grid {
+        padding-left:
+            max(14px, calc((100vw - min(84vw, 340px)) / 2));
+
+        padding-right:
+            max(14px, calc((100vw - min(84vw, 340px)) / 2));
+    }
+
+    .mobile-music-navigator {
+        width: calc(100% - 28px);
+    }
+}
+
+/* ==========================================================
+   ECHO CRAFT MOBILE VIDEO CAROUSEL
+   Swipe + left/right controls
+========================================================== */
+
+.mobile-video-controls {
+    display: none;
+}
+
+@media (max-width: 768px) {
+
+    section.videos {
+        width: 100%;
+        overflow: hidden;
+        padding: 3rem 0;
+    }
+
+    section.videos .section-title {
+        padding: 0 1rem;
+        margin-bottom: 1.7rem;
+    }
+
+    .videos-grid {
+        display: flex;
+        grid-template-columns: none;
+
+        width: 100%;
+        max-width: none;
+
+        gap: 16px;
+        margin: 0;
+
+        padding:
+            10px
+            max(18px, calc((100vw - min(88vw, 390px)) / 2))
+            22px;
+
+        overflow-x: auto;
+        overflow-y: hidden;
+
+        scroll-snap-type: x mandatory;
+
+        scroll-padding-inline:
+            max(18px, calc((100vw - min(88vw, 390px)) / 2));
+
+        overscroll-behavior-inline: contain;
+
+        -webkit-overflow-scrolling: touch;
+
+        scrollbar-width: none;
+    }
+
+    .videos-grid::-webkit-scrollbar {
+        display: none;
+    }
+
+    .videos-grid > a {
+        flex: 0 0 min(88vw, 390px);
+
+        width: min(88vw, 390px);
+        max-width: 390px;
+
+        scroll-snap-align: center;
+        scroll-snap-stop: always;
+    }
+
+    .video-card {
+        width: 100%;
+        min-height: 0;
+
+        aspect-ratio: 16 / 9;
+
+        border-radius: 18px;
+
+        transform: none;
+    }
+
+    .video-card:hover {
+        transform: none;
+    }
+
+    /*
+    Hide the existing See All / Subscribe buttons
+    from inside the mobile swipe row only.
+    They remain unchanged on desktop.
+    */
+
+    .videos-grid > div:last-child {
+        display: none !important;
+    }
+
+    /*
+    Mobile arrow controls
+    */
+
+    .mobile-video-controls {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        gap: 18px;
+
+        width: calc(100% - 32px);
+        max-width: 390px;
+
+        margin: 2px auto 0;
+        padding: 13px 18px;
+
+        border: 1px solid rgba(0, 217, 255, 0.16);
+        border-radius: 18px;
+
+        background:
+            linear-gradient(
+                145deg,
+                rgba(17, 27, 47, 0.76),
+                rgba(7, 13, 25, 0.88)
+            );
+
+        backdrop-filter: blur(14px);
+        -webkit-backdrop-filter: blur(14px);
+
+        box-shadow:
+            inset 0 1px 0 rgba(255, 255, 255, 0.08),
+            0 15px 35px rgba(0, 0, 0, 0.32),
+            0 0 22px rgba(0, 217, 255, 0.07);
+    }
+
+    .mobile-video-arrow {
+        width: 50px;
+        height: 50px;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        border: 1px solid rgba(0, 217, 255, 0.38);
+        border-radius: 50%;
+
+        background: rgba(0, 217, 255, 0.08);
+        color: #a8f2ff;
+
+        font-size: 1rem;
+
+        cursor: pointer;
+
+        box-shadow:
+            inset 0 1px 0 rgba(255, 255, 255, 0.09),
+            0 7px 18px rgba(0, 0, 0, 0.28);
+
+        transition:
+            transform 0.25s ease,
+            background 0.25s ease,
+            box-shadow 0.25s ease;
+    }
+
+    .mobile-video-arrow:active {
+        transform: scale(0.91);
+
+        background: rgba(0, 217, 255, 0.18);
+    }
+
+    .mobile-video-position {
+        min-width: 76px;
+
+        color: rgba(255, 255, 255, 0.82);
+
+        font-family: "Orbitron", sans-serif;
+        font-size: 0.82rem;
+        font-weight: 700;
+        letter-spacing: 1.5px;
+        text-align: center;
+
+        text-shadow:
+            0 0 12px rgba(0, 217, 255, 0.32);
+    }
+}
+
+</style>
+
+<style id="echoCraftMobileVideoFix">
+@media screen and (max-width: 768px) {
+
+    section#videos {
+        width: 100% !important;
+        overflow: hidden !important;
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+    }
+
+    #videosContainer.videos-grid {
+        display: flex !important;
+        flex-direction: row !important;
+        flex-wrap: nowrap !important;
+
+        width: 100% !important;
+        max-width: none !important;
+
+        gap: 16px !important;
+        margin: 0 !important;
+
+        padding:
+            10px
+            max(18px, calc((100vw - min(88vw, 390px)) / 2))
+            22px !important;
+
+        overflow-x: auto !important;
+        overflow-y: hidden !important;
+
+        scroll-snap-type: x mandatory !important;
+        scroll-behavior: smooth !important;
+
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+    }
+
+    #videosContainer::-webkit-scrollbar {
+        display: none;
+    }
+
+    #videosContainer > a {
+        display: block !important;
+
+        flex: 0 0 min(88vw, 390px) !important;
+
+        width: min(88vw, 390px) !important;
+        max-width: 390px !important;
+        height: auto !important;
+
+        scroll-snap-align: center !important;
+        scroll-snap-stop: always !important;
+    }
+
+    #videosContainer > a .video-card {
+        width: 100% !important;
+        height: auto !important;
+        min-height: 0 !important;
+
+        aspect-ratio: 16 / 9 !important;
+
+        border-radius: 18px !important;
+    }
+
+    #videosContainer > div {
+        display: none !important;
+    }
+
+    #mobileVideoControls {
+        display: flex !important;
+    }
+}
+
+/* ==========================================================
+   MOBILE VIDEO — SEE ALL VIDEOS CARD
+========================================================== */
+
+.video-see-all-card {
+    text-decoration: none;
+    color: inherit;
+}
+
+.video-see-all-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    min-height: 100%;
+    padding: 2rem;
+
+    text-align: center;
+
+    background:
+        radial-gradient(
+            circle at 50% 20%,
+            rgba(255, 0, 80, 0.18),
+            transparent 42%
+        ),
+        linear-gradient(
+            145deg,
+            rgba(22, 30, 50, 0.96),
+            rgba(7, 12, 24, 0.98)
+        );
+}
+
+.video-see-all-icon {
+    width: 68px;
+    height: 68px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    margin-bottom: 1rem;
+
+    border: 1px solid rgba(255, 75, 105, 0.55);
+    border-radius: 50%;
+
+    background: rgba(255, 0, 55, 0.12);
+    color: #ff3158;
+
+    font-size: 2rem;
+
+    box-shadow:
+        0 0 22px rgba(255, 0, 55, 0.25),
+        inset 0 1px 0 rgba(255, 255, 255, 0.12);
+}
+
+.video-see-all-content h3 {
+    margin: 0 0 0.55rem;
+
+    color: #ffffff;
+    font-family: "Orbitron", sans-serif;
+    font-size: 1.15rem;
+    letter-spacing: 0.7px;
+}
+
+.video-see-all-content p {
+    max-width: 290px;
+    margin: 0 0 1.2rem;
+
+    color: rgba(255, 255, 255, 0.67);
+    font-size: 0.82rem;
+    line-height: 1.55;
+}
+
+.video-see-all-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+
+    padding: 0.7rem 1.15rem;
+
+    border: 1px solid rgba(0, 217, 255, 0.45);
+    border-radius: 10px;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(0, 217, 255, 0.88),
+            rgba(139, 92, 246, 0.88)
+        );
+
+    color: #ffffff !important;
+
+text-shadow:
+    0 1px 2px rgba(0, 0, 0, 0.65),
+    0 0 8px rgba(255, 255, 255, 0.18);
+    font-size: 0.78rem;
+    font-weight: 800;
+
+    box-shadow:
+        0 8px 22px rgba(0, 217, 255, 0.18);
+}
+
+.video-see-all-button i {
+    color: #ffffff !important;
+}
+
+/* Keep the additional card exclusive to mobile */
+@media (min-width: 769px) {
+    .video-see-all-card {
+        display: none !important;
+    }
+
+}
+
 </style>
 
 </head>
+
 <body>
+    
     <!-- GLOBAL SUCCESS OVERLAY POPUP -->
     <div class="success-overlay" id="successOverlay">
         <div class="success-popup">
@@ -2494,6 +4095,7 @@ box-shadow:
     </div>
 
     <script>
+
         // LOAD LATEST ECHO CRAFT VIDEOS FROM videos.json
         function loadYouTubeVideos() {
             fetch('videos.json')
@@ -2526,6 +4128,37 @@ box-shadow:
                                 </a>
                             `;
                         });
+
+// Add mobile "See All Videos" carousel card
+videoHtml += `
+    <a
+        href="https://www.youtube.com/@EchoCraft-ai7/videos"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="video-see-all-card"
+        aria-label="See all Echo Craft videos on YouTube"
+    >
+        <div class="video-card video-see-all-content">
+
+            <div class="video-see-all-icon">
+                <i class="fab fa-youtube"></i>
+            </div>
+
+            <h3>See All Videos</h3>
+
+            <p>
+                Continue watching the complete Echo Craft video collection on YouTube.
+            </p>
+
+            <span class="video-see-all-button">
+                Open YouTube
+                <i class="fas fa-arrow-right"></i>
+            </span>
+
+        </div>
+    </a>
+`;
+
                         
                         // Add buttons after grid
                         videoHtml += `
