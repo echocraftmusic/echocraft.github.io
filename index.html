@@ -222,8 +222,8 @@ background-position: center center;
         }
 
        .sidebar-logo-image {
-    width: 120px;
-    height: 120px;
+    width: 132px;
+height: 132px;
             margin: 0 auto 1rem;
             border-radius: 12px;
             border: 2px solid var(--accent-cyan);
@@ -231,12 +231,15 @@ background-position: center center;
             display: flex;
             align-items: center;
             justify-content: center;
-            background: linear-gradient(135deg, rgba(0, 217, 255, 0.1), rgba(139, 92, 246, 0.1));
-            backdrop-filter: blur(8px);
-            box-shadow: 
-                inset 0 1px 0 rgba(255, 255, 255, 0.15),
-                inset 0 -1px 0 rgba(0, 0, 0, 0.3),
-                0 4px 16px rgba(0, 217, 255, 0.15);
+            background: rgba(255,255,255,.10);
+
+backdrop-filter: blur(12px);
+-webkit-backdrop-filter: blur(12px);
+
+box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.30),
+    inset 0 -1px 0 rgba(0,0,0,.12),
+    0 0 18px rgba(0,217,255,.22);
             position: relative;
         }
 
@@ -252,10 +255,16 @@ background-position: center center;
             pointer-events: none;
         }
 
-    .sidebar-logo-image img {
+.sidebar-logo-image img {
     width: 88%;
     height: 88%;
     object-fit: contain;
+
+    filter:
+        brightness(1.35)
+        contrast(1.18)
+        drop-shadow(0 0 8px rgba(0,217,255,.35))
+        drop-shadow(0 0 20px rgba(0,217,255,.25));
 }
 
   .sidebar-logo h1 {
@@ -630,12 +639,65 @@ background-position: center center;
         }
 
         /* HOME SECTION */
-        .home-content {
-            text-align: center;
-            max-width: 800px;
-            z-index: 3;
-            animation: fadeInUp 1s ease-out;
-        }
+
+.home-content{
+    text-align:center;
+    max-width:820px;
+    z-index:3;
+
+    padding:3.75rem 3.5rem;
+
+    background:rgba(15,22,42,.20);
+
+   border:1px solid rgba(0,217,255,.18);
+
+    border-radius:28px;
+
+    backdrop-filter:blur(24px);
+    -webkit-backdrop-filter:blur(24px);
+
+    box-shadow:
+        inset 0 1px 0 rgba(255,255,255,.18),
+        inset 0 -1px 0 rgba(255,255,255,.03),
+        0 45px 100px rgba(0,0,0,.48),
+0 0 90px rgba(0,217,255,.12);
+
+    animation:
+    fadeInUp 1s ease-out,
+    borderGlow 6s ease-in-out infinite;
+}
+
+    .home-content::before{
+    content:"";
+    position:absolute;
+    inset:0;
+
+    background:linear-gradient(
+        135deg,
+        rgba(255,255,255,.10),
+        rgba(255,255,255,0) 38%
+    );
+
+    border-radius:28px;
+
+    pointer-events:none;
+}
+
+.home-content:hover{
+
+    transform:translateY(-6px);
+
+    box-shadow:
+        inset 0 1px 0 rgba(255,255,255,.20),
+        inset 0 -1px 0 rgba(255,255,255,.04),
+        0 45px 100px rgba(0,0,0,.48),
+        0 0 80px rgba(0,217,255,.12);
+
+    transition:
+        transform .35s ease,
+        box-shadow .35s ease;
+
+}
 
         @keyframes fadeInUp {
             from {
@@ -648,15 +710,20 @@ background-position: center center;
             }
         }
 
+
+
 .home-logo {
-    width: min(780px, 90%);
-    margin: 2rem auto 2rem;
+    width: min(980px, 98%);
+    margin: -.5rem auto .75rem;
+    position: relative;
 }
 
 .home-logo img {
     width: 100%;
     height: auto;
     display: block;
+
+    transform: scale(1.2);
 
     filter:
         drop-shadow(0 0 10px rgba(255,255,255,.15))
@@ -667,6 +734,30 @@ background-position: center center;
             0%, 100% { box-shadow: 0 0 40px rgba(0, 217, 255, 0.4); }
             50% { box-shadow: 0 0 60px rgba(0, 217, 255, 0.6); }
         }
+@keyframes glow {
+    0%, 100% { box-shadow: 0 0 40px rgba(0, 217, 255, 0.4); }
+    50% { box-shadow: 0 0 60px rgba(0, 217, 255, 0.6); }
+}
+
+@keyframes borderGlow{
+
+    0%,100%{
+        box-shadow:
+            inset 0 1px 0 rgba(255,255,255,.18),
+            inset 0 -1px 0 rgba(255,255,255,.03),
+            0 45px 100px rgba(0,0,0,.48),
+            0 0 55px rgba(0,217,255,.08);
+    }
+
+    50%{
+        box-shadow:
+            inset 0 1px 0 rgba(255,255,255,.22),
+            inset 0 -1px 0 rgba(255,255,255,.04),
+            0 45px 100px rgba(0,0,0,.48),
+            0 0 90px rgba(0,217,255,.22);
+    }
+
+}
 
         @keyframes cinemaShimmer {
             0% {
@@ -788,11 +879,22 @@ background-position: center center;
             }
         }
 
-        .home-logo img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
+      .home-logo img {
+    width: 100%;
+    height: auto;
+    display: block;
+
+    transform: scale(1.20);
+    transition: transform .35s ease;
+
+    filter:
+        drop-shadow(0 0 6px rgba(255,255,255,.15))
+    drop-shadow(0 0 18px rgba(0,217,255,.25));
+}
+
+.home-logo img:hover {
+    transform: scale(1.24);
+}
 
         .home-content h1 {
             font-family: 'Orbitron', sans-serif;
@@ -809,28 +911,163 @@ background-position: center center;
             filter: drop-shadow(0 0 20px rgba(0, 217, 255, 0.25));
         }
 
-        .home-content .tagline {
-    font-size: 1.6rem;
-    color: rgba(255,255,255,.75);
-    margin: 1rem 0 1.2rem;
-    font-style: italic;
+.home-content .tagline {
+    font-size: 1.8rem;
     font-weight: 300;
+    font-style: italic;
+    letter-spacing: .4px;
+    color: rgba(255,255,255,.92);
+
+    text-shadow:
+        0 0 20px rgba(255,255,255,.12),
+        0 0 35px rgba(0,217,255,.18);
+
+    margin: .8rem 0 1rem;
 }
 
-       .home-content p {
+.home-content p {
     font-size: 1.12rem;
     color: rgba(255,255,255,.82);
     margin-bottom: 1rem;
     line-height: 1.75;
 }
 
-        .home-cta {
-            display: flex;
-            gap: 1.5rem;
-            justify-content: center;
-            flex-wrap: wrap;
-            margin-top: 3rem;
-        }
+.hero-features{
+    display:flex;
+    justify-content:center;
+    gap:18px;
+    flex-wrap:wrap;
+    margin:2rem 0 1.6rem;
+}
+
+.hero-feature{
+
+    min-width:120px;
+
+    padding:18px 20px;
+
+    border-radius:18px;
+
+    background:rgba(255,255,255,.05);
+
+    border:1px solid rgba(255,255,255,.10);
+
+    backdrop-filter:blur(14px);
+
+    -webkit-backdrop-filter:blur(14px);
+
+    text-align:center;
+
+    position:relative;
+
+    overflow:hidden;
+
+    transition:
+        transform .35s ease,
+        border-color .35s ease,
+        box-shadow .35s ease,
+        background .35s ease;
+
+}
+
+.hero-feature:hover{
+
+    transform:translateY(-8px);
+
+    background:rgba(255,255,255,.08);
+
+    border-color:rgba(0,217,255,.35);
+
+    box-shadow:
+        0 18px 40px rgba(0,0,0,.35),
+        0 0 30px rgba(0,217,255,.18);
+
+}
+
+.hero-feature::before{
+
+    content:"";
+
+    position:absolute;
+
+    top:0;
+
+    left:-120%;
+
+    width:70%;
+
+    height:100%;
+
+    background:linear-gradient(
+        90deg,
+        transparent,
+        rgba(255,255,255,.12),
+        transparent
+    );
+
+    transform:skewX(-25deg);
+
+    transition:left .8s ease;
+
+}
+
+.hero-feature-title{
+
+    color:#00d9ff;
+
+    font-size:2rem;
+
+    font-weight:700;
+
+    margin-bottom:.45rem;
+
+    text-shadow:
+        0 0 12px rgba(0,217,255,.35),
+        0 0 24px rgba(0,217,255,.15);
+
+    transition:
+        transform .35s ease,
+        text-shadow .35s ease;
+
+}
+
+.hero-feature-text{
+
+    color:rgba(255,255,255,.88);
+
+    font-size:.95rem;
+
+    line-height:1.45;
+
+    transition:color .35s ease;
+
+}
+
+.hero-feature:hover .hero-feature-title{
+
+    transform:scale(1.08);
+
+    text-shadow:
+        0 0 18px rgba(0,217,255,.55),
+        0 0 36px rgba(0,217,255,.28);
+
+}
+
+.hero-feature:hover .hero-feature-text{
+
+    color:#ffffff;
+
+}
+
+       .home-cta {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1.25rem;
+    flex-wrap: wrap;
+   margin-top:2rem;
+
+}
 
         .btn {
             padding: 1rem 2.5rem;
@@ -866,55 +1103,104 @@ background-position: center center;
             background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.5), transparent);
         }
 
-        .btn-primary {
-            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
-            color: var(--dark-bg);
-        }
+    .btn-primary{
+    background:linear-gradient(
+        135deg,
+        #00d9ff,
+        #8b5cf6
+    );
 
-        .btn-primary:hover {
-            transform: translateY(-3px);
-            box-shadow: 
-                0 10px 30px rgba(0, 217, 255, 0.4),
-                inset 0 1px 0 rgba(255, 255, 255, 0.2);
-        }
+    color:#ffffff;
 
-        .btn-secondary {
-            background: transparent;
-            color: var(--accent-cyan);
-            border-color: var(--accent-cyan);
-        }
+    border:none;
 
-        .btn-secondary:hover {
-            background: rgba(0, 217, 255, 0.1);
-            transform: translateY(-3px);
-            box-shadow: 
-                0 10px 30px rgba(0, 217, 255, 0.2),
-                inset 0 1px 0 rgba(255, 255, 255, 0.1);
-        }
+    box-shadow:
+        0 10px 30px rgba(0,217,255,.25);
+}
+
+      .btn-primary:hover{
+    transform:translateY(-5px);
+
+    box-shadow:
+        0 18px 45px rgba(0,217,255,.35);
+
+    filter:brightness(1.05);
+}
+
+      .btn-secondary{
+    background:rgba(255,255,255,.05);
+
+    color:#00d9ff;
+
+    border:1px solid rgba(0,217,255,.45);
+
+    backdrop-filter:blur(12px);
+
+    -webkit-backdrop-filter:blur(12px);
+}
+
+       .btn-secondary:hover{
+    background:rgba(0,217,255,.10);
+
+    transform:translateY(-5px);
+
+    border-color:#00d9ff;
+
+    box-shadow:
+        0 18px 45px rgba(0,217,255,.22);
+}
 
         /* VIDEOS SECTION */
-        .section-title {
-            font-family: 'Orbitron', sans-serif;
-            font-size: clamp(2rem, 5vw, 3.5rem);
-            margin-bottom: 3rem;
-            text-align: center;
-            color: var(--accent-cyan);
-            letter-spacing: 2px;
-            position: relative;
-            width: 100%;
-            z-index: 3;
-            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.4), 0 0 2px rgba(255, 255, 255, 0.08);
-        }
+    .section-title{
+    font-family:'Orbitron',sans-serif;
 
-        .section-title::after {
-            content: '';
-            display: block;
-            width: 80px;
-            height: 4px;
-            background: linear-gradient(90deg, var(--accent-cyan), var(--accent-purple));
-            margin: 1rem auto 0;
-            border-radius: 2px;
-        }
+    font-size:clamp(2.4rem,5vw,4rem);
+
+    letter-spacing:4px;
+
+    text-align:center;
+
+    color:#ffffff;
+
+    margin-bottom:3.5rem;
+
+    text-transform:uppercase;
+
+    text-shadow:
+        0 0 18px rgba(0,217,255,.35),
+        0 0 45px rgba(0,217,255,.15);
+
+    position:relative;
+
+    z-index:3;
+}
+
+     .section-title::after{
+
+    content:"";
+
+    display:block;
+
+    width:140px;
+
+    height:3px;
+
+    margin:1.3rem auto 0;
+
+    border-radius:999px;
+
+    background:linear-gradient(
+        90deg,
+        transparent,
+        #00d9ff,
+        #8b5cf6,
+        transparent
+    );
+
+    box-shadow:
+        0 0 20px rgba(0,217,255,.45);
+
+}
 
         .videos-grid {
             display: grid;
@@ -1021,6 +1307,17 @@ background-position: center center;
             text-align: center;
         }
 
+        .music-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(320px,1fr));
+    gap:26px;
+    justify-items:center;
+    align-items:start;
+    width:100%;
+    max-width:1200px;
+    margin:0 auto;
+}
+
         .music-description {
             font-size: 1.2rem;
             color: var(--text-secondary);
@@ -1051,36 +1348,36 @@ background-position: center center;
         }
 
         /* MUSIC GRID STYLES - Cinematic Featured Releases */
-        .music-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 2.5rem;
-            width: 100%;
-            max-width: 1600px;
-            z-index: 3;
-            margin-bottom: 3rem;
-        }
+        .music-card{
+    width:320px;
+    border-radius:16px;
+    overflow:hidden;
+    border:2px solid var(--border);
+    background:rgba(20,24,41,.60);
 
-        .music-card {
-            aspect-ratio: 16/9;
-            border-radius: 16px;
-            overflow: hidden;
-            border: 2px solid var(--border);
-            transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-            background: rgba(20, 24, 41, 0.6);
-            cursor: pointer;
-            position: relative;
-            display: flex;
-            flex-direction: column;
-            min-height: 350px;
-            backdrop-filter: blur(10px);
-            box-shadow: 
-                inset 0 1px 0 rgba(255, 255, 255, 0.1),
-                inset 0 -1px 0 rgba(0, 0, 0, 0.3),
-                0 8px 32px rgba(0, 0, 0, 0.3),
-                0 2px 8px rgba(139, 92, 246, 0.1);
-        }
+    display:flex;
+    flex-direction:column;
 
+    min-height:360px;
+
+    transition:.35s;
+}
+
+.music-card{
+    border-radius:16px;
+    overflow:hidden;
+    border:2px solid var(--border);
+    background:rgba(20,24,41,.60);
+
+    display:flex;
+    flex-direction:column;
+
+    min-height:390px;
+
+    transition:.35s;
+
+    backdrop-filter:blur(12px);
+}
         .music-card::before {
             content: '';
             position: absolute;
@@ -1168,38 +1465,38 @@ background-position: center center;
         }
 
         .music-info {
-            padding: 1.5rem 1.2rem;
+    padding: .9rem 1rem;
+
             background: linear-gradient(135deg, rgba(15, 20, 35, 0.9), rgba(20, 26, 45, 0.9));
             backdrop-filter: blur(10px);
             flex: 0 0 auto;
         }
 
-        .music-title {
-            font-size: 1.1rem;
-            font-weight: 600;
-            margin-bottom: 0.5rem;
-            color: var(--text-primary);
-            line-height: 1.3;
-            display: -webkit-box;
-            -webkit-line-clamp: 2;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
-            min-height: 2.6em;
-        }
+   .music-title{
+    font-size:1rem;
+    font-weight:700;
+    text-align:center;
+    margin-bottom:4px;
+}
 
-        .music-meta {
-            font-size: 0.9rem;
-            color: var(--text-secondary);
-        }
+.music-meta{
+    text-align:center;
+    font-size:.85rem;
+    color:#9aa7b5;
+    margin-bottom:10px;
+}
 
-        .music-footer {
-            display: flex;
-            gap: 1rem;
-            justify-content: center;
-            flex-wrap: wrap;
-            margin-bottom: 2rem;
-            margin-top: 1rem;
-        }
+      .music-footer {
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:.6rem;
+
+    margin-top:.75rem;
+
+}
 
         /* RESPONSIVE MUSIC GRID - Catalog Style */
         @media (max-width: 1024px) {
@@ -1726,7 +2023,188 @@ box-shadow:
         .sidebar::-webkit-scrollbar-thumb:hover {
             background: var(--accent-cyan);
         }
-    </style>
+
+.music-cover{
+
+    width:100%;
+
+    height:165px;
+
+    object-fit:contain;
+
+    background:#111827;
+
+    display:block;
+
+    padding:8px 10px 0;
+
+}
+
+.music-content{
+
+    padding:8px 12px 12px;
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+    flex:1;
+}
+
+.music-release{
+    display:none;
+}
+
+.music-buttons{
+    display:flex;
+    flex-direction:column;
+    gap:8px;
+    margin-top:auto;
+}
+
+.music-btn{
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+   width:80%;
+    margin:0 auto;
+
+    height:34px;
+
+    border-radius:8px;
+
+    text-decoration:none;
+
+    font-size:.88rem;
+    font-weight:700;
+
+    white-space: nowrap;
+
+    transition:.25s;
+}
+
+.music-btn-primary{
+    background:#00d9ff;
+    color:#000;
+}
+
+.music-btn{
+    background:#232b44;
+    color:#fff;
+}
+
+.music-card audio{
+    display:block;
+
+    width:72%;
+
+    margin:6px auto 10px;
+
+    height:32px;
+}
+
+.audio-wrap{
+    width:72%;
+    margin:8px auto;
+    display:flex;
+    justify-content:center;
+}
+
+.audio-wrap audio{
+    width:100%;
+    max-width:260px;
+    display:block;
+}
+
+/* ===========================================
+   BROWSE MUSIC (Desktop)
+=========================================== */
+
+.music-layout{
+    display:flex;
+    align-items:flex-start;
+    justify-content:space-between;
+    gap:40px;
+}
+
+.music-grid{
+    flex:1;
+}
+
+.browse-music{
+    width:165px;
+    position:sticky;
+    top:120px;
+    align-self:flex-start;
+    text-align:center;
+}
+
+.browse-music h3{
+    color:#ffffff;
+    font-size:1.3rem;
+    font-weight:800;
+    letter-spacing:1px;
+    margin-bottom:24px;
+    text-transform:uppercase;
+}
+
+.letter-nav{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    column-gap:18px;
+    row-gap:16px;
+    justify-items:center;
+}
+
+.letter-nav button{
+
+    width:50px;
+    height:50px;
+
+    border-radius:50%;
+    border:none;
+
+    background:#162132;
+    color:#555;
+
+    font-size:1.1rem;
+    font-weight:800;
+
+    cursor:pointer;
+    transition:.25s;
+}
+
+.letter-nav button.available{
+    color:#ffffff;
+    background:#1c2740;
+}
+
+.letter-nav button.available:hover{
+
+    transform:scale(1.12);
+
+    background:#00d9ff;
+    color:#000;
+
+    box-shadow:
+        0 0 10px #00d9ff,
+        0 0 25px rgba(0,217,255,.65);
+}
+
+.letter-nav button.active{
+
+    background:#00d9ff;
+    color:#000;
+
+    transform:scale(1.15);
+
+    box-shadow:
+        0 0 12px #00d9ff,
+        0 0 30px rgba(0,217,255,.75);
+}
+
+</style>
+
 </head>
 <body>
     <!-- GLOBAL SUCCESS OVERLAY POPUP -->
@@ -1760,8 +2238,8 @@ box-shadow:
     <li><a href="#home" class="nav-link active">HOME</a></li>
     <li><a href="#videos" class="nav-link">VIDEOS</a></li>
     <li><a href="#music" class="nav-link">🎵 MUSIC</a></li>
-<li><a href="https://echocraft.studio/">🎬 CREATIVE STUDIO</a></li>
-             <li><a href="#info" class="nav-link">INFO</a></li>
+    <li><a href="https://studio.echocraftmusic.com/">🎬 CREATIVE STUDIO</a></li>
+    <li><a href="#info" class="nav-link">INFO</a></li>
 </nav>
 
             <div class="sidebar-footer">
@@ -1799,19 +2277,67 @@ box-shadow:
             <!-- HOME SECTION -->
             <section class="home" id="home">
                 <div class="home-content">
-                    <div class="home-logo">
-                      <img src="assets/images/echo-craft-logo.png" alt="Echo Craft Logo">
-                    </div>
-                    
-                    <p class="tagline">All Genres. All Music. All Together.</p>
-                    <p>This isn't just music… it's an experience.</p>
-                    <p>Echo Craft is a world where sound meets story — from high-energy anthems to cinematic journeys and soul-driven rhythms.</p>
-                    <p style="color: var(--accent-cyan); font-style: italic; margin-bottom: 2rem;">AI is just the instrument. The voice, the vision, the message? That's all human.</p>
-                    <div class="home-cta">
-                        <a href="#videos" class="btn btn-primary">Watch Videos</a>
-                        <a href="#music" class="btn btn-secondary">Get Music</a>
-                    </div>
-                </div>
+    
+    <div style="
+        display:inline-block;
+        padding:.45rem 1.2rem;
+        border:1px solid rgba(0,217,255,.35);
+        border-radius:999px;
+        background:rgba(0,217,255,.08);
+        color:#00d9ff;
+        letter-spacing:2px;
+        font-size:.8rem;
+        margin-bottom:2rem;
+        text-transform:uppercase;
+    ">
+        Welcome to the Echo Craft Universe
+    </div>
+
+    <div class="home-logo">
+        <img src="assets/images/echo-craft-logo.png" alt="Echo Craft Logo">
+    </div>
+
+    <p class="tagline">
+        Where Music, Storytelling & Technology Become One.
+    </p>
+
+    <p>
+        Every release is crafted with intention—from cinematic soundtracks and
+        hard-hitting rock to faith-driven music, ambient journeys, podcasts,
+        and commercial productions.
+    </p>
+
+<div class="hero-features">
+
+    <div class="hero-feature">
+        <div class="hero-feature-title">AI</div>
+        <div class="hero-feature-text">
+            Music Production
+        </div>
+    </div>
+
+    <div class="hero-feature">
+        <div class="hero-feature-title">Video</div>
+        <div class="hero-feature-text">
+            Cinematic Visuals
+        </div>
+    </div>
+
+    <div class="hero-feature">
+        <div class="hero-feature-title">Studio</div>
+        <div class="hero-feature-text">
+            Creative Services
+        </div>
+    </div>
+
+</div>
+
+    <div class="home-cta">
+        <a href="#videos" class="btn btn-primary">Watch Videos</a>
+        <a href="#music" class="btn btn-secondary">Listen to Music</a>
+    </div>
+
+</div>
             </section>
 
             <!-- VIDEOS SECTION -->
@@ -1823,42 +2349,78 @@ box-shadow:
             </section>
 
             <!-- MUSIC SECTION -->
-            <section class="music" id="music">
-                <h2 class="section-title">MUSIC</h2>
-                <div class="music-grid" id="musicContainer">
+          <section class="music" id="music">
+
+    <h2 class="section-title">MUSIC</h2>
+
+    <div class="music-layout">
+
+        <div class="music-grid" id="musicContainer">
+            <!-- Auto-populated from music.json -->
+        </div>
+
+        <aside class="browse-music">
+
+            <h3>Browse Music</h3>
+
+            <div id="letterNav" class="letter-nav">
+
+            </div>
+
+        </aside>
+
+    </div>
                     <!-- Auto-populated from music.json -->
-                </div>
-                <div class="music-footer">
-                    <a href="https://hyperfollow.com/echocraft7" target="_blank" style="
-                        display: inline-block;
-                        padding: 0.9rem 2rem;
-                        background: linear-gradient(135deg, #00d9ff, #0099cc);
-                        color: #000;
-                        text-decoration: none;
-                        border-radius: 6px;
-                        font-weight: 600;
-                        font-size: 1rem;
-                        transition: all 0.3s ease;
-                        box-shadow: 0 0 20px rgba(0, 217, 255, 0.3);
-                    " onmouseover="this.style.boxShadow='0 0 30px rgba(0, 217, 255, 0.6)'" onmouseout="this.style.boxShadow='0 0 20px rgba(0, 217, 255, 0.3)'">
-                        🎵 Stream All Music
-                    </a>
-                    <a href="https://www.youtube.com/@EchoCraft-ai7/videos" target="_blank" style="
-                        display: inline-block;
-                        padding: 0.9rem 2rem;
-                        background: linear-gradient(135deg, #0099cc, #006699);
-                        color: #fff;
-                        text-decoration: none;
-                        border-radius: 6px;
-                        font-weight: 600;
-                        font-size: 1rem;
-                        transition: all 0.3s ease;
-                        box-shadow: 0 0 20px rgba(0, 153, 204, 0.3);
-                    " onmouseover="this.style.boxShadow='0 0 30px rgba(0, 153, 204, 0.6)'" onmouseout="this.style.boxShadow='0 0 20px rgba(0, 153, 204, 0.3)'">
-                        Subscribe on YouTube
-                    </a>
-                </div>
-            </section>
+                        </div>
+
+    </div>
+
+<div id="musicPagination"
+
+     style="
+        display:flex;
+        justify-content:center;
+        align-items:center;
+        gap:12px;
+        margin:35px 0;
+     ">
+</div>
+
+<div class="music-footer">
+
+    <a href="https://hyperfollow.com/echocraft7"
+       target="_blank"
+       style="
+        display:inline-block;
+        padding:.9rem 2rem;
+        background:linear-gradient(135deg,#00d9ff,#0099cc);
+        color:#000;
+        text-decoration:none;
+        border-radius:6px;
+        font-weight:600;
+        box-shadow:0 0 20px rgba(0,217,255,.3);
+       ">
+        🎵 Stream All Music
+    </a>
+
+    <a href="https://www.youtube.com/@EchoCraft-ai7/videos"
+       target="_blank"
+       style="
+        display:inline-block;
+        padding:.9rem 2rem;
+        background:linear-gradient(135deg,#0099cc,#006699);
+        color:#fff;
+        text-decoration:none;
+        border-radius:6px;
+        font-weight:600;
+        box-shadow:0 0 20px rgba(0,153,204,.3);
+       ">
+        Subscribe on YouTube
+    </a>
+
+</div>
+
+</section>
 
             <!-- INFO SECTION -->
             <section class="info" id="info">
@@ -2012,51 +2574,8 @@ box-shadow:
 
         // Load video on page load
         window.addEventListener('load', loadYouTubeVideos);
-        window.addEventListener('load', loadMusicTracks);
 
         // LOAD MUSIC TRACKS FROM music.json (Topic Channel)
-        function loadMusicTracks() {
-            fetch('music.json')
-                .then(response => response.json())
-                .then(data => {
-                    if (data && data.items && data.items.length > 0) {
-                        const musicItems = data.items.slice(0, 4);
-                        
-                        let musicHtml = '';
-                        musicItems.forEach((track) => {
-                            const videoId = track.id.videoId;
-                            const title = track.snippet.title || 'Untitled Track';
-                            const thumbnail = track.snippet.thumbnails.high.url;
-                            const publishedAt = new Date(track.snippet.publishedAt).toLocaleDateString();
-                            
-                            musicHtml += `
-                                <a href="https://www.youtube.com/watch?v=${videoId}" target="_blank" style="text-decoration: none; color: inherit; display: block; height: 100%;">
-                                    <div class="music-card" style="height: 100%;">
-                                        <div class="music-thumbnail">
-                                            <img src="${thumbnail}" alt="${title}" loading="lazy">
-                                            <div class="music-overlay">
-                                                <div class="play-icon">▶</div>
-                                            </div>
-                                        </div>
-                                        <div class="music-info">
-                                            <div class="music-title">${title}</div>
-                                            <div class="music-meta">${publishedAt}</div>
-                                        </div>
-                                    </div>
-                                </a>
-                            `;
-                        });
-                        
-                        const container = document.getElementById('musicContainer');
-                        if (container) {
-                            container.innerHTML = musicHtml;
-                        }
-                    }
-                })
-                .catch(error => {
-                    console.log('Loading music from Topic channel...');
-                });
-        }
 
         // MOBILE HAMBURGER MENU
         const hamburger = document.getElementById('hamburger');
@@ -2237,5 +2756,10 @@ box-shadow:
             }
         });
     </script>
+    </script>
+
+    <script src="js/music.js"></script>
+
 </body>
 </html>
+
