@@ -3612,6 +3612,326 @@ section.music {
     }
 }
 
+
+/* ==========================================================
+   ECHO CRAFT ALBUMS & COLLECTIONS
+========================================================== */
+
+section.albums {
+    min-height: auto;
+    padding: 5rem 2.2rem;
+    background:
+        radial-gradient(circle at 50% 15%, rgba(139,92,246,.12), transparent 38%),
+        linear-gradient(180deg, transparent 0%, rgba(0,217,255,.035) 100%);
+}
+
+.albums-heading {
+    max-width: 850px;
+    margin: 0 auto 2.8rem;
+    text-align: center;
+    position: relative;
+    z-index: 3;
+}
+
+.albums-heading .section-title {
+    margin-bottom: 1.2rem;
+}
+
+.albums-heading p {
+    color: rgba(255,255,255,.72);
+    font-size: 1.05rem;
+    line-height: 1.75;
+}
+
+.albums-kicker {
+    display: inline-block;
+    margin-bottom: 1rem;
+    color: #74ecff;
+    font-size: .78rem;
+    font-weight: 800;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+}
+
+.albums-carousel-shell {
+    display: grid;
+    grid-template-columns: 58px minmax(0, 1fr) 58px;
+    align-items: center;
+    gap: 18px;
+    width: 100%;
+    max-width: 1220px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 3;
+}
+
+.albums-grid {
+    display: flex;
+    gap: 24px;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+    padding: 16px 8px 24px;
+    scroll-behavior: smooth;
+}
+
+.albums-grid::-webkit-scrollbar {
+    display: none;
+}
+
+.album-card {
+    flex: 0 0 min(100%, 920px);
+    display: grid;
+    grid-template-columns: minmax(260px, 390px) minmax(0, 1fr);
+    min-height: 410px;
+    overflow: hidden;
+    scroll-snap-align: center;
+    border: 1px solid rgba(0,217,255,.30);
+    border-radius: 26px;
+    background:
+        linear-gradient(145deg, rgba(24,34,58,.95), rgba(7,13,25,.97));
+    box-shadow:
+        inset 0 1px 0 rgba(255,255,255,.12),
+        0 30px 70px rgba(0,0,0,.48),
+        0 0 40px rgba(0,217,255,.10);
+}
+
+.album-card-art {
+    position: relative;
+    min-height: 100%;
+    overflow: hidden;
+    background: #090f1c;
+}
+
+.album-card-art img {
+    width: 100%;
+    height: 100%;
+    min-height: 410px;
+    object-fit: cover;
+    display: block;
+    transition: transform .6s ease, filter .6s ease;
+}
+
+.album-card:hover .album-card-art img {
+    transform: scale(1.035);
+    filter: brightness(1.06) saturate(1.05);
+}
+
+.album-card-art::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background:
+        linear-gradient(to right, transparent 55%, rgba(8,13,24,.55) 100%),
+        linear-gradient(to top, rgba(8,13,24,.28), transparent 46%);
+    pointer-events: none;
+}
+
+.album-card-body {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 2.4rem;
+}
+
+.album-card-badge {
+    align-self: flex-start;
+    margin-bottom: 1rem;
+    padding: .45rem .85rem;
+    border: 1px solid rgba(0,217,255,.35);
+    border-radius: 999px;
+    background: rgba(0,217,255,.08);
+    color: #8ff0ff;
+    font-size: .72rem;
+    font-weight: 900;
+    letter-spacing: 1.3px;
+    text-transform: uppercase;
+}
+
+.album-card-title {
+    margin: 0 0 .55rem;
+    color: #fff;
+    font-family: "Orbitron", sans-serif;
+    font-size: clamp(1.8rem, 4vw, 3.2rem);
+    line-height: 1.08;
+    text-shadow: 0 0 24px rgba(0,217,255,.18);
+}
+
+.album-card-artist {
+    color: rgba(255,255,255,.66);
+    margin-bottom: 1.35rem;
+    font-size: 1rem;
+}
+
+.album-card-description {
+    color: rgba(255,255,255,.74);
+    line-height: 1.75;
+    margin-bottom: 1.8rem;
+}
+
+.album-card-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.album-explore-btn,
+.album-platform-btn {
+    min-height: 46px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 9px;
+    padding: 0 1.1rem;
+    border-radius: 11px;
+    text-decoration: none;
+    font-weight: 800;
+    transition: transform .25s ease, box-shadow .25s ease, filter .25s ease;
+}
+
+.album-explore-btn {
+    background: linear-gradient(135deg, #00d9ff, #8b5cf6);
+    color: #fff;
+    box-shadow: 0 10px 24px rgba(0,217,255,.18);
+}
+
+.album-platform-btn {
+    width: 46px;
+    padding: 0;
+    border: 1px solid rgba(255,255,255,.13);
+    background: rgba(255,255,255,.05);
+    color: #fff;
+    font-size: 1.2rem;
+}
+
+.album-platform-btn.spotify {
+    color: #1ed760;
+}
+
+.album-explore-btn:hover,
+.album-platform-btn:hover {
+    transform: translateY(-3px);
+    filter: brightness(1.08);
+}
+
+.albums-carousel-arrow {
+    width: 54px;
+    height: 54px;
+    border: 1px solid rgba(0,217,255,.35);
+    border-radius: 50%;
+    background: rgba(0,217,255,.08);
+    color: #a8f2ff;
+    cursor: pointer;
+    box-shadow: 0 8px 22px rgba(0,0,0,.28);
+}
+
+.albums-carousel-arrow:disabled {
+    opacity: .35;
+    cursor: default;
+}
+
+.albums-position {
+    margin-top: 10px;
+    text-align: center;
+    color: rgba(255,255,255,.62);
+    font-family: "Orbitron", sans-serif;
+    font-size: .78rem;
+    letter-spacing: 1.5px;
+}
+
+.albums-loading,
+.albums-empty {
+    width: 100%;
+    min-height: 280px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    color: rgba(255,255,255,.70);
+}
+
+@media (max-width: 900px) {
+    .albums-carousel-shell {
+        grid-template-columns: 48px minmax(0, 1fr) 48px;
+        gap: 10px;
+    }
+
+    .album-card {
+        grid-template-columns: 1fr;
+        flex-basis: min(88vw, 560px);
+    }
+
+    .album-card-art img {
+        min-height: 0;
+        aspect-ratio: 1 / 1;
+    }
+}
+
+@media (max-width: 768px) {
+    section.albums {
+        padding: 3.2rem 0;
+        overflow: hidden;
+    }
+
+    .albums-heading {
+        padding: 0 1rem;
+        margin-bottom: 1.8rem;
+    }
+
+    .albums-carousel-shell {
+        display: block;
+    }
+
+    .albums-grid {
+        gap: 16px;
+        padding:
+            8px
+            max(18px, calc((100vw - min(86vw, 390px)) / 2))
+            18px;
+        scroll-padding-inline:
+            max(18px, calc((100vw - min(86vw, 390px)) / 2));
+    }
+
+    .album-card {
+        flex: 0 0 min(86vw, 390px);
+        border-radius: 22px;
+    }
+
+    .album-card-body {
+        padding: 1.35rem;
+    }
+
+    .album-card-title {
+        font-size: 1.65rem;
+    }
+
+    .album-card-description {
+        font-size: .9rem;
+    }
+
+    .albums-carousel-arrow {
+        position: absolute;
+        top: 50%;
+        z-index: 8;
+        width: 46px;
+        height: 46px;
+        transform: translateY(-50%);
+        backdrop-filter: blur(8px);
+    }
+
+    #previousAlbum {
+        left: 8px;
+    }
+
+    #nextAlbum {
+        right: 8px;
+    }
+
+    .albums-position {
+        margin-top: 4px;
+    }
+}
+
 </style>
 
 <style id="echoCraftMobileVideoFix">
@@ -3838,6 +4158,7 @@ text-shadow:
          <nav class="sidebar-nav">
     <li><a href="#home" class="nav-link active">HOME</a></li>
     <li><a href="#videos" class="nav-link">VIDEOS</a></li>
+    <li><a href="#albums" class="nav-link">💿 ALBUMS</a></li>
     <li><a href="#music" class="nav-link">🎵 MUSIC</a></li>
     <li><a href="https://studio.echocraftmusic.com/">🎬 CREATIVE STUDIO</a></li>
     <li><a href="#info" class="nav-link">INFO</a></li>
@@ -3979,6 +4300,52 @@ text-shadow:
                         <i class="fas fa-chevron-right"></i>
                     </button>
                 </div>
+            </section>
+
+
+            <!-- ALBUMS & COLLECTIONS SECTION -->
+            <section class="albums" id="albums">
+                <div class="albums-heading">
+                    <span class="albums-kicker">Complete Musical Experiences</span>
+                    <h2 class="section-title">ALBUMS &amp; COLLECTIONS</h2>
+                    <p>
+                        Explore complete Echo Craft projects, hear every available
+                        preview in order, and continue listening on your preferred platform.
+                    </p>
+                </div>
+
+                <div class="albums-carousel-shell">
+                    <button
+                        type="button"
+                        class="albums-carousel-arrow"
+                        id="previousAlbum"
+                        aria-label="Previous album"
+                    >
+                        <i class="fas fa-chevron-left"></i>
+                    </button>
+
+                    <div
+                        class="albums-grid"
+                        id="albumsContainer"
+                        aria-live="polite"
+                    >
+                        <div class="albums-loading">
+                            <i class="fas fa-circle-notch fa-spin"></i>
+                            Loading albums and collections...
+                        </div>
+                    </div>
+
+                    <button
+                        type="button"
+                        class="albums-carousel-arrow"
+                        id="nextAlbum"
+                        aria-label="Next album"
+                    >
+                        <i class="fas fa-chevron-right"></i>
+                    </button>
+                </div>
+
+                <div class="albums-position" id="albumsPosition">1 / 1</div>
             </section>
 
             <!-- MUSIC SECTION -->
