@@ -222,6 +222,63 @@
       "created": "2026-07-17T01:45:36.578Z"
     },
     {
+      "type": "album",
+      "title": "Soul of Solomon",
+      "artist": "Echo Craft",
+      "releaseDate": "",
+      "cover": "https://distrokid.imgix.net/http%3A%2F%2Fgather.fandalism.com%2F12103955--EF4C9D88-A45A-49A7-9790D864EE7F6F79--0--6049126--SqSOS.png?fm=jpg&mark-y=568&mark-x=620&mark-w=180&q=75&w=800&mark=http%3A%2F%2Fgather.fandalism.com%2Fdistrokid-sticker-sm.png&s=0f7482aeb77a919b12150dc725ce4757",
+      "preview": "",
+      "hyperfollow": "https://distrokid.com/hyperfollow/echocraft11/soul-of-solomon?ref=release",
+      "spotify": "https://open.spotify.com/album/2C8nQKOmV5TtoPXBpLXrzg",
+      "apple": "https://music.apple.com/us/album/soul-of-solomon/6769793141?uo=4",
+      "itunes": "https://itunes.apple.com/lookup?upc=825233183739&entity=song&callback=iTunesCallback",
+      "description": "",
+      "tracks": [
+        {
+          "number": 1,
+          "title": "Better Than Wine",
+          "preview": "music/previews/Album/01 - Better Than Wine.mp3"
+        },
+        {
+          "number": 2,
+          "title": "Look Not Away",
+          "preview": "music/previews/Album/02 - Look Not Away.mp3"
+        },
+        {
+          "number": 3,
+          "title": "In The Night",
+          "preview": "music/previews/Album/03 - In The Night.mp3"
+        },
+        {
+          "number": 4,
+          "title": "A Garden Enclosed",
+          "preview": "music/previews/Album/04 - A Garden Enclosed.mp3"
+        },
+        {
+          "number": 5,
+          "title": "Open The Door",
+          "preview": "music/previews/Album/05 - Open The Door.mp3"
+        },
+        {
+          "number": 6,
+          "title": "My Beloved Is Mine",
+          "preview": "music/previews/Album/06 - My Beloved Is Mine.mp3"
+        },
+        {
+          "number": 7,
+          "title": "How Beautiful",
+          "preview": "music/previews/Album/07 - How Beautiful.mp3"
+        },
+        {
+          "number": 8,
+          "title": "Love Is Strong",
+          "preview": "music/previews/Album/08 - Love Is Strong.mp3"
+        }
+      ],
+      "updated": "2026-07-19T19:58:31.100Z",
+      "created": "2026-07-19T19:58:31.100Z"
+    },
+    {
       "title": "Stickay!",
       "artist": "Echo Craft",
       "releaseDate": "",
