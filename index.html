@@ -3932,6 +3932,140 @@ section.albums {
     }
 }
 
+
+/* ==========================================================
+   ALBUM MOBILE COMPACTNESS UPDATE
+========================================================== */
+
+.album-platform-btn {
+    width: auto;
+    min-width: 118px;
+    padding: 0 .95rem;
+    font-size: .95rem;
+}
+
+.album-platform-btn span {
+    font-size: .82rem;
+    font-weight: 800;
+}
+
+@media (max-width: 768px) {
+    section.albums {
+        padding: 2.4rem 0 2.8rem;
+    }
+
+    .albums-heading {
+        margin-bottom: 1.15rem;
+        padding: 0 1.15rem;
+    }
+
+    .albums-kicker {
+        margin-bottom: .6rem;
+        font-size: .68rem;
+        letter-spacing: 1.5px;
+    }
+
+    .albums-heading .section-title {
+        margin-bottom: .75rem;
+        font-size: clamp(2rem, 9.4vw, 2.85rem);
+        line-height: 1.12;
+    }
+
+    .albums-heading p {
+        max-width: 33rem;
+        margin: 0 auto;
+        font-size: .94rem;
+        line-height: 1.58;
+    }
+
+    .albums-grid {
+        padding:
+            6px
+            max(20px, calc((100vw - min(82vw, 344px)) / 2))
+            14px;
+        scroll-padding-inline:
+            max(20px, calc((100vw - min(82vw, 344px)) / 2));
+    }
+
+    .album-card {
+        flex: 0 0 min(82vw, 344px);
+        border-radius: 19px;
+    }
+
+    .album-card-art img {
+        aspect-ratio: 1 / 1;
+        min-height: 0;
+    }
+
+    .album-card-body {
+        padding: 1rem;
+    }
+
+    .album-card-badge {
+        margin-bottom: .7rem;
+        padding: .36rem .7rem;
+        font-size: .64rem;
+    }
+
+    .album-card-title {
+        margin-bottom: .35rem;
+        font-size: 1.42rem;
+    }
+
+    .album-card-artist {
+        margin-bottom: .8rem;
+        font-size: .88rem;
+    }
+
+    .album-card-description {
+        margin-bottom: 1rem;
+        font-size: .82rem;
+        line-height: 1.55;
+    }
+
+    .album-card-actions {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
+    }
+
+    .album-explore-btn {
+        grid-column: 1 / -1;
+        min-height: 42px;
+        padding: 0 .8rem;
+        font-size: .85rem;
+    }
+
+    .album-platform-btn {
+        width: 100%;
+        min-width: 0;
+        min-height: 40px;
+        padding: 0 .55rem;
+    }
+
+    .album-platform-btn span {
+        font-size: .74rem;
+    }
+
+    .albums-carousel-arrow {
+        width: 40px;
+        height: 40px;
+        opacity: .72;
+    }
+
+    #previousAlbum {
+        left: 4px;
+    }
+
+    #nextAlbum {
+        right: 4px;
+    }
+
+    .albums-position {
+        font-size: .7rem;
+    }
+}
+
 </style>
 
 <style id="echoCraftMobileVideoFix">
