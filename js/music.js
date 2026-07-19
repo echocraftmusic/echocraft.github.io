@@ -32,36 +32,6 @@ function escapeMusicAttribute(value) {
 
 /*
 ------------------------------------------
-Optimize remote cover artwork
-------------------------------------------
-*/
-
-function optimizeMusicCoverUrl(value) {
-    const rawUrl = String(value || "").trim();
-
-    if (!rawUrl) {
-        return "assets/images/ec-icon.webp";
-    }
-
-    try {
-        const url = new URL(rawUrl, window.location.href);
-
-        if (url.hostname.endsWith("imgix.net")) {
-            url.searchParams.set("auto", "format,compress");
-            url.searchParams.set("fit", "crop");
-            url.searchParams.set("w", "640");
-            url.searchParams.set("h", "640");
-            url.searchParams.set("q", "76");
-        }
-
-        return url.href;
-    } catch (error) {
-        return rawUrl;
-    }
-}
-
-/*
-------------------------------------------
 Create one premium music card
 ------------------------------------------
 */
@@ -70,13 +40,10 @@ function createMusicCard(track, index) {
     const rawTitle = String(track.title || "Untitled Release");
     const title = escapeMusicText(rawTitle);
 
-    const cover = escapeMusicAttribute(
-        optimizeMusicCoverUrl(track.cover)
-    );
-
-    const isPriorityCover = index === 0;
-    const coverLoading = isPriorityCover ? "eager" : "lazy";
-    const coverPriority = isPriorityCover ? "high" : "low";
+    const cover =
+        track.cover && track.cover.trim() !== ""
+            ? escapeMusicAttribute(track.cover)
+            : "assets/images/ec-icon.webp";
 
     const preview =
         track.preview && track.preview.trim() !== ""
@@ -183,11 +150,7 @@ function createMusicCard(track, index) {
                     class="music-cover"
                     src="${cover}"
                     alt="${title} cover artwork"
-                    width="640"
-                    height="640"
-                    loading="${coverLoading}"
-                    fetchpriority="${coverPriority}"
-                    decoding="async"
+                    loading="lazy"
                     onerror="this.onerror=null;this.src='assets/images/ec-icon.webp';"
                 >
 
@@ -588,11 +551,18 @@ function updateMobileMusicNavigator(index) {
             );
 
             if (isActive) {
-                button.scrollIntoView({
-                    behavior: "smooth",
-                    block: "nearest",
-                    inline: "center"
-                });
+                const strip = document.getElementById("mobileLetterStrip");
+
+                if (strip) {
+                    const targetLeft =
+                        button.offsetLeft -
+                        (strip.clientWidth - button.clientWidth) / 2;
+
+                    strip.scrollTo({
+                        left: Math.max(0, targetLeft),
+                        behavior: "smooth"
+                    });
+                }
             }
         });
 
