@@ -22,7 +22,57 @@ function resolveAlbumPath(value) {
         return value;
     }
 
-    return "../" + value;
+    const cleanValue =
+        String(value)
+            .replaceAll("\\", "/")
+            .replace(/^\/+/, "");
+
+    return new URL(
+        "../" + cleanValue,
+        window.location.href
+    ).href;
+}
+
+function getPreviewCandidates(value) {
+    if (!value) {
+        return [];
+    }
+
+    const cleanValue =
+        String(value)
+            .replaceAll("\\", "/")
+            .replace(/^\/+/, "");
+
+    const filename =
+        cleanValue.split("/").pop();
+
+    const candidates = [
+        cleanValue,
+        cleanValue.replace(
+            "music/previews/Album/",
+            "music/previews/album/"
+        ),
+        "music/previews/" + filename
+    ];
+
+    return [
+        ...new Set(candidates)
+    ].map(resolveAlbumPath);
+}
+
+function setAudioStatus(message = "") {
+    const status =
+        document.getElementById(
+            "audioStatus"
+        );
+
+    if (!status) {
+        return;
+    }
+
+    status.textContent = message;
+    status.style.display =
+        message ? "block" : "none";
 }
 
 function updateMainPlayIcon() {
@@ -173,18 +223,33 @@ function selectTrack(index, autoplay = false) {
         return;
     }
 
-    const nextSource =
-        resolveAlbumPath(
+    const candidates =
+        getPreviewCandidates(
             track.preview
         );
+
+    const nextSource =
+        candidates[0] || "";
+
+    audio.dataset.candidates =
+        JSON.stringify(candidates);
+
+    audio.dataset.candidateIndex = "0";
 
     if (audio.dataset.source !== nextSource) {
         audio.src = nextSource;
         audio.dataset.source = nextSource;
+        audio.load();
     }
 
+    setAudioStatus("");
+
     if (autoplay && nextSource) {
-        audio.play().catch(() => {});
+        audio.play().catch(() => {
+            setAudioStatus(
+                "The preview could not start. Tap play once more after the audio finishes loading."
+            );
+        });
     }
 
     updateMainPlayIcon();
@@ -426,6 +491,59 @@ albumAudio.addEventListener(
         selectTrack(
             currentTrackIndex,
             false
+        );
+    }
+);
+
+albumAudio.addEventListener(
+    "loadedmetadata",
+    () => {
+        setAudioStatus("");
+    }
+);
+
+albumAudio.addEventListener(
+    "error",
+    () => {
+        let candidates = [];
+
+        try {
+            candidates = JSON.parse(
+                albumAudio.dataset.candidates ||
+                "[]"
+            );
+        } catch {
+            candidates = [];
+        }
+
+        const currentCandidateIndex =
+            Number(
+                albumAudio.dataset.candidateIndex ||
+                "0"
+            );
+
+        const nextCandidateIndex =
+            currentCandidateIndex + 1;
+
+        if (
+            candidates[nextCandidateIndex]
+        ) {
+            albumAudio.dataset.candidateIndex =
+                String(nextCandidateIndex);
+
+            albumAudio.src =
+                candidates[nextCandidateIndex];
+
+            albumAudio.dataset.source =
+                candidates[nextCandidateIndex];
+
+            albumAudio.load();
+
+            return;
+        }
+
+        setAudioStatus(
+            "Preview file not found. Confirm the MP3 is uploaded to music/previews/Album with the exact same filename shown in music.json."
         );
     }
 );

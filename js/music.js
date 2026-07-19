@@ -115,6 +115,7 @@ function createAlbumCard(album, index) {
                 title="Spotify"
             >
                 <i class="fab fa-spotify"></i>
+                <span>Spotify</span>
             </a>
         `
         : "";
@@ -130,6 +131,7 @@ function createAlbumCard(album, index) {
                 title="Apple Music"
             >
                 <i class="fab fa-apple"></i>
+                <span>Apple Music</span>
             </a>
         `
         : "";
