@@ -43,7 +43,7 @@ function createMusicCard(track, index) {
     const cover =
         track.cover && track.cover.trim() !== ""
             ? escapeMusicAttribute(track.cover)
-            : "assets/images/ec-icon.webp";
+            : "assets/images/ec-icon.png";
 
     const preview =
         track.preview && track.preview.trim() !== ""
@@ -151,7 +151,7 @@ function createMusicCard(track, index) {
                     src="${cover}"
                     alt="${title} cover artwork"
                     loading="lazy"
-                    onerror="this.onerror=null;this.src='assets/images/ec-icon.webp';"
+                    onerror="this.src='assets/images/ec-icon.png';"
                 >
 
                 <div class="music-artwork-shine"></div>
@@ -551,18 +551,11 @@ function updateMobileMusicNavigator(index) {
             );
 
             if (isActive) {
-                const strip = document.getElementById("mobileLetterStrip");
-
-                if (strip) {
-                    const targetLeft =
-                        button.offsetLeft -
-                        (strip.clientWidth - button.clientWidth) / 2;
-
-                    strip.scrollTo({
-                        left: Math.max(0, targetLeft),
-                        behavior: "smooth"
-                    });
-                }
+                button.scrollIntoView({
+                    behavior: "smooth",
+                    block: "nearest",
+                    inline: "center"
+                });
             }
         });
 
