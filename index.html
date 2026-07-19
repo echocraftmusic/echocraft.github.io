@@ -6,31 +6,8 @@
     <title>Echo Craft - All Genres. All Music. All Together.</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link
-        rel="preload"
-        href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@300;400;500;600;700&display=swap"
-        as="style"
-        onload="this.onload=null;this.rel='stylesheet'"
-    >
-    <noscript>
-        <link
-            rel="stylesheet"
-            href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@300;400;500;600;700&display=swap"
-        >
-    </noscript>
-
-    <link
-        rel="preload"
-        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
-        as="style"
-        onload="this.onload=null;this.rel='stylesheet'"
-    >
-    <noscript>
-        <link
-            rel="stylesheet"
-            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
-        >
-    </noscript>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         * {
             margin: 0;
@@ -3635,38 +3612,6 @@ section.music {
     }
 }
 
-
-/* ==========================================================
-   MOBILE PERFORMANCE REFINEMENT
-   Preserve the cinematic design while avoiding continuous
-   animation work during the initial mobile load.
-========================================================== */
-@media (max-width: 768px) {
-    body::before,
-    .sidebar-logo h1,
-    .home-content,
-    .home-content h1,
-    .mobile-swipe-note i {
-        animation: none !important;
-    }
-
-    body::before {
-        transform: none !important;
-        filter: blur(2px) brightness(0.72);
-    }
-}
-
-@media (prefers-reduced-motion: reduce) {
-    *,
-    *::before,
-    *::after {
-        animation-duration: 0.01ms !important;
-        animation-iteration-count: 1 !important;
-        scroll-behavior: auto !important;
-        transition-duration: 0.01ms !important;
-    }
-}
-
 </style>
 
 <style id="echoCraftMobileVideoFix">
@@ -3871,7 +3816,7 @@ text-shadow:
         </div>
     </div>
     <!-- HAMBURGER MENU BUTTON (Mobile Only) -->
-    <button class="hamburger-menu" id="hamburger" type="button" aria-label="Open navigation menu" aria-controls="sidebarNavigation" aria-expanded="false">
+    <button class="hamburger-menu" id="hamburger">
         <span></span>
         <span></span>
         <span></span>
@@ -3882,22 +3827,20 @@ text-shadow:
 
     <div class="container">
         <!-- LEFT SIDEBAR -->
-        <aside class="sidebar" id="sidebarNavigation">
+        <aside class="sidebar">
             <div class="sidebar-logo">
                 <div class="sidebar-logo-image">
-                   <img src="assets/images/ec-icon.webp" alt="Echo Craft" width="512" height="512" decoding="async">
+                   <img src="assets/images/ec-icon.webp" alt="Echo Craft">
                 </div>
                 <h1>ECHO CRAFT</h1>
             </div>
 
-         <nav aria-label="Primary navigation">
-    <ul class="sidebar-nav">
-        <li><a href="#home" class="nav-link active">HOME</a></li>
-        <li><a href="#videos" class="nav-link">VIDEOS</a></li>
-        <li><a href="#music" class="nav-link">🎵 MUSIC</a></li>
-        <li><a href="https://studio.echocraftmusic.com/">🎬 CREATIVE STUDIO</a></li>
-        <li><a href="#info" class="nav-link">INFO</a></li>
-    </ul>
+         <nav class="sidebar-nav">
+    <li><a href="#home" class="nav-link active">HOME</a></li>
+    <li><a href="#videos" class="nav-link">VIDEOS</a></li>
+    <li><a href="#music" class="nav-link">🎵 MUSIC</a></li>
+    <li><a href="https://studio.echocraftmusic.com/">🎬 CREATIVE STUDIO</a></li>
+    <li><a href="#info" class="nav-link">INFO</a></li>
 </nav>
 
             <div class="sidebar-footer">
@@ -3952,7 +3895,7 @@ text-shadow:
     </div>
 
     <div class="home-logo">
-        <img src="assets/images/echo-craft-logo.webp" alt="Echo Craft Logo" width="1024" height="1024" fetchpriority="high" decoding="async">
+        <img src="assets/images/echo-craft-logo.webp" alt="Echo Craft Logo">
     </div>
 
     <p class="tagline">
@@ -4003,6 +3946,38 @@ text-shadow:
                 <h2 class="section-title">VIDEOS</h2>
                 <div class="videos-grid" id="videosContainer">
                     <!-- Auto-populated from YouTube -->
+                </div>
+
+                <div
+                    class="mobile-video-controls"
+                    id="mobileVideoControls"
+                    aria-label="Video carousel controls"
+                >
+                    <button
+                        type="button"
+                        class="mobile-video-arrow"
+                        id="previousVideo"
+                        aria-label="Previous video"
+                    >
+                        <i class="fas fa-chevron-left"></i>
+                    </button>
+
+                    <div
+                        class="mobile-video-position"
+                        id="mobileVideoPosition"
+                        aria-live="polite"
+                    >
+                        1 / 5
+                    </div>
+
+                    <button
+                        type="button"
+                        class="mobile-video-arrow"
+                        id="nextVideo"
+                        aria-label="Next video"
+                    >
+                        <i class="fas fa-chevron-right"></i>
+                    </button>
                 </div>
             </section>
 
@@ -4172,7 +4147,7 @@ text-shadow:
                                 <a href="https://www.youtube.com/watch?v=${videoId}" target="_blank" style="text-decoration: none; color: inherit; display: block; height: 100%;">
                                     <div class="video-card" style="height: 100%;">
                                         <div class="music-thumbnail">
-                                            <img src="${thumbnail}" alt="${title}" width="480" height="360" loading="lazy" decoding="async">
+                                            <img src="${thumbnail}" alt="${title}" loading="lazy">
                                             <div class="music-overlay">
                                                 <div class="play-icon">▶</div>
                                             </div>
@@ -4265,6 +4240,129 @@ videoHtml += `
         // Load video on page load
         window.addEventListener('load', loadYouTubeVideos);
 
+        // MOBILE VIDEO CAROUSEL CONTROLS
+        function setupMobileVideoControls() {
+            const videoContainer = document.getElementById('videosContainer');
+            const previousVideo = document.getElementById('previousVideo');
+            const nextVideo = document.getElementById('nextVideo');
+            const videoPosition = document.getElementById('mobileVideoPosition');
+
+            if (!videoContainer || !previousVideo || !nextVideo || !videoPosition) {
+                return;
+            }
+
+            function getVideoCards() {
+                return Array.from(
+                    videoContainer.querySelectorAll(':scope > a')
+                );
+            }
+
+            function getActiveVideoIndex() {
+                const cards = getVideoCards();
+
+                if (!cards.length) {
+                    return 0;
+                }
+
+                const containerCenter =
+                    videoContainer.scrollLeft +
+                    videoContainer.clientWidth / 2;
+
+                let activeIndex = 0;
+                let shortestDistance = Number.POSITIVE_INFINITY;
+
+                cards.forEach((card, index) => {
+                    const cardCenter =
+                        card.offsetLeft +
+                        card.clientWidth / 2;
+
+                    const distance =
+                        Math.abs(containerCenter - cardCenter);
+
+                    if (distance < shortestDistance) {
+                        shortestDistance = distance;
+                        activeIndex = index;
+                    }
+                });
+
+                return activeIndex;
+            }
+
+            function updateVideoPosition() {
+                const cards = getVideoCards();
+                const activeIndex = getActiveVideoIndex();
+
+                videoPosition.textContent =
+                    cards.length
+                        ? `${activeIndex + 1} / ${cards.length}`
+                        : '0 / 0';
+            }
+
+            function moveVideo(direction) {
+                const cards = getVideoCards();
+
+                if (!cards.length) {
+                    return;
+                }
+
+                const currentIndex = getActiveVideoIndex();
+                const nextIndex =
+                    (currentIndex + direction + cards.length) %
+                    cards.length;
+
+                const target = cards[nextIndex];
+
+                const left =
+                    target.offsetLeft -
+                    (videoContainer.clientWidth - target.clientWidth) / 2;
+
+                videoContainer.scrollTo({
+                    left,
+                    behavior: 'smooth'
+                });
+
+                window.setTimeout(updateVideoPosition, 350);
+            }
+
+            previousVideo.addEventListener('click', () => {
+                moveVideo(-1);
+            });
+
+            nextVideo.addEventListener('click', () => {
+                moveVideo(1);
+            });
+
+            let videoScrollTimer = null;
+
+            videoContainer.addEventListener(
+                'scroll',
+                () => {
+                    window.clearTimeout(videoScrollTimer);
+
+                    videoScrollTimer = window.setTimeout(
+                        updateVideoPosition,
+                        90
+                    );
+                },
+                { passive: true }
+            );
+
+            const observer = new MutationObserver(() => {
+                updateVideoPosition();
+            });
+
+            observer.observe(videoContainer, {
+                childList: true
+            });
+
+            updateVideoPosition();
+        }
+
+        window.addEventListener(
+            'DOMContentLoaded',
+            setupMobileVideoControls
+        );
+
         // LOAD MUSIC TRACKS FROM music.json (Topic Channel)
 
         // MOBILE HAMBURGER MENU
@@ -4275,14 +4373,9 @@ videoHtml += `
 
         // Toggle menu when hamburger is clicked
         hamburger.addEventListener('click', () => {
-            const isOpen = hamburger.classList.toggle('active');
-            sidebar.classList.toggle('mobile-open', isOpen);
-            menuOverlay.classList.toggle('active', isOpen);
-            hamburger.setAttribute('aria-expanded', String(isOpen));
-            hamburger.setAttribute(
-                'aria-label',
-                isOpen ? 'Close navigation menu' : 'Open navigation menu'
-            );
+            hamburger.classList.toggle('active');
+            sidebar.classList.toggle('mobile-open');
+            menuOverlay.classList.toggle('active');
         });
 
         // Close menu when overlay is clicked
@@ -4290,8 +4383,6 @@ videoHtml += `
             hamburger.classList.remove('active');
             sidebar.classList.remove('mobile-open');
             menuOverlay.classList.remove('active');
-            hamburger.setAttribute('aria-expanded', 'false');
-            hamburger.setAttribute('aria-label', 'Open navigation menu');
         });
 
         // Close menu when nav link is clicked
@@ -4452,6 +4543,7 @@ videoHtml += `
                 subscribeForm.dispatchEvent(new Event('submit'));
             }
         });
+    </script>
     </script>
 
     <script src="js/music.js"></script>
