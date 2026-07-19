@@ -8,6 +8,8 @@ Premium Desktop + Mobile Carousel Edition
 "use strict";
 
 let echoCraftTracks = [];
+let echoCraftAlbums = [];
+let activeAlbumIndex = 0;
 let activeMobileCardIndex = 0;
 let mobileScrollTimer = null;
 
@@ -30,6 +32,322 @@ function escapeMusicAttribute(value) {
     return escapeMusicText(value);
 }
 
+
+/*
+------------------------------------------
+Create one premium album card
+------------------------------------------
+*/
+
+function createAlbumCard(album, index) {
+    const rawTitle =
+        String(album.title || "Untitled Album");
+
+    const title =
+        escapeMusicText(rawTitle);
+
+    const artist =
+        escapeMusicText(
+            album.artist || "Echo Craft"
+        );
+
+    const cover =
+        album.cover && album.cover.trim() !== ""
+            ? escapeMusicAttribute(album.cover)
+            : "assets/images/ec-icon.webp";
+
+    const hyperfollow =
+        album.hyperfollow && album.hyperfollow.trim() !== ""
+            ? escapeMusicAttribute(album.hyperfollow)
+            : "";
+
+    const spotify =
+        album.spotify && album.spotify.trim() !== ""
+            ? escapeMusicAttribute(album.spotify)
+            : "";
+
+    const apple =
+        album.apple && album.apple.trim() !== ""
+            ? escapeMusicAttribute(album.apple)
+            : "";
+
+    const trackCount =
+        Array.isArray(album.tracks)
+            ? album.tracks.length
+            : 0;
+
+    const description =
+        album.description &&
+        album.description.trim() !== ""
+            ? escapeMusicText(album.description)
+            : "A complete Echo Craft listening experience inspired by love, devotion, intimacy, and the poetic beauty of the Song of Solomon.";
+
+    const slug =
+        rawTitle
+            .trim()
+            .toLowerCase()
+            .replace(/&/g, "and")
+            .replace(/[^a-z0-9]+/g, "-")
+            .replace(/^-|-$/g, "");
+
+    const hyperfollowButton = hyperfollow
+        ? `
+            <a
+                href="${hyperfollow}"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="album-explore-btn"
+            >
+                <i class="fas fa-headphones"></i>
+                Listen Everywhere
+            </a>
+        `
+        : "";
+
+    const spotifyButton = spotify
+        ? `
+            <a
+                href="${spotify}"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="album-platform-btn spotify"
+                aria-label="Listen to ${title} on Spotify"
+                title="Spotify"
+            >
+                <i class="fab fa-spotify"></i>
+            </a>
+        `
+        : "";
+
+    const appleButton = apple
+        ? `
+            <a
+                href="${apple}"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="album-platform-btn"
+                aria-label="Listen to ${title} on Apple Music"
+                title="Apple Music"
+            >
+                <i class="fab fa-apple"></i>
+            </a>
+        `
+        : "";
+
+    return `
+        <article
+            class="album-card"
+            data-album-index="${index}"
+        >
+            <div class="album-card-art">
+                <img
+                    src="${cover}"
+                    alt="${title} album cover"
+                    loading="lazy"
+                    onerror="this.src='assets/images/ec-icon.webp';"
+                >
+            </div>
+
+            <div class="album-card-body">
+                <div class="album-card-badge">
+                    Album · ${trackCount} Tracks
+                </div>
+
+                <h3 class="album-card-title">
+                    ${title}
+                </h3>
+
+                <div class="album-card-artist">
+                    ${artist}
+                </div>
+
+                <p class="album-card-description">
+                    ${description}
+                </p>
+
+                <div class="album-card-actions">
+                    <a
+                        href="albums/${slug}.html"
+                        class="album-explore-btn"
+                    >
+                        <i class="fas fa-compact-disc"></i>
+                        Explore Album
+                    </a>
+
+                    ${hyperfollowButton}
+                    ${spotifyButton}
+                    ${appleButton}
+                </div>
+            </div>
+        </article>
+    `;
+}
+
+/*
+------------------------------------------
+Album carousel controls
+------------------------------------------
+*/
+
+function setupAlbumCarousel() {
+    const container =
+        document.getElementById(
+            "albumsContainer"
+        );
+
+    const previousButton =
+        document.getElementById(
+            "previousAlbum"
+        );
+
+    const nextButton =
+        document.getElementById(
+            "nextAlbum"
+        );
+
+    if (
+        !container ||
+        !previousButton ||
+        !nextButton
+    ) {
+        return;
+    }
+
+    function updatePosition() {
+        const cards = [
+            ...container.querySelectorAll(
+                ".album-card"
+            )
+        ];
+
+        const position =
+            document.getElementById(
+                "albumsPosition"
+            );
+
+        if (!cards.length) {
+            if (position) {
+                position.textContent = "0 / 0";
+            }
+
+            previousButton.disabled = true;
+            nextButton.disabled = true;
+            return;
+        }
+
+        const containerCenter =
+            container.scrollLeft +
+            container.clientWidth / 2;
+
+        let nearestIndex = 0;
+        let nearestDistance =
+            Number.POSITIVE_INFINITY;
+
+        cards.forEach((card, index) => {
+            const cardCenter =
+                card.offsetLeft +
+                card.clientWidth / 2;
+
+            const distance =
+                Math.abs(
+                    containerCenter -
+                    cardCenter
+                );
+
+            if (distance < nearestDistance) {
+                nearestDistance = distance;
+                nearestIndex = index;
+            }
+        });
+
+        activeAlbumIndex =
+            nearestIndex;
+
+        if (position) {
+            position.textContent =
+                `${nearestIndex + 1} / ${cards.length}`;
+        }
+
+        const onlyOne =
+            cards.length <= 1;
+
+        previousButton.disabled =
+            onlyOne;
+
+        nextButton.disabled =
+            onlyOne;
+    }
+
+    function moveAlbum(direction) {
+        const cards = [
+            ...container.querySelectorAll(
+                ".album-card"
+            )
+        ];
+
+        if (!cards.length) {
+            return;
+        }
+
+        const nextIndex =
+            (
+                activeAlbumIndex +
+                direction +
+                cards.length
+            ) % cards.length;
+
+        const target =
+            cards[nextIndex];
+
+        const left =
+            target.offsetLeft -
+            (
+                container.clientWidth -
+                target.clientWidth
+            ) / 2;
+
+        container.scrollTo({
+            left,
+            behavior: "smooth"
+        });
+
+        activeAlbumIndex =
+            nextIndex;
+
+        window.setTimeout(
+            updatePosition,
+            350
+        );
+    }
+
+    previousButton.onclick =
+        () => moveAlbum(-1);
+
+    nextButton.onclick =
+        () => moveAlbum(1);
+
+    let timer = null;
+
+    container.addEventListener(
+        "scroll",
+        () => {
+            window.clearTimeout(timer);
+
+            timer =
+                window.setTimeout(
+                    updatePosition,
+                    80
+                );
+        },
+        {
+            passive: true
+        }
+    );
+
+    updatePosition();
+}
+
+
 /*
 ------------------------------------------
 Create one premium music card
@@ -43,7 +361,7 @@ function createMusicCard(track, index) {
     const cover =
         track.cover && track.cover.trim() !== ""
             ? escapeMusicAttribute(track.cover)
-            : "assets/images/ec-icon.png";
+            : "assets/images/ec-icon.webp";
 
     const preview =
         track.preview && track.preview.trim() !== ""
@@ -151,7 +469,7 @@ function createMusicCard(track, index) {
                     src="${cover}"
                     alt="${title} cover artwork"
                     loading="lazy"
-                    onerror="this.src='assets/images/ec-icon.png';"
+                    onerror="this.src='assets/images/ec-icon.webp';"
                 >
 
                 <div class="music-artwork-shine"></div>
@@ -551,11 +869,27 @@ function updateMobileMusicNavigator(index) {
             );
 
             if (isActive) {
-                button.scrollIntoView({
-                    behavior: "smooth",
-                    block: "nearest",
-                    inline: "center"
-                });
+                const strip =
+                    document.getElementById(
+                        "mobileLetterStrip"
+                    );
+
+                if (strip) {
+                    const targetLeft =
+                        button.offsetLeft -
+                        (
+                            strip.clientWidth -
+                            button.clientWidth
+                        ) / 2;
+
+                    strip.scrollTo({
+                        left: Math.max(
+                            0,
+                            targetLeft
+                        ),
+                        behavior: "smooth"
+                    });
+                }
             }
         });
 
@@ -697,20 +1031,61 @@ async function loadMusicTracks() {
             return;
         }
 
-        echoCraftTracks = [
-            ...data.items
-        ].sort((a, b) =>
-            String(
-                a.title || ""
-            ).localeCompare(
-                String(b.title || ""),
-                undefined,
-                {
-                    sensitivity: "base",
-                    numeric: true
-                }
-            )
-        );
+        echoCraftAlbums =
+            data.items
+                .filter(
+                    item =>
+                        item.type === "album"
+                )
+                .sort((a, b) =>
+                    String(
+                        a.title || ""
+                    ).localeCompare(
+                        String(b.title || ""),
+                        undefined,
+                        {
+                            sensitivity: "base",
+                            numeric: true
+                        }
+                    )
+                );
+
+        echoCraftTracks =
+            data.items
+                .filter(
+                    item =>
+                        item.type !== "album"
+                )
+                .sort((a, b) =>
+                    String(
+                        a.title || ""
+                    ).localeCompare(
+                        String(b.title || ""),
+                        undefined,
+                        {
+                            sensitivity: "base",
+                            numeric: true
+                        }
+                    )
+                );
+
+        const albumsContainer =
+            document.getElementById(
+                "albumsContainer"
+            );
+
+        if (albumsContainer) {
+            albumsContainer.innerHTML =
+                echoCraftAlbums.length
+                    ? echoCraftAlbums
+                        .map(createAlbumCard)
+                        .join("")
+                    : `
+                        <div class="albums-empty">
+                            Albums and collections are coming soon.
+                        </div>
+                    `;
+        }
 
         container.innerHTML =
             echoCraftTracks
@@ -725,6 +1100,7 @@ async function loadMusicTracks() {
             echoCraftTracks
         );
 
+        setupAlbumCarousel();
         activateSingleAudioPlayback();
         activateMobileMusicScrollTracking();
 
