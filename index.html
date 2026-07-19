@@ -6,8 +6,31 @@
     <title>Echo Craft - All Genres. All Music. All Together.</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link
+        rel="preload"
+        href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@300;400;500;600;700&display=swap"
+        as="style"
+        onload="this.onload=null;this.rel='stylesheet'"
+    >
+    <noscript>
+        <link
+            rel="stylesheet"
+            href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@300;400;500;600;700&display=swap"
+        >
+    </noscript>
+
+    <link
+        rel="preload"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+        as="style"
+        onload="this.onload=null;this.rel='stylesheet'"
+    >
+    <noscript>
+        <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+        >
+    </noscript>
     <style>
         * {
             margin: 0;
@@ -3612,6 +3635,38 @@ section.music {
     }
 }
 
+
+/* ==========================================================
+   MOBILE PERFORMANCE REFINEMENT
+   Preserve the cinematic design while avoiding continuous
+   animation work during the initial mobile load.
+========================================================== */
+@media (max-width: 768px) {
+    body::before,
+    .sidebar-logo h1,
+    .home-content,
+    .home-content h1,
+    .mobile-swipe-note i {
+        animation: none !important;
+    }
+
+    body::before {
+        transform: none !important;
+        filter: blur(2px) brightness(0.72);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        scroll-behavior: auto !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
 </style>
 
 <style id="echoCraftMobileVideoFix">
@@ -3816,7 +3871,7 @@ text-shadow:
         </div>
     </div>
     <!-- HAMBURGER MENU BUTTON (Mobile Only) -->
-    <button class="hamburger-menu" id="hamburger">
+    <button class="hamburger-menu" id="hamburger" type="button" aria-label="Open navigation menu" aria-controls="sidebarNavigation" aria-expanded="false">
         <span></span>
         <span></span>
         <span></span>
@@ -3827,20 +3882,22 @@ text-shadow:
 
     <div class="container">
         <!-- LEFT SIDEBAR -->
-        <aside class="sidebar">
+        <aside class="sidebar" id="sidebarNavigation">
             <div class="sidebar-logo">
                 <div class="sidebar-logo-image">
-                   <img src="assets/images/ec-icon.webp" alt="Echo Craft">
+                   <img src="assets/images/ec-icon.webp" alt="Echo Craft" width="512" height="512" decoding="async">
                 </div>
                 <h1>ECHO CRAFT</h1>
             </div>
 
-         <nav class="sidebar-nav">
-    <li><a href="#home" class="nav-link active">HOME</a></li>
-    <li><a href="#videos" class="nav-link">VIDEOS</a></li>
-    <li><a href="#music" class="nav-link">🎵 MUSIC</a></li>
-    <li><a href="https://studio.echocraftmusic.com/">🎬 CREATIVE STUDIO</a></li>
-    <li><a href="#info" class="nav-link">INFO</a></li>
+         <nav aria-label="Primary navigation">
+    <ul class="sidebar-nav">
+        <li><a href="#home" class="nav-link active">HOME</a></li>
+        <li><a href="#videos" class="nav-link">VIDEOS</a></li>
+        <li><a href="#music" class="nav-link">🎵 MUSIC</a></li>
+        <li><a href="https://studio.echocraftmusic.com/">🎬 CREATIVE STUDIO</a></li>
+        <li><a href="#info" class="nav-link">INFO</a></li>
+    </ul>
 </nav>
 
             <div class="sidebar-footer">
@@ -3895,7 +3952,7 @@ text-shadow:
     </div>
 
     <div class="home-logo">
-        <img src="assets/images/echo-craft-logo.webp" alt="Echo Craft Logo">
+        <img src="assets/images/echo-craft-logo.webp" alt="Echo Craft Logo" width="1024" height="1024" fetchpriority="high" decoding="async">
     </div>
 
     <p class="tagline">
@@ -4115,7 +4172,7 @@ text-shadow:
                                 <a href="https://www.youtube.com/watch?v=${videoId}" target="_blank" style="text-decoration: none; color: inherit; display: block; height: 100%;">
                                     <div class="video-card" style="height: 100%;">
                                         <div class="music-thumbnail">
-                                            <img src="${thumbnail}" alt="${title}" loading="lazy">
+                                            <img src="${thumbnail}" alt="${title}" width="480" height="360" loading="lazy" decoding="async">
                                             <div class="music-overlay">
                                                 <div class="play-icon">▶</div>
                                             </div>
@@ -4218,9 +4275,14 @@ videoHtml += `
 
         // Toggle menu when hamburger is clicked
         hamburger.addEventListener('click', () => {
-            hamburger.classList.toggle('active');
-            sidebar.classList.toggle('mobile-open');
-            menuOverlay.classList.toggle('active');
+            const isOpen = hamburger.classList.toggle('active');
+            sidebar.classList.toggle('mobile-open', isOpen);
+            menuOverlay.classList.toggle('active', isOpen);
+            hamburger.setAttribute('aria-expanded', String(isOpen));
+            hamburger.setAttribute(
+                'aria-label',
+                isOpen ? 'Close navigation menu' : 'Open navigation menu'
+            );
         });
 
         // Close menu when overlay is clicked
@@ -4228,6 +4290,8 @@ videoHtml += `
             hamburger.classList.remove('active');
             sidebar.classList.remove('mobile-open');
             menuOverlay.classList.remove('active');
+            hamburger.setAttribute('aria-expanded', 'false');
+            hamburger.setAttribute('aria-label', 'Open navigation menu');
         });
 
         // Close menu when nav link is clicked
@@ -4388,7 +4452,6 @@ videoHtml += `
                 subscribeForm.dispatchEvent(new Event('submit'));
             }
         });
-    </script>
     </script>
 
     <script src="js/music.js"></script>
