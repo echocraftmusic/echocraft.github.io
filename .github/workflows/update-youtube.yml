@@ -91,29 +91,22 @@ jobs:
               
               console.log(`Received details for ${detailsData.items.length} videos`);
               
-              // Get current date
-              const now = new Date();
-              const thirtyDaysAgo = new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000);
-              
-              console.log(`Filtering videos from last 30 days (since ${thirtyDaysAgo.toISOString()})`);
-              
-              // Filter: Only videos over 60 seconds, published in last 30 days
+              // Filter: Only videos longer than 60 seconds
               let filtered = detailsData.items.filter(item => {
                 const duration = parseDuration(item.contentDetails.duration);
                 const publishedAt = new Date(item.snippet.publishedAt);
-                
+
                 const isLongEnough = duration > 60;
-                const isRecent = publishedAt > thirtyDaysAgo;
-                
-                if (isLongEnough && isRecent) {
+
+                if (isLongEnough) {
                   console.log(`✓ Keep: "${item.snippet.title}" (${duration}s, ${publishedAt.toISOString()})`);
                   return true;
-                } else {
-                  console.log(`✗ Skip: "${item.snippet.title}" (${duration}s, ${publishedAt.toISOString()})`);
-                  return false;
                 }
+
+                console.log(`✗ Skip: "${item.snippet.title}" (${duration}s, ${publishedAt.toISOString()})`);
+                return false;
               });
-              
+
               // Sort by publish date descending (newest first)
               filtered.sort((a, b) => {
                 return new Date(b.snippet.publishedAt) - new Date(a.snippet.publishedAt);
