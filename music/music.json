@@ -5,7 +5,7 @@
       "artist": "Echo Craft",
       "releaseDate": "",
       "cover": "https://distrokid.imgix.net/http%3A%2F%2Fgather.fandalism.com%2F12103955--9D7D5982-7317-4C36-8CA66B7430288528--0--6411117--ALIGHTTHRUDARKNESS1.jpg?fm=jpg&mark-y=568&mark-x=620&mark-w=180&q=75&w=800&mark=http%3A%2F%2Fgather.fandalism.com%2Fdistrokid-sticker-sm.png&s=fdb6db9131fcbe00ca2fa7bcd4e3417f",
-      "preview": "music/previews/A Light Through Darkness by Echo Craft.mp3",
+      "preview": "music/previews/The Man Without Fear by Echo Craft.mp3",
       "hyperfollow": "https://distrokid.com/hyperfollow/echocraft11/a-light-through-darkness?ref=release",
       "spotify": "https://open.spotify.com/album/1k29GI4mTS6uzq9PiL4JKC",
       "apple": "https://music.apple.com/us/album/a-light-through-darkness-single/1883654531?uo=4",
@@ -14,6 +14,7 @@
       "created": "2026-07-10T21:29:28.010Z"
     },
     {
+      "type": "single",
       "title": "Beatography Track 1",
       "artist": "Echo Craft",
       "releaseDate": "",
@@ -23,10 +24,11 @@
       "spotify": "https://open.spotify.com/album/2lt6GipE35U1ZCfHgXQD5s",
       "apple": "https://music.apple.com/us/album/beatography-track-1-single/6784866806?uo=4",
       "itunes": "https://itunes.apple.com/lookup?upc=882557061150&entity=song&callback=iTunesCallback",
-      "updated": "2026-07-17T02:05:10.682Z",
+      "updated": "2026-07-20T23:43:38.695Z",
       "created": "2026-07-17T02:05:10.682Z"
     },
     {
+      "type": "single",
       "title": "Crosshair Of Noise",
       "artist": "Echo Craft",
       "releaseDate": "",
@@ -36,10 +38,11 @@
       "spotify": "https://open.spotify.com/album/7ixnGmB5K6xsrnqvav6dyk",
       "apple": "https://music.apple.com/us/album/crosshair-of-noise-single/6770055269?uo=4",
       "itunes": "https://itunes.apple.com/lookup?upc=825200214985&entity=song&callback=iTunesCallback",
-      "updated": "2026-07-17T02:03:53.493Z",
+      "updated": "2026-07-20T23:43:54.126Z",
       "created": "2026-07-17T02:03:53.493Z"
     },
     {
+      "type": "single",
       "title": "Crown Pon Mi Head",
       "artist": "Echo Craft",
       "releaseDate": "",
@@ -49,7 +52,7 @@
       "spotify": "https://open.spotify.com/album/2tWLMzAPPyWl883jVvZDsi",
       "apple": "https://music.apple.com/us/album/crown-pon-mi-head-single/1893995826?uo=4",
       "itunes": "https://itunes.apple.com/lookup?upc=825417657049&entity=song&callback=iTunesCallback",
-      "updated": "2026-07-17T01:39:07.392Z",
+      "updated": "2026-07-20T23:44:14.808Z",
       "created": "2026-07-17T01:39:07.392Z"
     },
     {
@@ -387,7 +390,7 @@
       "artist": "Echo Craft",
       "releaseDate": "",
       "cover": "https://distrokid.imgix.net/http%3A%2F%2Fgather.fandalism.com%2F12103955--7DE0D5C4-6C19-4442-91D73AC600E33FD2--0--4236445--trickster.jpg?fm=jpg&mark-y=568&mark-x=620&mark-w=180&q=75&w=800&mark=http%3A%2F%2Fgather.fandalism.com%2Fdistrokid-sticker-sm.png&s=dbc2bdbbdba96a5acf08ea7c024198cd",
-      "preview": "music/previews/The Trickster's Grin by Echo Craft.mp3",
+      "preview": "",
       "hyperfollow": "https://distrokid.com/hyperfollow/echocraft11/the-tricksters-grin?ref=release",
       "spotify": "https://open.spotify.com/album/5VtxtnOe1GWzrzZF1tmSdr",
       "apple": "https://music.apple.com/us/album/the-tricksters-grin-single/1888621904?uo=4",
@@ -472,6 +475,20 @@
       "itunes": "https://itunes.apple.com/lookup?upc=825200809983&entity=song&callback=iTunesCallback",
       "updated": "2026-07-10T21:33:29.130Z",
       "created": "2026-07-10T21:33:29.130Z"
+    },
+    {
+      "type": "single",
+      "title": "Your Perspective",
+      "artist": "Echo Craft",
+      "releaseDate": "",
+      "cover": "music/covers/your-perspective.webp",
+      "preview": "music/previews/Your Perspective by Echo Craft.mp3",
+      "hyperfollow": "https://distrokid.com/hyperfollow/echocraft11/your-perspective?ref=release",
+      "spotify": "https://open.spotify.com/album/43RfGW3BynkQksKCkaMpqu",
+      "apple": "https://music.apple.com/us/album/your-perspective-single/6792829269?uo=4",
+      "itunes": "https://itunes.apple.com/lookup?upc=882159379196&entity=song&callback=iTunesCallback",
+      "updated": "2026-07-23T16:07:37.641Z",
+      "created": "2026-07-23T16:04:51.387Z"
     }
   ]
 }
