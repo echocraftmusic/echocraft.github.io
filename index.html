@@ -4258,6 +4258,237 @@ text-shadow:
 
 </style>
 
+
+    <style>
+    /* ===== Desktop Premium Art Direction — visual only ===== */
+    @media (min-width: 1025px) {
+        .main-content {
+            padding-left: 280px;
+        }
+
+        section.home {
+            padding: 52px 5vw 56px;
+        }
+
+        .home-content {
+            max-width: 820px;
+            padding: 46px 62px 40px;
+            border: 1px solid rgba(0,217,255,.28);
+            background:
+                linear-gradient(145deg, rgba(12,17,35,.94), rgba(9,14,29,.86)),
+                radial-gradient(circle at 50% 24%, rgba(0,217,255,.10), transparent 42%);
+            box-shadow:
+                inset 0 1px 0 rgba(255,255,255,.08),
+                0 28px 80px rgba(0,0,0,.42),
+                0 0 50px rgba(0,217,255,.08);
+            border-radius: 26px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .home-content::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            background: linear-gradient(115deg, transparent 25%, rgba(255,255,255,.055) 48%, transparent 68%);
+            transform: translateX(-120%);
+            animation: premiumSweep 12s ease-in-out infinite;
+        }
+
+        @keyframes premiumSweep {
+            0%, 74% { transform: translateX(-120%); }
+            100% { transform: translateX(120%); }
+        }
+
+        .universe-kicker {
+            display: inline-flex;
+            align-items: center;
+            padding: .5rem 1.2rem;
+            border: 1px solid rgba(0,217,255,.38);
+            border-radius: 999px;
+            background: rgba(0,217,255,.075);
+            color: #38e2ff;
+            letter-spacing: 2.2px;
+            font-size: .76rem;
+            margin-bottom: 1.2rem;
+            text-transform: uppercase;
+            box-shadow: inset 0 0 18px rgba(0,217,255,.06);
+        }
+
+        .home-logo { margin: 0 auto .7rem; }
+        .home-logo img {
+            filter: drop-shadow(0 0 22px rgba(0,217,255,.22));
+        }
+        .home-content .tagline { margin-top: .2rem; margin-bottom: .8rem; }
+        .home-content > p:not(.tagline) { max-width: 690px; margin-inline: auto; }
+
+        .hero-features {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 0;
+            margin: 1.6rem auto 1.25rem;
+            max-width: 640px;
+            border: 1px solid rgba(0,217,255,.22);
+            border-radius: 16px;
+            overflow: hidden;
+            background: rgba(255,255,255,.035);
+        }
+        .hero-feature {
+            border: 0 !important;
+            border-right: 1px solid rgba(0,217,255,.16) !important;
+            border-radius: 0 !important;
+            min-height: 88px;
+            padding: 1rem .8rem;
+            background: linear-gradient(180deg, rgba(255,255,255,.035), rgba(255,255,255,.012));
+        }
+        .hero-feature:last-child { border-right: 0 !important; }
+
+        section.albums { padding-top: 88px; padding-bottom: 88px; }
+        .albums-heading { max-width: 820px; margin-bottom: 2.6rem; }
+        .albums-carousel-shell { max-width: 1060px; }
+        .album-card {
+            width: min(960px, calc(100vw - 420px));
+            min-height: 500px;
+            grid-template-columns: minmax(350px, 43%) 1fr;
+            border-radius: 24px;
+            border-color: rgba(0,217,255,.34);
+            box-shadow: 0 30px 90px rgba(0,0,0,.45), 0 0 35px rgba(0,217,255,.07);
+            overflow: hidden;
+        }
+        .album-card-art { min-height: 500px; }
+        .album-card-art img { width: 100%; height: 100%; object-fit: cover; }
+        .album-card-body {
+            padding: 44px 46px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .album-card-badge { align-self: flex-start; margin-bottom: 1rem; }
+        .album-card-title { font-size: clamp(2.15rem, 3vw, 3.25rem); line-height: 1.04; }
+        .album-card-description { max-width: 530px; margin: 1.35rem 0 1.7rem; }
+        .album-card-actions {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0,1fr));
+            align-items: stretch;
+            gap: 10px;
+        }
+        .album-card-actions > .album-explore-btn { min-height: 48px; justify-content: center; }
+        .album-card-actions > .album-platform-btn {
+            min-height: 40px;
+            justify-content: center;
+            background: rgba(255,255,255,.04);
+            border: 1px solid rgba(255,255,255,.11);
+        }
+        .albums-carousel-arrow {
+            width: 48px; height: 48px;
+            background: rgba(6,14,28,.86);
+            border: 1px solid rgba(0,217,255,.35);
+            box-shadow: 0 0 24px rgba(0,217,255,.08);
+        }
+
+        section.music { padding-top: 88px; }
+        .music-layout { align-items: flex-start; gap: 28px; }
+        .music-card {
+            border-color: rgba(0,217,255,.24);
+            box-shadow: 0 18px 45px rgba(0,0,0,.24);
+        }
+        .music-card:hover {
+            transform: translateY(-6px);
+            border-color: rgba(0,217,255,.52);
+            box-shadow: 0 25px 60px rgba(0,0,0,.38), 0 0 26px rgba(0,217,255,.08);
+        }
+        .music-title { min-height: 2.65em; display:flex; align-items:center; justify-content:center; }
+        .browse-music {
+            position: sticky; top: 34px;
+            border: 1px solid rgba(0,217,255,.22);
+            box-shadow: 0 18px 50px rgba(0,0,0,.28), inset 0 1px 0 rgba(255,255,255,.04);
+        }
+        .letter-nav button.active, .letter-nav a.active {
+            box-shadow: 0 0 0 6px rgba(0,217,255,.08), 0 0 26px rgba(0,217,255,.46);
+        }
+
+        .premium-music-actions {
+            display:flex; justify-content:center; gap:14px; margin: 34px 0 0;
+        }
+        .catalog-action {
+            display:inline-flex; align-items:center; justify-content:center; gap:.65rem;
+            min-width: 220px; padding: .95rem 1.55rem; border-radius: 12px;
+            font-weight: 700; text-decoration:none; letter-spacing:.2px;
+            transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease;
+        }
+        .catalog-action:hover { transform: translateY(-3px); }
+        .catalog-action-primary {
+            color:#04101a; background: linear-gradient(135deg,#38e8ff,#00bfe8 52%,#8b5cf6);
+            box-shadow: 0 12px 32px rgba(0,217,255,.18);
+        }
+        .catalog-action-secondary {
+            color:#fff; border:1px solid rgba(0,217,255,.28);
+            background:rgba(8,16,34,.78);
+        }
+
+        section.info { padding: 88px 5vw 100px; }
+        .premium-about { max-width: 1120px; }
+        .about-heading { text-align:center; margin-bottom:2.6rem; }
+        .about-kicker {
+            color:#37e5ff; text-transform:uppercase; letter-spacing:2.4px; font-size:.76rem; font-weight:700;
+        }
+        .about-editorial {
+            display:grid; grid-template-columns: .82fr 1.45fr; gap: 46px; align-items:start;
+            padding: 42px; border:1px solid rgba(0,217,255,.20); border-radius:22px;
+            background:linear-gradient(145deg,rgba(8,16,33,.92),rgba(11,18,37,.78));
+            box-shadow:0 24px 70px rgba(0,0,0,.30);
+        }
+        .about-manifesto {
+            padding:28px; border-left:2px solid #00d9ff; background:rgba(0,217,255,.045); border-radius:0 16px 16px 0;
+        }
+        .manifesto-mark { font-family:'Orbitron'; color:rgba(0,217,255,.24); font-size:3.6rem; font-weight:900; line-height:1; }
+        .about-manifesto blockquote { font-family:'Orbitron'; font-size:1.35rem; line-height:1.45; margin:.8rem 0 1rem; }
+        .about-manifesto p { color:#8f9bad; font-size:.92rem; }
+        .about-story p { margin:0 0 1.15rem; color:#c0c7d2; }
+
+        .about-panel-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:22px; margin-top:24px; }
+        .premium-info-panel { margin:0 !important; padding:32px !important; position:relative; overflow:hidden; min-height:310px; }
+        .panel-number { position:absolute; right:24px; top:18px; font-family:'Orbitron'; font-size:2.6rem; color:rgba(0,217,255,.10); }
+        .premium-info-panel h3 { padding-right:55px; }
+        .premium-info-panel small { display:block; margin-top:18px; color:#778397; }
+        .about-list { list-style:none; margin:1.1rem 0; display:grid; gap:.65rem; }
+        .about-list li::before { content:'✦'; color:#00d9ff; margin-right:.7rem; }
+        .about-inline-link { color:#30e4ff; text-decoration:none; font-weight:700; }
+
+        .frequency-statement {
+            margin:28px 0; padding:32px 40px; border-radius:20px; text-align:center;
+            border:1px solid rgba(139,92,246,.26);
+            background:radial-gradient(circle at center,rgba(0,217,255,.09),transparent 55%),rgba(8,14,30,.88);
+            font-family:'Orbitron';
+        }
+        .frequency-statement span { display:block; color:#aeb7c5; font-size:1rem; }
+        .frequency-statement strong { display:block; color:#fff; font-size:clamp(1.8rem,3vw,3rem); text-shadow:0 0 24px rgba(0,217,255,.26); }
+
+        .support-panel {
+            display:flex; align-items:center; justify-content:space-between; gap:30px; padding:34px 38px !important; margin:0 !important;
+        }
+        .support-panel p { margin-bottom:0; }
+        .premium-contact-row { justify-content:center; margin-top:24px; }
+
+        .sidebar-nav a { transition: background .25s ease, transform .25s ease, color .25s ease; }
+        .sidebar-nav a:hover { transform: translateX(4px); }
+        .subscribe-box { border-color:rgba(0,217,255,.20); background:rgba(6,14,29,.68); }
+    }
+
+    @media (max-width: 1024px) {
+        .universe-kicker {
+            display:inline-flex; padding:.45rem 1rem; border:1px solid rgba(0,217,255,.35); border-radius:999px;
+            background:rgba(0,217,255,.08); color:#00d9ff; letter-spacing:2px; font-size:.72rem; margin-bottom:1.3rem; text-transform:uppercase;
+        }
+        .about-editorial, .about-panel-grid { display:block; }
+        .about-manifesto, .premium-info-panel { margin-bottom:18px !important; }
+        .support-panel { display:block; }
+        .support-panel .btn { margin-top:1rem; }
+        .catalog-action { min-width:0; }
+    }
+    </style>
+
 </head>
 
 <body>
@@ -4334,18 +4565,7 @@ text-shadow:
             <section class="home" id="home">
                 <div class="home-content">
     
-    <div style="
-        display:inline-block;
-        padding:.45rem 1.2rem;
-        border:1px solid rgba(0,217,255,.35);
-        border-radius:999px;
-        background:rgba(0,217,255,.08);
-        color:#00d9ff;
-        letter-spacing:2px;
-        font-size:.8rem;
-        margin-bottom:2rem;
-        text-transform:uppercase;
-    ">
+    <div class="universe-kicker">
         Welcome to the Echo Craft Universe
     </div>
 
@@ -4520,36 +4740,18 @@ text-shadow:
      ">
 </div>
 
-<div class="music-footer">
+<div class="music-footer premium-music-actions">
 
     <a href="https://hyperfollow.com/echocraft7"
        target="_blank"
-       style="
-        display:inline-block;
-        padding:.9rem 2rem;
-        background:linear-gradient(135deg,#00d9ff,#0099cc);
-        color:#000;
-        text-decoration:none;
-        border-radius:6px;
-        font-weight:600;
-        box-shadow:0 0 20px rgba(0,217,255,.3);
-       ">
-        🎵 Stream All Music
+       class="catalog-action catalog-action-primary">
+        <i class="fas fa-headphones"></i> Stream All Music
     </a>
 
     <a href="https://www.youtube.com/@EchoCraft-ai7/videos"
        target="_blank"
-       style="
-        display:inline-block;
-        padding:.9rem 2rem;
-        background:linear-gradient(135deg,#0099cc,#006699);
-        color:#fff;
-        text-decoration:none;
-        border-radius:6px;
-        font-weight:600;
-        box-shadow:0 0 20px rgba(0,153,204,.3);
-       ">
-        Subscribe on YouTube
+       class="catalog-action catalog-action-secondary">
+        <i class="fab fa-youtube"></i> Subscribe on YouTube
     </a>
 
 </div>
@@ -4558,72 +4760,72 @@ text-shadow:
 
             <!-- INFO SECTION -->
             <section class="info" id="info">
-                <div class="info-content">
-                    <h2 class="section-title">ABOUT ECHO CRAFT</h2>
-                    
-                    <p><strong>Echo Craft is a genre-fluid music project built on one core belief: Music isn't meant to be boxed in—it's meant to be felt.</strong></p>
-
-                    <p>Spearheaded by a digital composer and lyricist utilizing cutting-edge AI production tools, Echo Craft bridges the gap between human emotion and modern technology. Every track begins with a deeply intentional concept, custom-crafted lyrics, and a meticulous vision to create music driven by raw energy and purpose.</p>
-
-                    <p>The project defies traditional labels, seamlessly blending elements of rock, heavy metal, soulful roots, and vibrant global rhythms. Some songs hit with aggressive intensity; others uplift, inspire, or tell rich stories rooted in resilience, identity, and faith.</p>
-
-                    <p>From anthems like "I Bleed Silver & Blue" to the immersive, cinematic storytelling of "I Am the Paladin" and "Rogue," Echo Craft exists in a space where music becomes a visceral experience. This isn't about chasing trends. This is about delivering a sound that connects and a message that lasts.</p>
-
-                    <div class="info-section">
-                        <h3>🎬 Sync Licensing & Music Placement</h3>
-                        <p>Echo Craft features a diverse, high-energy catalog optimized for film, TV, advertising, video games, and media projects of all sizes.</p>
-                        <p><strong>Core Catalog Elements:</strong> Rock & Metal | Cinematic Soundscapes | Afrobeats & Reggae | Neo Soul & Latin Pop | Faith-Driven Anthem Rock</p>
-                        <p style="margin-top: 1rem;"><strong>For licensing inquiries:</strong> 📧 <a href="mailto:listening@echocraftmusic.com" style="color: var(--accent-cyan);">listening@echocraftmusic.com</a></p>
-                        <p style="margin-top: 1rem; font-size: 0.95rem;"><strong>Published by V33POGRAPHY | ASCAP Registered</strong></p>
+                <div class="info-content premium-about">
+                    <div class="about-heading">
+                        <span class="about-kicker">The Frequency Behind the Work</span>
+                        <h2 class="section-title">ABOUT ECHO CRAFT</h2>
                     </div>
 
-                    <div class="info-section">
-                        <h3>🎧 Connect & Support</h3>
-                        <p>If the music resonates with you, join the journey:</p>
-                        <p>🔔 <strong>Subscribe on YouTube</strong> to catch the latest releases<br>
-                        🎵 <strong>Stream and download</strong> your favorite tracks on your preferred platform<br>
-                        💙 <strong>Share a song</strong> with someone who needs to hear it today</p>
+                    <div class="about-editorial">
+                        <aside class="about-manifesto">
+                            <span class="manifesto-mark">EC</span>
+                            <blockquote>Music isn't meant to be boxed in—it's meant to be felt.</blockquote>
+                            <p>Genre-fluid. Emotion-led. Built with intention.</p>
+                        </aside>
+
+                        <div class="about-story">
+                            <p>Spearheaded by a digital composer and lyricist utilizing cutting-edge AI production tools, Echo Craft bridges the gap between human emotion and modern technology. Every track begins with a deeply intentional concept, custom-crafted lyrics, and a meticulous vision to create music driven by raw energy and purpose.</p>
+
+                            <p>The project defies traditional labels, seamlessly blending elements of rock, heavy metal, soulful roots, and vibrant global rhythms. Some songs hit with aggressive intensity; others uplift, inspire, or tell rich stories rooted in resilience, identity, and faith.</p>
+
+                            <p>From anthems like “I Bleed Silver &amp; Blue” to the immersive, cinematic storytelling of “I Am the Paladin” and “Rogue,” Echo Craft exists in a space where music becomes a visceral experience. This isn't about chasing trends. This is about delivering a sound that connects and a message that lasts.</p>
+                        </div>
                     </div>
 
-</p>
-                    
-<p style="margin-top: 3rem; font-size: 1.3rem; color: var(--accent-cyan); font-weight: 600;">
-    ⚡ Echo Craft isn't just music… It's a frequency.
-    
-<div class="info-section" style="text-align:center; margin-top:2.5rem;">
+                    <div class="about-panel-grid">
+                        <article class="info-section premium-info-panel">
+                            <span class="panel-number">01</span>
+                            <h3><i class="fas fa-clapperboard"></i> Sync Licensing &amp; Music Placement</h3>
+                            <p>Echo Craft features a diverse, high-energy catalog optimized for film, TV, advertising, video games, and media projects of all sizes.</p>
+                            <p><strong>Core Catalog:</strong> Rock &amp; Metal · Cinematic Soundscapes · Afrobeats &amp; Reggae · Neo Soul &amp; Latin Pop · Faith-Driven Anthem Rock</p>
+                            <a class="about-inline-link" href="mailto:listening@echocraftmusic.com">listening@echocraftmusic.com <i class="fas fa-arrow-right"></i></a>
+                            <small>Published by V33POGRAPHY · ASCAP Registered</small>
+                        </article>
 
-    <h3>Support the Mission</h3>
+                        <article class="info-section premium-info-panel">
+                            <span class="panel-number">02</span>
+                            <h3><i class="fas fa-headphones"></i> Connect &amp; Support</h3>
+                            <p>If the music resonates with you, join the journey.</p>
+                            <ul class="about-list">
+                                <li>Subscribe on YouTube for new releases</li>
+                                <li>Stream and download on your preferred platform</li>
+                                <li>Share a song with someone who needs it</li>
+                            </ul>
+                            <a class="about-inline-link" href="https://hyperfollow.com/echocraft7" target="_blank">Explore all music <i class="fas fa-arrow-right"></i></a>
+                        </article>
+                    </div>
 
-    <p style="text-align:center; max-width:700px; margin:0 auto 1.8rem;">
-        If Echo Craft has inspired you, fueled your creativity, or simply brought more music into your life, your support helps create future songs, albums, cinematic videos, and new artistic projects.
-    </p>
+                    <div class="frequency-statement">
+                        <span>Echo Craft isn't just music.</span>
+                        <strong>It's a frequency.</strong>
+                    </div>
 
-    <a href="https://square.link/u/n6lDqioG"
-       target="_blank"
-       class="btn btn-primary">
-        Support Echo Craft
-    </a>
+                    <div class="info-section support-panel">
+                        <div>
+                            <span class="about-kicker">Fuel the Next Release</span>
+                            <h3>Support the Mission</h3>
+                            <p>Your support helps create future songs, albums, cinematic videos, and new artistic projects.</p>
+                        </div>
+                        <a href="https://square.link/u/n6lDqioG" target="_blank" class="btn btn-primary">Support Echo Craft</a>
+                    </div>
 
-    <p style="margin-top:1rem; font-size:.9rem; opacity:.75;">
-        Secure payments processed by Square.
-    </p>
-
-</div>
-
-<div class="info-contact">
-    
-                    <a href="mailto:listening@echocraftmusic.com">
-                            <i class="fas fa-envelope"></i> Business Inquiries
-                        </a>
-                        <a href="https://www.echocraftmusic.com" target="_blank">
-                            <i class="fas fa-globe"></i> Website
-                        </a>
-                        <a href="https://hyperfollow.com/echocraft7" target="_blank">
-                         
-                            <i class="fas fa-music"></i> All Music
-                        </a>
-    </div>
-                             </section>
+                    <div class="info-contact premium-contact-row">
+                        <a href="mailto:listening@echocraftmusic.com"><i class="fas fa-envelope"></i> Business Inquiries</a>
+                        <a href="https://www.echocraftmusic.com" target="_blank"><i class="fas fa-globe"></i> Website</a>
+                        <a href="https://hyperfollow.com/echocraft7" target="_blank"><i class="fas fa-music"></i> All Music</a>
+                    </div>
+                </div>
+            </section>
         </main>
     </div>
 
