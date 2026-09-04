@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Get a Track | Echo Craft</title>
+  <meta name="description" content="Request a license to record, release, or create with an Echo Craft track or instrumental.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="css/licensing.css">
+</head>
+<body>
+<div class="page-shell">
+  <aside class="sidebar">
+    <div class="sidebar-logo"><div class="sidebar-logo-image"><img src="assets/images/ec-icon.webp" alt="Echo Craft"></div><h1>ECHO CRAFT</h1></div>
+    <nav><ul class="sidebar-nav">
+      <li><a href="index.html#home">HOME</a></li>
+      <li><a href="index.html#videos">VIDEOS</a></li>
+      <li><a href="index.html#albums">💿 ALBUMS</a></li>
+      <li><a href="index.html#music">🎵 MUSIC</a></li>
+      <li><a class="active" href="get-a-track.html">🎧 GET A TRACK!</a></li>
+      <li><a href="sync-licensing.html">🎬 SYNC LICENSING</a></li>
+      <li><a href="https://studio.echocraftmusic.com/">🎨 CREATIVE STUDIO</a></li>
+      <li><a href="index.html#info">INFO</a></li>
+    </ul></nav>
+    <div class="sidebar-footer">Echo Craft Music<br>Music made to move beyond genres.</div>
+  </aside>
+
+  <main class="main">
+    <div class="mobile-top"><img src="assets/images/ec-icon.webp" alt="Echo Craft"><a href="index.html">← MUSIC HOME</a></div>
+    <section class="hero">
+      <span class="eyebrow">For Artists & Creators</span>
+      <h1>GET A TRACK!</h1>
+      <p>Heard an Echo Craft track or instrumental you want to create with? <strong>Tell us which one caught your ear</strong> and how you plan to use it. We'll help match your project with the right license.</p>
+    </section>
+
+    <section class="content">
+      <div class="grid">
+        <article class="card"><div class="icon"><i class="fas fa-microphone-lines"></i></div><h2>Record Over It</h2><p>For singers, rappers, vocalists and artists who want to create a new song using an Echo Craft instrumental.</p></article>
+        <article class="card"><div class="icon"><i class="fas fa-compact-disc"></i></div><h2>Release Your Song</h2><p>Tell us whether your project is for streaming, social media, YouTube, a mixtape, or another release.</p></article>
+        <article class="card"><div class="icon"><i class="fas fa-link"></i></div><h2>Don't Know the Name?</h2><p>No problem. Paste the video or post where you heard it, or simply describe the track to us.</p></article>
+        <article class="card"><div class="icon"><i class="fas fa-file-signature"></i></div><h2>Clear Terms</h2><p>Every approved use is accompanied by licensing terms so you know exactly what your license allows.</p></article>
+      </div>
+
+      <div class="notice"><strong>Important:</strong> Getting a track means receiving a license to use the music under agreed terms. It does not transfer ownership of the Echo Craft composition, master, or publishing unless a separate written agreement specifically says otherwise.</div>
+
+      <div class="form-panel">
+        <h2>Track Inquiry</h2>
+        <p class="intro">You don't have to know music-industry terminology. Just tell us what you heard and what you want to do with it.</p>
+        <form action="https://formspree.io/f/mgoqppve" method="POST">
+          <input type="hidden" name="inquiry_type" value="Get A Track">
+          <input type="hidden" name="_subject" value="Echo Craft - Get A Track Inquiry">
+          <div class="form-grid">
+            <div class="field"><label for="name">Your Name *</label><input id="name" name="name" type="text" required></div>
+            <div class="field"><label for="email">Email *</label><input id="email" name="email" type="email" required></div>
+            <div class="field full"><label for="track">Track / Beat Name</label><input id="track" name="track_name" type="text" placeholder="If you know it"></div>
+            <div class="field full"><label for="heard">Where did you hear it?</label><input id="heard" name="where_heard" type="text" placeholder="Paste a YouTube, TikTok, Instagram or other link — or describe it"></div>
+            <div class="field"><label for="use">How will you use the track? *</label><select id="use" name="intended_use" required><option value="">Choose one</option><option>Record a new song</option><option>Streaming release</option><option>YouTube / social media</option><option>Mixtape / demo</option><option>Live performance</option><option>Other</option></select></div>
+            <div class="field"><label for="commercial">Will your release be monetized?</label><select id="commercial" name="monetized"><option>Not sure yet</option><option>Yes</option><option>No</option></select></div>
+            <div class="field full"><label for="details">Tell us about your project *</label><textarea id="details" name="project_details" required placeholder="What are you creating? Where do you expect to release it? Anything else we should know?"></textarea></div>
+            <div class="field full"><input type="text" name="_gotcha" style="display:none" tabindex="-1" autocomplete="off"></div>
+          </div>
+          <div class="submit-row"><button class="btn" type="submit">SEND TRACK INQUIRY</button><p class="fineprint">Submitting an inquiry does not grant a license. Echo Craft will review the request and provide licensing options before any use is authorized.</p></div>
+        </form>
+      </div>
+      <a class="back-home" href="index.html#music">← Back to Echo Craft Music</a>
+    </section>
+  </main>
+</div>
+    <script src="js/analytics.js"></script>
+
+</body>
+</html>

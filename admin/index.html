@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Echo Craft Music Manager</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root{--bg:#07111e;--panel:#0d1a2c;--panel2:#101f34;--line:#124769;--cyan:#00d9ff;--blue:#3f7cff;--text:#f6fbff;--muted:#9db0c3;--good:#46d39a;--warn:#ffc857;--bad:#ff6b6b}
+    *{box-sizing:border-box} body{margin:0;min-height:100vh;background:radial-gradient(circle at 20% 0,#10233b 0,#07111e 38%,#040a12 100%);color:var(--text);font-family:Inter,system-ui,sans-serif}
+    a{color:inherit}.shell{max-width:1440px;margin:0 auto;padding:28px}.topbar{display:flex;gap:18px;align-items:center;justify-content:space-between;margin-bottom:22px}.brand h1{font-family:Orbitron,sans-serif;margin:0;font-size:clamp(22px,3vw,34px);letter-spacing:1.5px}.brand p{margin:7px 0 0;color:var(--muted)}
+    .top-actions{display:flex;gap:10px;flex-wrap:wrap}.btn{border:1px solid #275272;background:#15253a;color:#fff;padding:11px 14px;border-radius:11px;font-weight:700;cursor:pointer;text-decoration:none;display:inline-flex;gap:8px;align-items:center}.btn:hover{border-color:var(--cyan)}.btn.primary{background:linear-gradient(135deg,#00c8ef,#4d67ff);border:0}.btn.good{background:#123c34;border-color:#1d765e}.btn:disabled{opacity:.5;cursor:not-allowed}
+    .status{padding:12px 15px;border-radius:12px;background:#0a1829;border:1px solid #214660;color:var(--muted);margin-bottom:12px}.status.good{border-color:#286a59;color:#baf7dc}.status.bad{border-color:#7a3131;color:#ffd2d2}.activity{padding:13px 15px;border-radius:12px;background:#0a1829;border:1px solid #214660;color:#d8e8f5;margin-bottom:20px;line-height:1.45}.activity.good{border-color:#286a59;background:#0c241f;color:#baf7dc}.activity.warn{border-color:#735f2c;background:#2b2410;color:#ffe39a}.activity.bad{border-color:#7a3131;background:#30171c;color:#ffd2d2}.activity .stamp{color:var(--muted);font-size:11px;margin-left:8px}.grid{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(330px,.8fr);gap:20px}.panel{background:linear-gradient(180deg,rgba(16,31,52,.97),rgba(8,20,34,.97));border:1px solid var(--line);border-radius:18px;padding:20px;box-shadow:0 18px 50px rgba(0,0,0,.25)}.panel h2{font-family:Orbitron,sans-serif;font-size:18px;margin:0 0 16px}.subtle{color:var(--muted);font-size:13px}
+    label{display:block;font-size:13px;font-weight:700;margin:14px 0 7px;color:#dcecff}.fieldrow{display:grid;grid-template-columns:1fr 1fr;gap:12px}.fieldrow.three{grid-template-columns:1fr 1fr 1fr}input,select,textarea{width:100%;background:#071421;border:1px solid #29506b;color:#fff;border-radius:10px;padding:11px 12px;font:inherit;outline:none}input:focus,select:focus,textarea:focus{border-color:var(--cyan);box-shadow:0 0 0 3px rgba(0,217,255,.09)}textarea{min-height:80px;resize:vertical}.inline{display:flex;gap:9px}.inline input{flex:1}.help{font-size:12px;color:var(--muted);margin-top:6px}.sectionline{height:1px;background:#17384f;margin:20px 0}.pendingBox{display:flex;gap:10px;align-items:end}.pendingBox>div{flex:1}
+    .preview-card{border:1px solid #0f597e;border-radius:18px;padding:12px;background:#071726;max-width:360px;margin:0 auto}.cover-wrap{aspect-ratio:1/1;border-radius:13px;overflow:hidden;background:#06111d;display:grid;place-items:center}.cover-wrap img{width:100%;height:100%;object-fit:cover}.cover-placeholder{color:#617a8d;font-size:44px}.song-title{text-align:center;font-weight:800;margin:14px 8px 10px}.audiofake{background:#303943;border-radius:18px;height:34px;display:flex;align-items:center;padding:0 12px;color:#d9e1e8;font-size:12px;gap:9px}.audiofake i{font-size:11px}.cardbuttons{display:grid;grid-template-columns:1fr 42px 42px;gap:7px;margin-top:10px}.listen{background:linear-gradient(135deg,#00cfe8,#4568ff);border-radius:9px;padding:11px 10px;text-align:center;font-weight:800;font-size:12px}.platform{border-radius:9px;border:1px solid #315064;display:grid;place-items:center;font-size:18px}.spotify{color:#1ed760}.apple{color:#fff;background:#201a2a}
+    .mp3box{border:1px dashed #2e5d7b;background:#091a2a;border-radius:12px;padding:13px;margin-top:8px}.mp3name{font-size:13px;color:#d9ecf7;margin-top:8px;word-break:break-all}.checks{display:grid;gap:8px;margin-top:14px}.check{display:flex;gap:9px;align-items:center;color:var(--muted);font-size:13px}.check.ok{color:#b7f5dc}.check i{width:18px;text-align:center}.footerActions{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}.note{font-size:12px;color:var(--muted);line-height:1.5;margin-top:12px}.toast{position:fixed;right:22px;bottom:22px;max-width:420px;padding:14px 16px;border-radius:12px;background:#102a3b;border:1px solid #2d728d;box-shadow:0 16px 50px #0008;display:none;z-index:20}.toast.show{display:block}.toast.bad{border-color:#8e3c3c;background:#351a22}
+    .auth-gate{min-height:100vh;display:grid;place-items:center;padding:24px}.auth-card{width:min(480px,100%);background:linear-gradient(180deg,rgba(16,31,52,.98),rgba(8,20,34,.98));border:1px solid var(--line);border-radius:22px;padding:28px;box-shadow:0 22px 70px rgba(0,0,0,.38)}.auth-card h1{font-family:Orbitron,sans-serif;margin:0 0 8px;font-size:25px}.auth-card p{color:var(--muted);line-height:1.55;margin:0 0 18px}.auth-card .lock{width:48px;height:48px;border-radius:14px;display:grid;place-items:center;background:#0a2135;border:1px solid #185779;color:var(--cyan);font-size:20px;margin-bottom:18px}.auth-message{margin-top:13px;padding:11px 12px;border-radius:10px;background:#0a1829;border:1px solid #214660;color:var(--muted);display:none;line-height:1.4}.auth-message.show{display:block}.auth-message.good{border-color:#286a59;color:#baf7dc}.auth-message.bad{border-color:#7a3131;color:#ffd2d2}.admin-shell{display:none}.admin-shell.authorized{display:block}.signed-in{display:none;align-items:center;gap:8px;color:var(--muted);font-size:12px}.signed-in.show{display:flex}.signed-in strong{color:#dff8ff}
+    @media(max-width:900px){.grid{grid-template-columns:1fr}.fieldrow,.fieldrow.three{grid-template-columns:1fr}.shell{padding:18px}.topbar{align-items:flex-start;flex-direction:column}}
+  </style>
+</head>
+<body>
+<div id="authGate" class="auth-gate">
+  <div class="auth-card">
+    <div class="lock"><i class="fa-solid fa-lock"></i></div>
+    <h1>ECHO CRAFT ADMIN</h1>
+    <p>Enter an approved Echo Craft administrator email. We’ll send a secure magic link — no password to remember.</p>
+    <label for="authEmail">Admin email</label>
+    <input id="authEmail" type="email" autocomplete="email" placeholder="name@example.com">
+    <button id="sendMagicLink" class="btn primary" type="button" style="width:100%;justify-content:center;margin-top:12px"><i class="fa-solid fa-envelope"></i> Send Magic Link</button>
+    <div id="authMessage" class="auth-message"></div>
+    <div class="note" style="margin-top:16px">Only approved Echo Craft administrator accounts can enter the Music Manager.</div>
+  </div>
+</div>
+<div id="adminApp" class="shell admin-shell">
+  <div class="topbar">
+    <div class="brand">
+      <h1><i class="fa-solid fa-sliders"></i> ECHO CRAFT MUSIC MANAGER</h1>
+      <p>Turn a new DistroKid release into an Echo Craft website music card.</p>
+    </div>
+    <div class="top-actions">
+      <div id="signedInAs" class="signed-in"><i class="fa-solid fa-user-shield"></i> <span></span></div>
+      <a class="btn" href="../#music"><i class="fa-solid fa-music"></i> View Music</a>
+      <a class="btn" href="../"><i class="fa-solid fa-arrow-left"></i> Back to Site</a>
+      <button id="signOut" class="btn" type="button"><i class="fa-solid fa-right-from-bracket"></i> Sign Out</button>
+    </div>
+  </div>
+
+  <div id="serverStatus" class="status">Checking the local Echo Craft Admin server…</div>
+  <div id="activityStatus" class="activity"><strong>Status:</strong> Ready. Nothing has been saved or published yet.</div>
+
+  <div class="grid">
+    <section class="panel">
+      <h2>1. Choose a detected release</h2>
+      <div class="pendingBox">
+        <div>
+          <label for="pendingSelect">Pending releases</label>
+          <select id="pendingSelect"><option value="">Loading…</option></select>
+        </div>
+        <button id="refreshPending" class="btn" type="button"><i class="fa-solid fa-rotate"></i></button>
+      </div>
+      <div class="help">A pending release can prefill title, cover, release date and Apple Music information. You can also build a song manually.</div>
+
+      <div class="sectionline"></div>
+      <h2>2. HyperFollow</h2>
+      <label for="hyperfollow">DistroKid HyperFollow URL</label>
+      <div class="inline">
+        <input id="hyperfollow" type="url" placeholder="https://distrokid.com/hyperfollow/...">
+        <button id="fetchHyperfollow" class="btn primary" type="button"><i class="fa-solid fa-wand-magic-sparkles"></i> Fetch</button>
+      </div>
+      <div class="help">The local manager will try to pull the official cover and service links. Anything it cannot find stays editable.</div>
+
+      <div class="sectionline"></div>
+      <h2>3. Song information</h2>
+      <div class="fieldrow">
+        <div><label for="title">Song title</label><input id="title" type="text" placeholder="This Right Here"></div>
+        <div><label for="artist">Artist</label><input id="artist" type="text" value="Echo Craft"></div>
+      </div>
+      <div class="fieldrow three">
+        <div><label for="type">Type</label><select id="type"><option value="single">Single</option><option value="album">Album</option></select></div>
+        <div><label for="releaseDate">Release date</label><input id="releaseDate" type="date"></div>
+        <div><label for="collectionId">Catalog ID</label><input id="collectionId" type="text" placeholder="optional" readonly></div>
+      </div>
+      <label for="cover">Cover image URL</label><input id="cover" type="url" placeholder="Official cover art URL">
+      <div class="fieldrow">
+        <div><label for="spotify">Spotify <span class="subtle">(optional)</span></label><input id="spotify" type="url" placeholder="https://open.spotify.com/... — leave blank if unavailable"></div>
+        <div><label for="apple">Apple Music <span class="subtle">(optional)</span></label><input id="apple" type="url" placeholder="https://music.apple.com/..."></div>
+      </div>
+      <label for="itunes">iTunes lookup (optional)</label><input id="itunes" type="url" placeholder="https://itunes.apple.com/lookup?...">
+
+      <div class="sectionline"></div>
+      <h2>4. Preview MP3</h2>
+      <div class="mp3box">
+        <input id="previewFile" type="file" accept="audio/mpeg,.mp3">
+        <div id="mp3Name" class="mp3name">No preview selected.</div>
+        <audio id="audioPreview" controls style="width:100%;margin-top:10px;display:none"></audio>
+      </div>
+      <div class="help">This MP3 will be copied into <strong>music/previews/</strong> when you publish locally.</div>
+
+      <div class="footerActions">
+        <button id="saveDraft" class="btn" type="button"><i class="fa-solid fa-floppy-disk"></i> Save Draft</button>
+        <button id="publishLocal" class="btn good" type="button"><i class="fa-solid fa-check"></i> Publish to Local Site</button>
+      </div>
+      <div class="note">“Publish to Local Site” only changes the files in this VS Code project. It does not push anything to GitHub yet. That gives you a safe review step first.</div>
+    </section>
+
+    <aside class="panel">
+      <h2>Music card preview</h2>
+      <div class="preview-card">
+        <div class="cover-wrap"><div id="coverPlaceholder" class="cover-placeholder"><i class="fa-solid fa-compact-disc"></i></div><img id="cardCover" alt="Cover preview" style="display:none"></div>
+        <div id="cardTitle" class="song-title">New Echo Craft Song</div>
+        <div class="audiofake"><i class="fa-solid fa-play"></i><span>0:00 / 0:00</span><span style="flex:1;height:3px;background:#67727c;border-radius:3px"></span><i class="fa-solid fa-volume-high"></i></div>
+        <div class="cardbuttons">
+          <div class="listen"><i class="fa-solid fa-headphones"></i> Listen Everywhere</div>
+          <div id="cardSpotify" class="platform spotify" title="Spotify"><i class="fa-brands fa-spotify"></i></div>
+          <div id="cardApple" class="platform apple" title="Apple Music"><i class="fa-brands fa-apple"></i></div>
+        </div>
+      </div>
+      <div class="checks">
+        <div id="checkTitle" class="check"><i class="fa-regular fa-circle"></i> Song title</div>
+        <div id="checkHyper" class="check"><i class="fa-regular fa-circle"></i> HyperFollow</div>
+        <div id="checkCover" class="check"><i class="fa-regular fa-circle"></i> Cover art</div>
+        <div id="checkSpotify" class="check"><i class="fa-regular fa-circle"></i> Spotify link <span class="subtle">(optional)</span></div>
+        <div id="checkApple" class="check"><i class="fa-regular fa-circle"></i> Apple Music link <span class="subtle">(optional)</span></div>
+        <div id="checkMp3" class="check"><i class="fa-regular fa-circle"></i> Preview MP3</div>
+      </div>
+      <div class="sectionline"></div>
+      <div class="subtle"><strong>How this works</strong><br><br>1. Select a detected release or paste HyperFollow.<br>2. Confirm what was auto-filled.<br>3. Choose your preview MP3.<br>4. Preview the card.<br>5. Publish locally, then review the website before GitHub.</div>
+    </aside>
+  </div>
+</div>
+<div id="toast" class="toast"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+(() => {
+  const SUPABASE_URL = 'https://jryqukxridujdqfuqinz.supabase.co';
+  const SUPABASE_PUBLISHABLE_KEY = 'sb_publishable_1Uyu1Lfzwolx26MvLEHbQg_NXNHzTLW';
+  const ALLOWED_EMAILS = new Set([
+    'echocraft.aimusic@gmail.com',
+    'troy.saha@gmail.com'
+  ]);
+
+  const authGate = document.getElementById('authGate');
+  const adminApp = document.getElementById('adminApp');
+  const authEmail = document.getElementById('authEmail');
+  const sendMagicLink = document.getElementById('sendMagicLink');
+  const authMessage = document.getElementById('authMessage');
+  const signOutButton = document.getElementById('signOut');
+  const signedInAs = document.getElementById('signedInAs');
+
+  function authStatus(message, kind=''){
+    authMessage.textContent = message;
+    authMessage.className = 'auth-message show' + (kind ? ' ' + kind : '');
+  }
+
+  function showGate(){
+    authGate.style.display = 'grid';
+    adminApp.classList.remove('authorized');
+    signedInAs.classList.remove('show');
+  }
+
+  function showAdmin(email){
+    authGate.style.display = 'none';
+    adminApp.classList.add('authorized');
+    signedInAs.querySelector('span').innerHTML = `Signed in as <strong>${email}</strong>`;
+    signedInAs.classList.add('show');
+  }
+
+  if (!window.supabase || !window.supabase.createClient) {
+    authStatus('Supabase authentication could not load. Check your internet connection and refresh.', 'bad');
+    return;
+  }
+
+  const authClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY, {
+    auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true }
+  });
+
+  async function applySession(session){
+    const email = String(session?.user?.email || '').toLowerCase();
+    if (email && ALLOWED_EMAILS.has(email)) {
+      showAdmin(email);
+      return true;
+    }
+    if (session) await authClient.auth.signOut();
+    showGate();
+    return false;
+  }
+
+  async function checkAuth(){
+    const { data, error } = await authClient.auth.getSession();
+    if (error) authStatus(error.message, 'bad');
+    await applySession(data?.session || null);
+  }
+
+  sendMagicLink.addEventListener('click', async () => {
+    const email = String(authEmail.value || '').trim().toLowerCase();
+    if (!email) return authStatus('Enter your administrator email first.', 'bad');
+    if (!ALLOWED_EMAILS.has(email)) return authStatus('That email is not approved for Echo Craft Admin.', 'bad');
+
+    sendMagicLink.disabled = true;
+    sendMagicLink.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Sending…';
+    authStatus('Requesting your secure magic link…');
+    try {
+      const redirectTo = `${window.location.origin}/admin/`;
+      const { error } = await authClient.auth.signInWithOtp({
+        email,
+        options: { emailRedirectTo: redirectTo, shouldCreateUser: false }
+      });
+      if (error) throw error;
+      authStatus('Magic link sent. Check that email and click the link to enter the Music Manager.', 'good');
+    } catch (error) {
+      authStatus(error.message || 'Could not send the magic link.', 'bad');
+    } finally {
+      sendMagicLink.disabled = false;
+      sendMagicLink.innerHTML = '<i class="fa-solid fa-envelope"></i> Send Magic Link';
+    }
+  });
+
+  authEmail.addEventListener('keydown', e => { if (e.key === 'Enter') sendMagicLink.click(); });
+  signOutButton.addEventListener('click', async () => { await authClient.auth.signOut(); showGate(); authStatus('Signed out successfully.', 'good'); });
+  authClient.auth.onAuthStateChange((_event, session) => { applySession(session); });
+  checkAuth();
+})();
+</script>
+<script>
+(() => {
+  const $ = id => document.getElementById(id);
+  const fields = ['title','artist','type','releaseDate','collectionId','cover','hyperfollow','spotify','apple','itunes'];
+  let pending = [];
+  let selectedPreview = null;
+
+  function toast(message, bad=false){ const el=$('toast'); el.textContent=message; el.className='toast show'+(bad?' bad':''); clearTimeout(el._t); el._t=setTimeout(()=>el.className='toast',4200); }
+  function activity(message, kind=''){ const el=$('activityStatus'); const now=new Date().toLocaleTimeString([], {hour:'numeric',minute:'2-digit'}); el.className='activity'+(kind?' '+kind:''); el.innerHTML=`<strong>Status:</strong> ${message}<span class="stamp">${now}</span>`; }
+  function val(id){ return $(id).value.trim(); }
+  function setIf(id, value, overwrite=false){ if(value && (overwrite || !val(id))) $(id).value=value; }
+  function stripSingle(title){ return String(title||'').replace(/\s*-\s*Single$/i,'').trim(); }
+
+  function updateCheck(id, ok){ const el=$(id); el.classList.toggle('ok',!!ok); el.querySelector('i').className=ok?'fa-solid fa-circle-check':'fa-regular fa-circle'; }
+  function updatePreview(){
+    const title=val('title')||'New Echo Craft Song'; $('cardTitle').textContent=title;
+    const cover=val('cover');
+    if(cover){ $('cardCover').src=cover; $('cardCover').style.display='block'; $('coverPlaceholder').style.display='none'; }
+    else { $('cardCover').style.display='none'; $('coverPlaceholder').style.display='block'; }
+    updateCheck('checkTitle',!!val('title')); updateCheck('checkHyper',!!val('hyperfollow')); updateCheck('checkCover',!!cover);
+    const hasSpotify=!!val('spotify'), hasApple=!!val('apple');
+    $('cardSpotify').style.display=hasSpotify?'grid':'none'; $('cardApple').style.display=hasApple?'grid':'none';
+    updateCheck('checkSpotify',hasSpotify); updateCheck('checkApple',hasApple); updateCheck('checkMp3',!!selectedPreview);
+  }
+
+  async function api(url, options={}){
+    const res=await fetch(url,{...options,headers:{'Content-Type':'application/json',...(options.headers||{})}});
+    const data=await res.json().catch(()=>({}));
+    if(!res.ok) throw new Error(data.error||`Request failed (${res.status})`);
+    return data;
+  }
+
+  async function checkServer(){
+    try { await api('/api/status'); $('serverStatus').className='status good'; $('serverStatus').innerHTML='<strong>Local manager connected.</strong> Changes can be written safely into this VS Code project.'; $('publishLocal').disabled=false; }
+    catch { $('serverStatus').className='status bad'; $('serverStatus').innerHTML='<strong>Local manager is not running.</strong> In the VS Code terminal run: <code>node scripts/admin-server.js</code>, then open <code>http://127.0.0.1:3030/admin/</code>'; $('publishLocal').disabled=true; }
+  }
+
+  async function loadPending(){
+    try {
+      const data=await api('/api/pending'); pending=Array.isArray(data.items)?data.items:[];
+      $('pendingSelect').innerHTML='<option value="">— Build manually —</option>'+pending.map((item,i)=>`<option value="${i}">${item.title} ${item.releaseDate?'('+item.releaseDate+')':''}</option>`).join('');
+      if(!pending.length) $('pendingSelect').innerHTML='<option value="">No pending releases — build manually</option>';
+    } catch(e){ $('pendingSelect').innerHTML='<option value="">Could not load pending releases</option>'; }
+  }
+
+  $('pendingSelect').addEventListener('change',()=>{
+    const item=pending[Number($('pendingSelect').value)]; if(!item) return;
+    $('title').value=stripSingle(item.title); $('artist').value=item.artist||'Echo Craft'; $('type').value=item.type||'single'; $('releaseDate').value=item.releaseDate||''; $('collectionId').value=item.collectionId||'';
+    $('cover').value=item.cover||''; $('apple').value=item.apple||''; updatePreview(); activity('Detected release loaded. Add the HyperFollow link and preview MP3.','good'); toast('Detected release loaded.');
+  });
+
+  $('refreshPending').addEventListener('click',loadPending);
+  $('fetchHyperfollow').addEventListener('click',async()=>{
+    const url=val('hyperfollow'); if(!url){ activity('HyperFollow URL is missing. Paste it first.','bad'); return toast('Paste the HyperFollow URL first.',true); }
+    const btn=$('fetchHyperfollow'); btn.disabled=true; btn.innerHTML='<i class="fa-solid fa-spinner fa-spin"></i> Fetching'; activity('Reading HyperFollow and looking for cover, Spotify, and Apple Music links…');
+    try {
+      const data=await api('/api/hyperfollow',{method:'POST',body:JSON.stringify({url})});
+      setIf('title',data.title); setIf('artist',data.artist); setIf('cover',data.cover,true); setIf('spotify',data.spotify,true); setIf('apple',data.apple,false);
+      updatePreview();
+      const found=[data.cover&&'cover',data.spotify&&'Spotify',data.apple&&'Apple Music'].filter(Boolean);
+      const missing=[]; if(!data.spotify) missing.push('Spotify'); if(!data.apple) missing.push('Apple Music');
+      if(missing.length){ activity(`HyperFollow loaded. Found: ${found.join(', ')||'release details'}. ${missing.join(' and ')} not found automatically — optional, so you can paste the link or leave it blank.`, 'warn'); }
+      else { activity(`HyperFollow loaded successfully. Found ${found.join(', ')}.`, 'good'); }
+      toast(found.length?`HyperFollow loaded: ${found.join(', ')} found.`:'HyperFollow loaded. Confirm the fields manually.');
+    } catch(e){ activity(`HyperFollow fetch failed: ${e.message}`,'bad'); toast(e.message,true); }
+    finally { btn.disabled=false; btn.innerHTML='<i class="fa-solid fa-wand-magic-sparkles"></i> Fetch'; }
+  });
+
+  $('previewFile').addEventListener('change',e=>{
+    selectedPreview=e.target.files&&e.target.files[0]||null;
+    $('mp3Name').textContent=selectedPreview?selectedPreview.name:'No preview selected.';
+    if(selectedPreview){ $('audioPreview').src=URL.createObjectURL(selectedPreview); $('audioPreview').style.display='block'; activity(`Preview MP3 selected: ${selectedPreview.name}`,'good'); }
+    else { $('audioPreview').style.display='none'; activity('Preview MP3 selection cleared.','warn'); }
+    updatePreview();
+  });
+
+  fields.forEach(id=>$(id).addEventListener('input',updatePreview));
+  $('cardCover').addEventListener('error',()=>{ $('cardCover').style.display='none'; $('coverPlaceholder').style.display='block'; });
+
+  function currentEntry(){ return Object.fromEntries(fields.map(id=>[id,$(id).value.trim()])); }
+  $('saveDraft').addEventListener('click',()=>{ localStorage.setItem('echoCraftMusicDraft',JSON.stringify(currentEntry())); activity('Draft saved in this browser. No website files were changed.','good'); toast('Draft saved in this browser.'); });
+
+  async function fileToBase64(file){
+    if(!file) return null;
+    const buffer=await file.arrayBuffer();
+    const bytes=new Uint8Array(buffer); let binary=''; const chunk=0x8000;
+    for(let i=0;i<bytes.length;i+=chunk) binary+=String.fromCharCode(...bytes.subarray(i,i+chunk));
+    return {name:file.name,dataBase64:btoa(binary)};
+  }
+
+  $('publishLocal').addEventListener('click',async()=>{
+    if(!val('title')){ activity('Cannot publish: song title is required.','bad'); return toast('Song title is required.',true); }
+    if(!val('hyperfollow')){ activity('Cannot publish: HyperFollow URL is required.','bad'); return toast('HyperFollow URL is required.',true); }
+    if(!selectedPreview && !confirm('No preview MP3 is selected. Publish this entry without a preview for now?')) return;
+    const btn=$('publishLocal'); btn.disabled=true; btn.innerHTML='<i class="fa-solid fa-spinner fa-spin"></i> Publishing'; activity('Publishing to the local VS Code project…');
+    try {
+      const preview=await fileToBase64(selectedPreview);
+      const data=await api('/api/publish',{method:'POST',body:JSON.stringify({entry:currentEntry(),preview})});
+      const extras=[]; if(!val('spotify')) extras.push('Spotify omitted'); if(!val('apple')) extras.push('Apple Music omitted');
+      activity(`${data.message}${extras.length?' '+extras.join(' · ')+'.':''} Review the local Music page before pushing to GitHub.`, 'good');
+      toast(data.message); localStorage.removeItem('echoCraftMusicDraft'); await loadPending();
+    } catch(e){ activity(`Publish failed: ${e.message}`,'bad'); toast(e.message,true); }
+    finally { btn.disabled=false; btn.innerHTML='<i class="fa-solid fa-check"></i> Publish to Local Site'; }
+  });
+
+  const draft=localStorage.getItem('echoCraftMusicDraft');
+  if(draft){ try{ const d=JSON.parse(draft); fields.forEach(id=>{ if(d[id]) $(id).value=d[id]; }); activity('A saved browser draft was restored.','good'); }catch{} }
+  updatePreview(); checkServer(); loadPending();
+})();
+</script>
+</body>
+</html>

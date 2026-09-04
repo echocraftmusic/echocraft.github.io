@@ -1,0 +1,42 @@
+name: Update Echo Craft Releases
+
+on:
+  schedule:
+    - cron: '0 6 * * *' # Daily at 6 AM UTC
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: echo-craft-release-monitor
+  cancel-in-progress: false
+
+jobs:
+  check-releases:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out website
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Check Echo Craft music catalog
+        run: node scripts/update-releases.js
+
+      - name: Commit newly detected releases
+        run: |
+          if git diff --quiet -- music/pending-releases.json; then
+            echo "No new releases to commit."
+            exit 0
+          fi
+
+          git config user.name "GitHub Actions"
+          git config user.email "actions@github.com"
+          git add music/pending-releases.json
+          git commit -m "Detect new Echo Craft release"
+          git push

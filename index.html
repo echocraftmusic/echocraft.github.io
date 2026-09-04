@@ -346,6 +346,34 @@ box-shadow:
             padding-top: 2rem;
         }
 
+
+        .sidebar-admin-link {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: .55rem;
+            width: 100%;
+            margin: 0 0 1rem;
+            padding: .72rem .9rem;
+            border: 1px solid rgba(0,217,255,.28);
+            border-radius: 9px;
+            background: rgba(0,217,255,.055);
+            color: rgba(255,255,255,.78);
+            text-decoration: none;
+            font-size: .78rem;
+            font-weight: 600;
+            letter-spacing: 1.4px;
+            transition: all .25s ease;
+        }
+
+        .sidebar-admin-link:hover {
+            color: #fff;
+            border-color: rgba(0,217,255,.62);
+            background: rgba(0,217,255,.13);
+            box-shadow: 0 0 18px rgba(0,217,255,.12);
+            transform: translateY(-1px);
+        }
+
         .sidebar-social {
             display: flex;
             gap: 1rem;
@@ -4525,11 +4553,16 @@ text-shadow:
     <li><a href="#videos" class="nav-link">VIDEOS</a></li>
     <li><a href="#albums" class="nav-link">💿 ALBUMS</a></li>
     <li><a href="#music" class="nav-link">🎵 MUSIC</a></li>
-    <li><a href="https://studio.echocraftmusic.com/">🎬 CREATIVE STUDIO</a></li>
+    <li><a href="get-a-track.html">🎧 GET A TRACK!</a></li>
+    <li><a href="sync-licensing.html">🎬 SYNC LICENSING</a></li>
+    <li><a href="https://studio.echocraftmusic.com/">🎨 CREATIVE STUDIO</a></li>
     <li><a href="#info" class="nav-link">INFO</a></li>
 </nav>
 
             <div class="sidebar-footer">
+                <a class="sidebar-admin-link" href="admin/" title="Echo Craft Admin">
+                    <i class="fas fa-lock"></i> ADMIN
+                </a>
                 <div class="sidebar-social">
                     <a href="https://www.instagram.com/echocraft.music/" target="_blank" title="Instagram">
                         <i class="fab fa-instagram"></i>
@@ -4788,7 +4821,7 @@ text-shadow:
                             <h3><i class="fas fa-clapperboard"></i> Sync Licensing &amp; Music Placement</h3>
                             <p>Echo Craft features a diverse, high-energy catalog optimized for film, TV, advertising, video games, and media projects of all sizes.</p>
                             <p><strong>Core Catalog:</strong> Rock &amp; Metal · Cinematic Soundscapes · Afrobeats &amp; Reggae · Neo Soul &amp; Latin Pop · Faith-Driven Anthem Rock</p>
-                            <a class="about-inline-link" href="mailto:listening@echocraftmusic.com">listening@echocraftmusic.com <i class="fas fa-arrow-right"></i></a>
+                            <a class="about-inline-link" href="sync-licensing.html">Explore Sync Licensing <i class="fas fa-arrow-right"></i></a>
                             <small>Published by V33POGRAPHY · ASCAP Registered</small>
                         </article>
 
@@ -5250,6 +5283,8 @@ videoHtml += `
     </script>
 
     <script src="js/music.js"></script>
+
+    <script src="js/analytics.js"></script>
 
 </body>
 </html>

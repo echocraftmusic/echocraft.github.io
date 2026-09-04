@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sync Licensing | Echo Craft</title>
+  <meta name="description" content="Request Echo Craft music for film, advertising, podcasts, games, online video, business content and other media projects.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="css/licensing.css">
+</head>
+<body>
+<div class="page-shell">
+  <aside class="sidebar">
+    <div class="sidebar-logo"><div class="sidebar-logo-image"><img src="assets/images/ec-icon.webp" alt="Echo Craft"></div><h1>ECHO CRAFT</h1></div>
+    <nav><ul class="sidebar-nav">
+      <li><a href="index.html#home">HOME</a></li>
+      <li><a href="index.html#videos">VIDEOS</a></li>
+      <li><a href="index.html#albums">💿 ALBUMS</a></li>
+      <li><a href="index.html#music">🎵 MUSIC</a></li>
+      <li><a href="get-a-track.html">🎧 GET A TRACK!</a></li>
+      <li><a class="active" href="sync-licensing.html">🎬 SYNC LICENSING</a></li>
+      <li><a href="https://studio.echocraftmusic.com/">🎨 CREATIVE STUDIO</a></li>
+      <li><a href="index.html#info">INFO</a></li>
+    </ul></nav>
+    <div class="sidebar-footer">Echo Craft Music<br>Music made to move beyond genres.</div>
+  </aside>
+
+  <main class="main">
+    <div class="mobile-top"><img src="assets/images/ec-icon.webp" alt="Echo Craft"><a href="index.html">← MUSIC HOME</a></div>
+    <section class="hero">
+      <span class="eyebrow">Music For Picture, Story & Brand</span>
+      <h1>SYNC LICENSING</h1>
+      <p>Looking to place Echo Craft music in a visual or media project? Tell us about the production, where it will appear, and the track you're interested in. <strong>We review sync requests individually</strong> so the license fits the actual use.</p>
+    </section>
+
+    <section class="content">
+      <div class="grid">
+        <article class="card"><div class="icon"><i class="fas fa-film"></i></div><h2>Film & Video</h2><p>Short films, documentaries, web series, trailers, YouTube productions and other visual storytelling.</p></article>
+        <article class="card"><div class="icon"><i class="fas fa-bullhorn"></i></div><h2>Advertising & Brands</h2><p>Commercials, social campaigns, branded content, business promotions and product storytelling.</p></article>
+        <article class="card"><div class="icon"><i class="fas fa-podcast"></i></div><h2>Podcasts & Digital Media</h2><p>Intros, outros, episode segments, promotional clips and other digital-media uses.</p></article>
+        <article class="card"><div class="icon"><i class="fas fa-gamepad"></i></div><h2>Games & Interactive</h2><p>Games, apps, immersive experiences and other interactive media placements.</p></article>
+      </div>
+
+      <div class="notice"><strong>Can't identify the track?</strong> Send the link to the Echo Craft video, Short, Reel, TikTok or post where you heard it. If there's no link, describe the music and we'll help identify it.</div>
+
+      <div class="form-panel">
+        <h2>Sync Inquiry</h2>
+        <p class="intro">Pricing and terms depend on the project, distribution, duration, territory and usage. This form gives us what we need to start the conversation.</p>
+        <form action="https://formspree.io/f/mgoqppve" method="POST">
+          <input type="hidden" name="inquiry_type" value="Sync Licensing">
+          <input type="hidden" name="_subject" value="Echo Craft - Sync Licensing Inquiry">
+          <div class="form-grid">
+            <div class="field"><label for="name">Your Name *</label><input id="name" name="name" type="text" required></div>
+            <div class="field"><label for="email">Email *</label><input id="email" name="email" type="email" required></div>
+            <div class="field"><label for="company">Company / Organization</label><input id="company" name="company" type="text"></div>
+            <div class="field"><label for="project">Project Name</label><input id="project" name="project_name" type="text"></div>
+            <div class="field full"><label for="track">Echo Craft Track</label><input id="track" name="track_name" type="text" placeholder="Track title, if known"></div>
+            <div class="field full"><label for="heard">Where did you hear it?</label><input id="heard" name="where_heard" type="text" placeholder="Paste a link or describe the music"></div>
+            <div class="field"><label for="type">Project Type *</label><select id="type" name="project_type" required><option value="">Choose one</option><option>Film / short film</option><option>TV / streaming production</option><option>Advertisement / commercial</option><option>YouTube / online video</option><option>Podcast</option><option>Video game / app</option><option>Business / corporate media</option><option>Trailer / promo</option><option>Other</option></select></div>
+            <div class="field"><label for="distribution">Distribution</label><input id="distribution" name="distribution" type="text" placeholder="Web, social, broadcast, theaters, etc."></div>
+            <div class="field"><label for="duration">Approx. music duration</label><input id="duration" name="music_duration" type="text" placeholder="Example: 30 seconds"></div>
+            <div class="field"><label for="date">Target release date</label><input id="date" name="target_release_date" type="date"></div>
+            <div class="field full"><label for="details">Tell us about the project *</label><textarea id="details" name="project_details" required placeholder="Describe the project, intended audience, how the music will be used, and anything else that would help us understand the placement."></textarea></div>
+            <div class="field full"><input type="text" name="_gotcha" style="display:none" tabindex="-1" autocomplete="off"></div>
+          </div>
+          <div class="submit-row"><button class="btn" type="submit">SEND SYNC INQUIRY</button><p class="fineprint">Submitting an inquiry does not grant permission to use the music. A sync license is valid only after Echo Craft approves the use and both parties agree to the applicable terms.</p></div>
+        </form>
+      </div>
+      <a class="back-home" href="index.html#music">← Back to Echo Craft Music</a>
+    </section>
+  </main>
+</div>
+    <script src="js/analytics.js"></script>
+
+</body>
+</html>
