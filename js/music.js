@@ -1,3 +1,9 @@
+function isReleaseAvailable(item, now = Date.now()) {
+    if (item.publicationStatus === "draft") return false;
+    if (item.publicationStatus !== "scheduled") return true;
+    const release = Date.parse(item.publishAt || "");
+    return Number.isFinite(release) && release <= now;
+}
 /*
 ==========================================
 Echo Craft Music Module
@@ -80,7 +86,7 @@ function createAlbumCard(album, index) {
         album.description &&
         album.description.trim() !== ""
             ? escapeMusicText(album.description)
-            : "A complete Echo Craft listening experience inspired by love, devotion, intimacy, and the poetic beauty of the Song of Solomon.";
+            : "A complete Echo Craft listening experience.";
 
     const slug =
         rawTitle
@@ -169,7 +175,7 @@ function createAlbumCard(album, index) {
 
                 <div class="album-card-actions">
                     <a
-                        href="albums/${slug}.html"
+                        href="albums/album.html?title=${encodeURIComponent(rawTitle)}"
                         class="album-explore-btn"
                     >
                         <i class="fas fa-compact-disc"></i>
@@ -1016,8 +1022,12 @@ async function loadMusicTracks() {
             );
         }
 
-        const data =
-            await response.json();
+        const data = await response.json();
+        const allItems = Array.isArray(data.items) ? data.items : [];
+        const nextRelease = allItems.filter(item => item.publicationStatus === 'scheduled').map(item => Date.parse(item.publishAt)).filter(time => time > Date.now()).sort((a,b)=>a-b)[0];
+        clearTimeout(window.echoCraftReleaseTimer);
+        if (nextRelease) window.echoCraftReleaseTimer = setTimeout(loadMusicTracks, Math.min(nextRelease-Date.now()+100, 2147483647));
+        data.items = allItems.filter(item => isReleaseAvailable(item));
 
         if (
             !data.items ||

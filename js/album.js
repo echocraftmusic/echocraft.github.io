@@ -1,5 +1,13 @@
 "use strict";
 
+function isReleaseAvailable(item, now = Date.now()) {
+    if (item.publicationStatus === "draft") return false;
+    if (item.publicationStatus !== "scheduled") return true;
+    const release = Date.parse(item.publishAt || "");
+    return Number.isFinite(release) && release <= now;
+}
+
+
 let currentAlbum = null;
 let currentTrackIndex = 0;
 
@@ -311,7 +319,7 @@ function buildAlbumLinks(album) {
 
 async function loadAlbum() {
     const requestedTitle =
-        document.body.dataset.albumTitle;
+        new URLSearchParams(window.location.search).get("title") || document.body.dataset.albumTitle;
 
     try {
         const response = await fetch(
@@ -331,7 +339,7 @@ async function loadAlbum() {
         currentAlbum =
             data.items.find(
                 item =>
-                    item.type === "album" &&
+                    item.type === "album" && isReleaseAvailable(item) &&
                     String(item.title)
                         .toLowerCase() ===
                     String(requestedTitle)
@@ -562,3 +570,4 @@ window.addEventListener(
     "DOMContentLoaded",
     loadAlbum
 );
+

@@ -73,9 +73,10 @@
       <div class="help">The local manager will try to pull the official cover and service links. Anything it cannot find stays editable.</div>
 
       <div class="sectionline"></div>
-      <h2>3. Song information</h2>
+      <h2>3. Release information</h2>
+      <label for="existingRelease">Edit a saved release</label><select id="existingRelease"><option value="">New release</option></select>
       <div class="fieldrow">
-        <div><label for="title">Song title</label><input id="title" type="text" placeholder="This Right Here"></div>
+        <div><label for="title">Release title</label><input id="title" type="text" placeholder="This Right Here"></div>
         <div><label for="artist">Artist</label><input id="artist" type="text" value="Echo Craft"></div>
       </div>
       <div class="fieldrow three">
@@ -83,6 +84,11 @@
         <div><label for="releaseDate">Release date</label><input id="releaseDate" type="date"></div>
         <div><label for="collectionId">Catalog ID</label><input id="collectionId" type="text" placeholder="optional" readonly></div>
       </div>
+      <label for="description">Album description</label><textarea id="description"></textarea>
+      <div class="fieldrow"><div><label for="publicationStatus">Showcase availability</label><select id="publicationStatus"><option value="published">Available now</option><option value="scheduled">Scheduled release</option><option value="draft">Draft — hidden</option></select></div><div><label for="scheduledLocal">Release time (Eastern)</label><input id="scheduledLocal" type="datetime-local"><div class="help">America/New_York, including daylight saving time.</div></div></div>
+      <button id="christmasSchedule" class="btn" type="button">Set October 31, 2026 · midnight Eastern</button>
+      <p id="scheduleSummary" class="help"></p>
+      <label for="coverFile">Upload cover art</label><input id="coverFile" type="file" accept="image/jpeg,image/png,image/webp">
       <label for="cover">Cover image URL</label><input id="cover" type="url" placeholder="Official cover art URL">
       <div class="fieldrow">
         <div><label for="spotify">Spotify <span class="subtle">(optional)</span></label><input id="spotify" type="url" placeholder="https://open.spotify.com/... — leave blank if unavailable"></div>
@@ -99,6 +105,7 @@
       </div>
       <div class="help">This MP3 will be copied into <strong>music/previews/</strong> when you publish locally.</div>
 
+      <section id="albumEditor" hidden><h2>Album tracks</h2><p class="help">Add tracks in album order. Use preview clips here; full purchase files will be connected with checkout.</p><div id="trackRows"></div><button id="addTrack" class="btn" type="button">Add track</button></section>
       <div class="footerActions">
         <button id="saveDraft" class="btn" type="button"><i class="fa-solid fa-floppy-disk"></i> Save Draft</button>
         <button id="publishLocal" class="btn good" type="button"><i class="fa-solid fa-check"></i> Publish to Local Site</button>
@@ -228,9 +235,33 @@
 <script>
 (() => {
   const $ = id => document.getElementById(id);
-  const fields = ['title','artist','type','releaseDate','collectionId','cover','hyperfollow','spotify','apple','itunes'];
+  const fields = ['title','artist','type','releaseDate','collectionId','cover','hyperfollow','spotify','apple','itunes','description','publicationStatus','scheduledLocal'];
   let pending = [];
-  let selectedPreview = null;
+  let selectedPreview = null, selectedCover = null, tracks = [], catalog = [], originalTitle = '';
+  function renderTracks(){
+    $('trackRows').replaceChildren();
+    tracks.forEach((track,index)=>{
+      const row=document.createElement('div'); row.className='mp3box';
+      const label=document.createElement('label'); label.textContent=`Track ${index+1}`;
+      const title=document.createElement('input'); title.value=track.title||''; title.placeholder='Track title'; title.setAttribute('aria-label',`Track ${index+1} title`); title.oninput=()=>track.title=title.value;
+      const preview=document.createElement('input'); preview.value=track.preview||''; preview.placeholder='Existing preview path (optional)'; preview.setAttribute('aria-label',`Track ${index+1} preview path`); preview.oninput=()=>track.preview=preview.value;
+      const file=document.createElement('input'); file.type='file'; file.accept='.mp3,audio/mpeg'; file.setAttribute('aria-label',`Track ${index+1} preview upload`);
+      const name=document.createElement('p'); name.className='help'; name.textContent=track.file?.name||'Choose a preview MP3 or use an existing path.';
+      file.onchange=()=>{track.file=file.files[0]||null;name.textContent=track.file?.name||'No new preview selected.';};
+      row.append(label,title,preview,file,name);
+      [['Move up',-1],['Move down',1],['Remove',0]].forEach(([text,delta])=>{const b=document.createElement('button');b.type='button';b.className='btn';b.textContent=text;b.disabled=delta!==0&&(index+delta<0||index+delta>=tracks.length);b.onclick=()=>{if(delta===0)tracks.splice(index,1);else [tracks[index],tracks[index+delta]]=[tracks[index+delta],tracks[index]];renderTracks();};row.append(b);});
+      $('trackRows').append(row);
+    });
+  }
+  $('addTrack').onclick=()=>{tracks.push({title:'',preview:''});renderTracks();};
+  $('coverFile').onchange=e=>{selectedCover=e.target.files[0]||null;if(selectedCover){$('cardCover').src=URL.createObjectURL(selectedCover);$('cardCover').style.display='block';$('coverPlaceholder').style.display='none';}};
+  $('christmasSchedule').onclick=()=>{$('publicationStatus').value='scheduled';$('scheduledLocal').value='2026-10-31T00:00';$('releaseDate').value='2026-10-31';updatePreview();};
+  async function loadCatalog(){try{catalog=(await api('/api/catalog')).items||[];$('existingRelease').replaceChildren(new Option('New release',''));catalog.forEach((item,i)=>$('existingRelease').add(new Option(`${item.title} (${item.publicationStatus||'published'})`,String(i))));}catch{}}
+  $('existingRelease').onchange=()=>{
+    if($('existingRelease').value===''){originalTitle='';tracks=[];fields.forEach(id=>$(id).value=id==='artist'?'Echo Craft':id==='type'?'single':id==='publicationStatus'?'published':'');}
+    else{const item=catalog[Number($('existingRelease').value)];originalTitle=item.title;fields.forEach(id=>$(id).value=item[id]|| (id==='publicationStatus'?'published':''));tracks=(item.tracks||[]).map(t=>({...t}));}
+    selectedPreview=null;selectedCover=null;$('previewFile').value='';$('coverFile').value='';renderTracks();updatePreview();
+  };
 
   function toast(message, bad=false){ const el=$('toast'); el.textContent=message; el.className='toast show'+(bad?' bad':''); clearTimeout(el._t); el._t=setTimeout(()=>el.className='toast',4200); }
   function activity(message, kind=''){ const el=$('activityStatus'); const now=new Date().toLocaleTimeString([], {hour:'numeric',minute:'2-digit'}); el.className='activity'+(kind?' '+kind:''); el.innerHTML=`<strong>Status:</strong> ${message}<span class="stamp">${now}</span>`; }
@@ -240,7 +271,7 @@
 
   function updateCheck(id, ok){ const el=$(id); el.classList.toggle('ok',!!ok); el.querySelector('i').className=ok?'fa-solid fa-circle-check':'fa-regular fa-circle'; }
   function updatePreview(){
-    const title=val('title')||'New Echo Craft Song'; $('cardTitle').textContent=title;
+    $('albumEditor').hidden=val('type')!=='album'; $('scheduledLocal').disabled=val('publicationStatus')!=='scheduled'; $('scheduleSummary').textContent=val('publicationStatus')==='scheduled' ? `Hidden until ${val('scheduledLocal')||'you select a release time'} Eastern. Save and push to GitHub before this time.` : val('publicationStatus')==='draft'?'Hidden from the public showcase.':'Visible after you save and push to GitHub.'; const title=val('title')||'New Echo Craft Release'; $('cardTitle').textContent=title;
     const cover=val('cover');
     if(cover){ $('cardCover').src=cover; $('cardCover').style.display='block'; $('coverPlaceholder').style.display='none'; }
     else { $('cardCover').style.display='none'; $('coverPlaceholder').style.display='block'; }
@@ -304,7 +335,7 @@
   fields.forEach(id=>$(id).addEventListener('input',updatePreview));
   $('cardCover').addEventListener('error',()=>{ $('cardCover').style.display='none'; $('coverPlaceholder').style.display='block'; });
 
-  function currentEntry(){ return Object.fromEntries(fields.map(id=>[id,$(id).value.trim()])); }
+  function currentEntry(){ return {...Object.fromEntries(fields.map(id=>[id,$(id).value.trim()])), originalTitle, preview:catalog.find(item=>item.title===originalTitle)?.preview||'', tracks:tracks.map(({file,...track})=>track)}; }
   $('saveDraft').addEventListener('click',()=>{ localStorage.setItem('echoCraftMusicDraft',JSON.stringify(currentEntry())); activity('Draft saved in this browser. No website files were changed.','good'); toast('Draft saved in this browser.'); });
 
   async function fileToBase64(file){
@@ -317,23 +348,24 @@
 
   $('publishLocal').addEventListener('click',async()=>{
     if(!val('title')){ activity('Cannot publish: song title is required.','bad'); return toast('Song title is required.',true); }
-    if(!val('hyperfollow')){ activity('Cannot publish: HyperFollow URL is required.','bad'); return toast('HyperFollow URL is required.',true); }
-    if(!selectedPreview && !confirm('No preview MP3 is selected. Publish this entry without a preview for now?')) return;
+    if(val('publicationStatus')==='scheduled'&&!val('scheduledLocal'))return toast('Select an Eastern release date and time.',true); if(val('type')==='album'&&(!tracks.length||tracks.some(t=>!t.title?.trim())))return toast('Add your album tracks and give each a title.',true);
+    
     const btn=$('publishLocal'); btn.disabled=true; btn.innerHTML='<i class="fa-solid fa-spinner fa-spin"></i> Publishing'; activity('Publishing to the local VS Code project…');
     try {
-      const preview=await fileToBase64(selectedPreview);
-      const data=await api('/api/publish',{method:'POST',body:JSON.stringify({entry:currentEntry(),preview})});
+      const preview=await fileToBase64(selectedPreview); const cover=await fileToBase64(selectedCover); const trackUploads=[]; for(const track of tracks)trackUploads.push(await fileToBase64(track.file));
+      const data=await api('/api/publish',{method:'POST',body:JSON.stringify({entry:currentEntry(),preview,cover,trackUploads})});
       const extras=[]; if(!val('spotify')) extras.push('Spotify omitted'); if(!val('apple')) extras.push('Apple Music omitted');
       activity(`${data.message}${extras.length?' '+extras.join(' · ')+'.':''} Review the local Music page before pushing to GitHub.`, 'good');
-      toast(data.message); localStorage.removeItem('echoCraftMusicDraft'); await loadPending();
+      originalTitle=val('title'); toast(data.message); localStorage.removeItem('echoCraftMusicDraft'); await loadPending(); await loadCatalog(); const saved=catalog.find(item=>item.title===originalTitle); if(saved){$('cover').value=saved.cover||'';tracks=(saved.tracks||[]).map(t=>({...t}));selectedCover=null;selectedPreview=null;$('coverFile').value='';$('previewFile').value='';renderTracks();updatePreview();}
     } catch(e){ activity(`Publish failed: ${e.message}`,'bad'); toast(e.message,true); }
     finally { btn.disabled=false; btn.innerHTML='<i class="fa-solid fa-check"></i> Publish to Local Site'; }
   });
 
   const draft=localStorage.getItem('echoCraftMusicDraft');
-  if(draft){ try{ const d=JSON.parse(draft); fields.forEach(id=>{ if(d[id]) $(id).value=d[id]; }); activity('A saved browser draft was restored.','good'); }catch{} }
-  updatePreview(); checkServer(); loadPending();
+  if(draft){ try{ const d=JSON.parse(draft); fields.forEach(id=>{ if(d[id]) $(id).value=d[id]; }); tracks=d.tracks||[];originalTitle=d.originalTitle||'';renderTracks(); activity('A saved browser draft was restored. Re-select any uploaded files.','good'); }catch{} }
+  updatePreview(); checkServer(); loadPending(); loadCatalog();
 })();
 </script>
 </body>
 </html>
+

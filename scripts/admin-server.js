@@ -13,6 +13,28 @@ const MUSIC_PATH = path.join(ROOT, 'music', 'music.json');
 const PENDING_PATH = path.join(ROOT, 'music', 'pending-releases.json');
 const PREVIEW_DIR = path.join(ROOT, 'music', 'previews');
 
+function easternToISO(local) {
+  if (!/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}$/.test(local)) throw new Error('Select a valid Eastern release time.');
+  const target = Date.parse(local + ':00Z');
+  if (!Number.isFinite(target)) throw new Error('Invalid release time.');
+  let instant = target;
+  const fmt = new Intl.DateTimeFormat('en-CA', {timeZone:'America/New_York', year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',second:'2-digit',hourCycle:'h23'});
+  function wallTime(time) { const parts=Object.fromEntries(fmt.formatToParts(new Date(time)).map(p=>[p.type,p.value]));return `${parts.year}-${parts.month}-${parts.day}T${parts.hour}:${parts.minute}:${parts.second}`; }
+  for(let i=0;i<4;i++) instant += target-Date.parse(wallTime(instant)+'Z');
+  if(wallTime(instant).slice(0,16)!==local)throw new Error('This Eastern time does not exist because of daylight saving time. Choose another time.');
+  return new Date(instant).toISOString();
+}
+function slugFor(title) {return normalize(title).replace(/ /g,'-') || 'release';}
+function saveUpload(upload, directory, extensions, prefix='') {
+  if(!upload)return '';
+  const extension=path.extname(upload.name||'').toLowerCase();
+  if(!extensions.includes(extension)||typeof upload.dataBase64!=='string')throw new Error('Unsupported upload file.');
+  const fileName=prefix+safeFileName(upload.name);
+  fs.mkdirSync(directory,{recursive:true});
+  fs.writeFileSync(path.join(directory,fileName),Buffer.from(upload.dataBase64,'base64'));
+  return path.relative(ROOT,path.join(directory,fileName)).split(path.sep).join('/');
+}
+
 function sendJson(res, status, data) {
   const body = JSON.stringify(data, null, 2);
   res.writeHead(status, {
@@ -268,18 +290,20 @@ async function handleApi(req, res, pathname) {
 
       const title = String(entry.title || '').trim();
       if (!title) return sendJson(res, 400, { error: 'Song title is required.' });
-      if (!String(entry.hyperfollow || '').trim()) {
-        return sendJson(res, 400, { error: 'HyperFollow URL is required.' });
-      }
-
-      fs.mkdirSync(PREVIEW_DIR, { recursive: true });
-      let previewPath = String(entry.preview || '').trim();
-      if (preview && preview.name && preview.dataBase64) {
-        const fileName = safeFileName(preview.name.endsWith('.mp3') ? preview.name : `${preview.name}.mp3`);
-        const absolute = path.join(PREVIEW_DIR, fileName);
-        fs.writeFileSync(absolute, Buffer.from(preview.dataBase64, 'base64'));
-        previewPath = `music/previews/${fileName}`;
-      }
+      const publicationStatus=entry.publicationStatus || 'published';
+      if(!['published','scheduled','draft'].includes(publicationStatus))throw new Error('Invalid availability setting.');
+      const publishAt=publicationStatus==='scheduled'?easternToISO(String(entry.scheduledLocal||'')):null;
+      const album=entry.type==='album';
+      if(album&&(!Array.isArray(entry.tracks)||!entry.tracks.length||entry.tracks.some(t=>!String(t.title||'').trim())))throw new Error('An album needs at least one named track.');
+      const trackUploads=payload.trackUploads||[];
+      // Validate every extension before writing any files.
+      const uploads=[preview,...trackUploads].filter(Boolean);
+      if(uploads.some(u=>path.extname(u.name||'').toLowerCase()!=='.mp3'))throw new Error('Preview uploads must be MP3 files.');
+      if(payload.cover&&!['.jpg','.jpeg','.png','.webp'].includes(path.extname(payload.cover.name||'').toLowerCase()))throw new Error('Use JPG, PNG, or WEBP cover art.');
+      const slug=slugFor(title);
+      const previewPath=saveUpload(preview,PREVIEW_DIR,['.mp3'],slug+'-')||String(entry.preview||'').trim();
+      const coverPath=saveUpload(payload.cover,path.join(ROOT,'music','covers'),['.jpg','.jpeg','.png','.webp'],slug+'-')||String(entry.cover||'').trim();
+      const tracks=album?entry.tracks.map((track,index)=>({title:String(track.title).trim(),preview:saveUpload(trackUploads[index],path.join(PREVIEW_DIR,slug),['.mp3'],String(index+1).padStart(2,'0')+'-')||String(track.preview||'').trim()})):[];
 
       const catalog = readJson(MUSIC_PATH, { items: [] });
       const now = new Date().toISOString();
@@ -288,7 +312,12 @@ async function handleApi(req, res, pathname) {
         title,
         artist: String(entry.artist || 'Echo Craft').trim() || 'Echo Craft',
         releaseDate: String(entry.releaseDate || '').trim(),
-        cover: String(entry.cover || '').trim(),
+        cover: coverPath,
+        description: String(entry.description || '').trim(),
+        publicationStatus,
+        scheduledLocal: publicationStatus==='scheduled'?String(entry.scheduledLocal):'',
+        publishAt,
+        ...(album ? {tracks} : {}),
         preview: previewPath,
         hyperfollow: String(entry.hyperfollow || '').trim(),
         spotify: String(entry.spotify || '').trim(),
@@ -300,12 +329,14 @@ async function handleApi(req, res, pathname) {
 
       const items = Array.isArray(catalog.items) ? catalog.items : [];
       const matchIndex = items.findIndex(item =>
+        normalize(item.title) === normalize(entry.originalTitle || finished.title) ||
         normalize(item.title) === normalize(finished.title) ||
         (finished.hyperfollow && item.hyperfollow === finished.hyperfollow)
       );
       if (matchIndex >= 0) {
         finished.created = items[matchIndex].created || finished.created;
         items[matchIndex] = { ...items[matchIndex], ...finished };
+        if(!album)delete items[matchIndex].tracks;
       } else {
         items.push(finished);
       }
@@ -323,7 +354,7 @@ async function handleApi(req, res, pathname) {
 
       return sendJson(res, 200, {
         ok: true,
-        message: `${finished.title} saved to the local Echo Craft music catalog.`,
+        message: `${finished.title} saved${publicationStatus==='scheduled'?' — scheduled for '+entry.scheduledLocal+' Eastern':publicationStatus==='draft'?' as a hidden draft':''}. Push to GitHub to update the live showcase.`,
         preview: previewPath,
         totalItems: items.length
       });
@@ -354,3 +385,4 @@ server.listen(PORT, HOST, () => {
   console.log('Press Ctrl+C in this terminal when you are finished.');
   console.log('');
 });
+
