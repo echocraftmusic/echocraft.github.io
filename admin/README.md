@@ -22,3 +22,7 @@ The manager still runs locally. The hosted GitHub Pages admin cannot save files 
 Scheduling controls public showcase visibility, not access control: catalog entries and uploaded previews are public repository assets. Upload only preview clips and public promotional artwork. Protected full-song delivery, checkout, and payment-based release gates require the commerce backend and are not provided by this workflow.
 
 The HyperFollow parser is best-effort; discovered fields remain editable.
+
+## When HyperFollow Fetch returns 403
+
+A 403 occurs before parsing. If the page opens in your browser, expand “Fetch blocked? Import a saved HyperFollow page.” Save that loaded page with Ctrl+S as Webpage, HTML Only, then select its HTML file and click Import saved page. Keep the matching HyperFollow URL in the URL field. Review all imported details before saving. Only the HTML text is parsed; uploaded scripts are never executed. This reads promotional metadata and does not download music or publish a release automatically.

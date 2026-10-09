@@ -280,6 +280,13 @@ async function handleApi(req, res, pathname) {
       if (!/^https?:\/\/(?:www\.)?distrokid\.com\/hyperfollow\//i.test(url)) {
         return sendJson(res, 400, { error: 'Please paste a valid DistroKid HyperFollow URL.' });
       }
+      if(payload.html !== undefined){
+        if(typeof payload.html !== 'string' || Buffer.byteLength(payload.html)>6*1024*1024)return sendJson(res,400,{error:'Use an HTML page smaller than 6 MB.'});
+        // Parse as text only: never execute uploaded scripts or fetch referenced assets.
+        const imported=parseHyperFollow(payload.html,url);
+        if(!imported.title || (!imported.cover && !imported.spotify && !imported.apple))return sendJson(res,400,{error:'This file does not contain release details. Save the loaded HyperFollow page, not an error or verification screen.'});
+        return sendJson(res,200,{ok:true,source:'saved-page',...imported});
+      }
       const { body, finalUrl } = await fetchText(url);
       return sendJson(res, 200, { ok: true, finalUrl, ...parseHyperFollow(body, url) });
     } catch (error) {

@@ -71,6 +71,11 @@
         <button id="fetchHyperfollow" class="btn primary" type="button"><i class="fa-solid fa-wand-magic-sparkles"></i> Fetch</button>
       </div>
       <div class="help">The local manager will try to pull the official cover and service links. Anything it cannot find stays editable.</div>
+      <details class="mp3box"><summary>Fetch blocked? Import a saved HyperFollow page</summary>
+        <p class="help">Open your HyperFollow link in your browser. Press Ctrl+S and save as “Webpage, HTML Only.” Keep its link in the field above, then select that saved HTML file here. The manager reads the title, artwork, and streaming links without requesting DistroKid again.</p>
+        <label for="hyperfollowHtml">Saved HyperFollow page (.html)</label><input id="hyperfollowHtml" type="file" accept=".html,.htm,text/html">
+        <button id="importHyperfollowHtml" class="btn" type="button">Import saved page</button>
+      </details>
 
       <div class="sectionline"></div>
       <h2>3. Release information</h2>
@@ -320,8 +325,22 @@
       if(missing.length){ activity(`HyperFollow loaded. Found: ${found.join(', ')||'release details'}. ${missing.join(' and ')} not found automatically — optional, so you can paste the link or leave it blank.`, 'warn'); }
       else { activity(`HyperFollow loaded successfully. Found ${found.join(', ')}.`, 'good'); }
       toast(found.length?`HyperFollow loaded: ${found.join(', ')} found.`:'HyperFollow loaded. Confirm the fields manually.');
-    } catch(e){ activity(`HyperFollow fetch failed: ${e.message}`,'bad'); toast(e.message,true); }
+    } catch(e){ activity(`HyperFollow fetch failed: ${e.message} If the page opens in your browser, use “Import a saved HyperFollow page” below.`, 'bad'); toast(e.message,true); }
     finally { btn.disabled=false; btn.innerHTML='<i class="fa-solid fa-wand-magic-sparkles"></i> Fetch'; }
+  });
+
+  $('importHyperfollowHtml').addEventListener('click',async()=>{
+    const file=$('hyperfollowHtml').files[0];
+    if(!file)return toast('Select the HTML page saved from your browser.',true);
+    if(!val('hyperfollow'))return toast('Paste this page’s HyperFollow link first.',true);
+    if(file.size>6*1024*1024)return toast('Select an HTML file smaller than 6 MB.',true);
+    const btn=$('importHyperfollowHtml');btn.disabled=true;activity('Reading your saved HyperFollow page…');
+    try {
+      const data=await api('/api/hyperfollow',{method:'POST',body:JSON.stringify({url:val('hyperfollow'),html:await file.text()})});
+      setIf('title',data.title,true);setIf('artist',data.artist,true);setIf('cover',data.cover,true);setIf('spotify',data.spotify,true);setIf('apple',data.apple,true);
+      updatePreview();activity('Saved page imported. Confirm the title, cover, and links. No request to DistroKid was needed.','good');toast('HyperFollow page imported.');
+    }catch(e){activity(`Saved-page import failed: ${e.message}`,'bad');toast(e.message,true);}
+    finally{btn.disabled=false;}
   });
 
   $('previewFile').addEventListener('change',e=>{
