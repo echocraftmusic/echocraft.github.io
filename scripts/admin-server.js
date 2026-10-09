@@ -75,7 +75,10 @@ function htmlDecode(value) {
   return String(value || '')
     .replace(/&amp;/g, '&')
     .replace(/&quot;/g, '"')
-    .replace(/&#39;/g, "'")
+    .replace(/&#(x[0-9a-f]+|[0-9]+);/gi, (entity, code) => {
+      const point = code[0].toLowerCase()==='x'?parseInt(code.slice(1),16):parseInt(code,10);
+      return point>0 && point<=0x10ffff?String.fromCodePoint(point):entity;
+    })
     .replace(/&lt;/g, '<')
     .replace(/&gt;/g, '>')
     .replace(/\\u0026/g, '&')
@@ -170,7 +173,7 @@ function findServiceUrl(html, hostPattern) {
 function parseHyperFollow(html, originalUrl) {
   const titleRaw = metaContent(html, 'og:title') || metaContent(html, 'twitter:title');
   const description = metaContent(html, 'og:description') || '';
-  const cover = metaContent(html, 'og:image') || metaContent(html, 'twitter:image');
+  const cover = metaContent(html, 'og:image') || metaContent(html, 'og:image:url') || metaContent(html, 'twitter:image');
 
   let title = titleRaw
     .replace(/\s*[-|–—]\s*HyperFollow.*$/i, '')
@@ -178,6 +181,7 @@ function parseHyperFollow(html, originalUrl) {
     .trim();
 
   // DistroKid pages sometimes use "Artist - Release" as the OG title.
+  title = title.replace(/\s+by\s+Echo Craft\s*$/i, '').trim();
   title = title.replace(/^Echo Craft\s*[-|–—:]\s*/i, '').trim();
 
   const spotify = firstMatchingUrl(html, [
@@ -185,8 +189,9 @@ function parseHyperFollow(html, originalUrl) {
   ]) || findServiceUrl(html, /^https?:\/\/open\.spotify\.com\/(?:album|track)\//i);
   const apple = firstMatchingUrl(html, [
     /https:\/\/music\.apple\.com\/[A-Za-z0-9/_?=&.%+-]+/i,
-    /https:\/\/itunes\.apple\.com\/[A-Za-z0-9/_?=&.%+-]+/i
-  ]) || findServiceUrl(html, /^https?:\/\/(?:music|itunes)\.apple\.com\//i);
+    /https:\/\/itunes\.apple\.com\/[A-Za-z]{2}\/(?:album|song)\/[A-Za-z0-9/_?=&.%+-]+/i
+  ]);
+
 
   return {
     hyperfollow: originalUrl,
