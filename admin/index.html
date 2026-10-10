@@ -269,6 +269,12 @@
   function adminPreviewSource(value){
     return new URL(String(value).replaceAll('\\','/'),new URL('../',window.location.href)).href;
   }
+  const MAX_MANUAL_PREVIEW_BYTES = 1.5 * 1024 * 1024;
+  function checkManualPreview(file){
+    if(!file || file.size<=MAX_MANUAL_PREVIEW_BYTES)return true;
+    const message=`Preview "${file.name}" is ${(file.size/1024/1024).toFixed(2)} MB. Maximum allowed: 1.5 MB. Select a shorter or smaller MP3.`;
+    activity(message,'bad');toast(message,true);return false;
+  }
   function renderTracks(){
     $('trackRows').replaceChildren();
     tracks.forEach((track,index)=>{
@@ -283,7 +289,7 @@
       play.onclick=async()=>{play.disabled=true;try{player.src=await sampleUrl(track);await player.play();}catch(e){toast(e.message,true);}finally{play.disabled=false;}};
       const note=document.createElement('p');note.className='help';note.textContent=track.assetId?'Imported sample stored online. No file selection needed.':track.preview?'Existing sample on the website.':'Choose a preview MP3.';
       const file=document.createElement('input');file.type='file';file.accept='.mp3,audio/mpeg';
-      file.onchange=()=>{track.file=file.files[0]||null;note.textContent=track.file?.name||'No replacement selected.';updatePreview();};
+      file.onchange=()=>{const chosen=file.files[0]||null;if(chosen&&!checkManualPreview(chosen)){file.value='';track.file=null;note.textContent='File too large — choose an MP3 no larger than 1.5 MB.';}else{track.file=chosen;note.textContent=chosen?.name||'No replacement selected.';}updatePreview();};
       const details=document.createElement('details'),summary=document.createElement('summary');summary.textContent='Upload or replace sample';details.append(summary,file);
       row.append(label,title,path,play,player,note,details);
       [['Move up',-1],['Move down',1],['Remove',0]].forEach(([text,delta])=>{const b=document.createElement('button');b.type='button';b.className='btn';b.textContent=text;b.disabled=delta!==0&&(index+delta<0||index+delta>=tracks.length);b.onclick=()=>{if(delta===0)tracks.splice(index,1);else [tracks[index],tracks[index+delta]]=[tracks[index+delta],tracks[index]];renderTracks();updatePreview();cardSample().catch(e=>toast(e.message,true));};row.append(b);});
@@ -397,6 +403,7 @@
 
   $('previewFile').addEventListener('change',e=>{
     selectedPreview=e.target.files&&e.target.files[0]||null;
+    if(selectedPreview&&!checkManualPreview(selectedPreview)){selectedPreview=null;e.target.value='';}
     $('mp3Name').textContent=selectedPreview?selectedPreview.name:'No preview selected.';
     if(selectedPreview){ $('audioPreview').src=URL.createObjectURL(selectedPreview); $('audioPreview').style.display='block'; activity(`Preview MP3 selected: ${selectedPreview.name}`,'good'); }
     else { $('audioPreview').style.display='none'; activity('Preview MP3 selection cleared.','warn'); }
@@ -407,8 +414,10 @@
   $('cardCover').addEventListener('error',()=>{ $('cardCover').style.display='none'; $('coverPlaceholder').style.display='block'; });
 
   function currentEntry(){return {...Object.fromEntries(fields.map(id=>[id,val(id)])),originalTitle,preview:singlePreview,previewAssetId,coverAssetId,tracks:tracks.map(({file,...track})=>track)};}
-  async function uploadFile(file,kind){const data=await fileToBase64(file);return api('/api/upload',{method:'POST',body:JSON.stringify({...data,kind})});}
+  async function uploadFile(file,kind){if(kind==='preview'&&!checkManualPreview(file))throw new Error('Preview file exceeds 1.5 MB: '+file.name);const data=await fileToBase64(file);return api('/api/upload',{method:'POST',body:JSON.stringify({...data,kind})});}
   async function storeFiles(){
+    const oversize=[...(selectedPreview?[selectedPreview]:[]),...tracks.map(t=>t.file).filter(Boolean)].find(f=>f.size>MAX_MANUAL_PREVIEW_BYTES);
+    if(oversize)throw new Error('Preview "'+oversize.name+'" exceeds the 1.5 MB limit. Replace it before saving or publishing.');
     if(selectedPreview){const a=await uploadFile(selectedPreview,'preview');previewAssetId=a.assetId;singlePreview=a.path;selectedPreview=null;$('previewFile').value='';}
     if(selectedCover){const a=await uploadFile(selectedCover,'cover');coverAssetId=a.assetId;$('cover').value=a.path;selectedCover=null;$('coverFile').value='';}
     for(const t of tracks)if(t.file){const a=await uploadFile(t.file,'preview');t.assetId=a.assetId;t.preview=a.path;t.file=null;}
