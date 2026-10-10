@@ -52,8 +52,16 @@ function storeAlbumURL(value) {
     } catch { return ''; }
 }
 
+function storeAlbumPrice(album) {
+    const price = Number(album?.price);
+    return Number.isFinite(price) && price >= 0.5 ? price : 9.99;
+}
+
 function createAlbumCard(album, index) {
     const title = escapeMusicText(album.title || 'Untitled Album');
+    const price = storeAlbumPrice(album).toFixed(2);
+    const configuredPrice = Number(album.price);
+    const priceLabel = album.price != null && Number.isFinite(configuredPrice) && configuredPrice >= 0.5 ? 'Album price' : 'Illustrative price';
     const tracks = Array.isArray(album.tracks) ? album.tracks : [];
     const description = escapeMusicText(album.description || 'A complete Echo Craft listening experience. Hear the available track previews below, then continue listening on your preferred platform.');
     const platform = (url, label, icon, className) => storeAlbumURL(url) ? `<a href="${escapeMusicAttribute(storeAlbumURL(url))}" class="ac-${className}" target="_blank" rel="noopener noreferrer"><i class="${icon}" aria-hidden="true"></i><span>${label}</span></a>` : '';
@@ -70,7 +78,7 @@ function createAlbumCard(album, index) {
             </div>
         </div>
         <div class="ac-streaming">${platform(album.hyperfollow, 'Listen Everywhere', 'fas fa-headphones', 'listen')}${platform(album.spotify, 'Spotify', 'fab fa-spotify', 'platform ac-spotify')}${platform(album.apple, 'Apple Music', 'fab fa-apple', 'platform')}</div>
-        <div class="ac-purchase"><div class="ac-cart-icon"><i class="fas fa-shopping-cart" aria-hidden="true"></i></div><div class="ac-purchase-copy"><strong>Get This Album</strong><span>Digital album · Store preview</span></div><div class="ac-price"><strong>$9.99</strong><small>Illustrative price</small></div><button class="ac-add" type="button"><i class="fas fa-shopping-cart" aria-hidden="true"></i>Add to Cart</button></div>
+        <div class="ac-purchase"><div class="ac-cart-icon"><i class="fas fa-shopping-cart" aria-hidden="true"></i></div><div class="ac-purchase-copy"><strong>Get This Album</strong><span>Digital album · Store preview</span></div><div class="ac-price"><strong>$${price}</strong><small>${priceLabel}</small></div><button class="ac-add" type="button"><i class="fas fa-shopping-cart" aria-hidden="true"></i>Add to Cart</button></div>
     </article>`;
 }
 
@@ -127,7 +135,7 @@ function renderStoreAlbumCart() {
     if (!storeAlbumCart.size) { const p = document.createElement('p'); p.textContent = 'Your preview cart is empty.'; container.append(p); }
     storeAlbumCart.forEach(title => {
         const row = document.createElement('div'); row.className = 'ac-cart-row';
-        const label = document.createElement('span'); label.textContent = title + ' · $9.99';
+        const label = document.createElement('span'); label.textContent = title + ' · $' + storeAlbumPrice(echoCraftAlbums.find(album => album.title === title)).toFixed(2);
         const remove = document.createElement('button'); remove.className = 'ac-remove'; remove.textContent = 'Remove'; remove.setAttribute('aria-label', 'Remove ' + title);
         remove.onclick = () => { storeAlbumCart.delete(title); renderStoreAlbumCart(); };
         row.append(label, remove); container.append(row);
