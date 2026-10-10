@@ -91,6 +91,12 @@
         <div><label for="releaseDate">Release date</label><input id="releaseDate" type="date"></div>
         <div><label for="collectionId">Catalog ID</label><input id="collectionId" type="text" placeholder="optional" readonly></div>
       </div>
+      <div class="fieldrow three">
+        <div><label for="price">Regular price ($)</label><input id="price" type="number" min="0.50" max="1000" step="0.01" placeholder="9.99"></div>
+        <div><label for="salePrice">Holiday / sale price ($)</label><input id="salePrice" type="number" min="0.50" max="1000" step="0.01" placeholder="Optional"></div>
+        <div><label for="saleEnabled">Promotion</label><select id="saleEnabled"><option value="false">Off</option><option value="true">Sale price active</option></select></div>
+      </div>
+      <p class="help">Pricing belongs to each release. Christmas can remain $9.99, while a longer album can be $14.99. Enable a lower sale price whenever you want.</p>
       <label for="description">Album description</label><textarea id="description"></textarea>
       <div class="fieldrow"><div><label for="publicationStatus">Showcase availability</label><select id="publicationStatus"><option value="published">Available now</option><option value="scheduled">Scheduled release</option><option value="draft">Draft — hidden</option></select></div><div><label for="scheduledLocal">Release time (Eastern)</label><input id="scheduledLocal" type="datetime-local"><div class="help">America/New_York, including daylight saving time.</div></div></div>
       <button id="christmasSchedule" class="btn" type="button">Set October 31, 2026 · midnight Eastern</button>
@@ -245,7 +251,7 @@
 <script>
 (() => {
   const $ = id => document.getElementById(id);
-  const fields = ['title','artist','type','releaseDate','collectionId','cover','hyperfollow','spotify','apple','itunes','description','publicationStatus','scheduledLocal'];
+  const fields = ['title','artist','type','releaseDate','collectionId','cover','hyperfollow','spotify','apple','itunes','description','publicationStatus','scheduledLocal','price','salePrice','saleEnabled'];
   let pending = [];
   let selectedPreview = null, selectedCover = null, tracks = [], catalog = [], originalTitle = '';
   const WORKER='https://echocraft-music-admin.echocraft-aimusic.workers.dev';
@@ -301,8 +307,8 @@
   $('christmasSchedule').onclick=()=>{$('publicationStatus').value='scheduled';$('scheduledLocal').value='2026-10-31T00:00';$('releaseDate').value='2026-10-31';updatePreview();};
   async function loadCatalog(){try{catalog=(await api('/api/catalog')).items||[];$('existingRelease').replaceChildren(new Option('New release',''));catalog.forEach((item,i)=>$('existingRelease').add(new Option(`${item.title} (${item.publicationStatus||'published'})`,String(i))));}catch{}}
   $('existingRelease').onchange=()=>{
-    if($('existingRelease').value===''){originalTitle='';tracks=[];fields.forEach(id=>$(id).value=id==='artist'?'Echo Craft':id==='type'?'single':id==='publicationStatus'?'published':'');}
-    else{const item=catalog[Number($('existingRelease').value)];originalTitle=item.title;fields.forEach(id=>$(id).value=item[id]|| (id==='publicationStatus'?'published':''));tracks=(item.tracks||[]).map(t=>({...t}));}
+    if($('existingRelease').value===''){originalTitle='';tracks=[];fields.forEach(id=>$(id).value=id==='artist'?'Echo Craft':id==='type'?'single':id==='publicationStatus'?'published':id==='saleEnabled'?'false':'');}
+    else{const item=catalog[Number($('existingRelease').value)];originalTitle=item.title;fields.forEach(id=>$(id).value=item[id]??(id==='publicationStatus'?'published':id==='saleEnabled'?'false':''));tracks=(item.tracks||[]).map(t=>({...t}));}
     previewAssetId='';coverAssetId='';singlePreview=catalog.find(item=>item.title===originalTitle)?.preview||'';selectedPreview=null;selectedCover=null;$('previewFile').value='';$('coverFile').value='';renderTracks();updatePreview();cardSample().catch(e=>toast(e.message,true));
   };
 
@@ -413,7 +419,7 @@
   fields.forEach(id=>$(id).addEventListener('input',updatePreview));
   $('cardCover').addEventListener('error',()=>{ $('cardCover').style.display='none'; $('coverPlaceholder').style.display='block'; });
 
-  function currentEntry(){return {...Object.fromEntries(fields.map(id=>[id,val(id)])),originalTitle,preview:singlePreview,previewAssetId,coverAssetId,tracks:tracks.map(({file,...track})=>track)};}
+  function currentEntry(){return {...Object.fromEntries(fields.map(id=>[id,val(id)])),saleEnabled:val('saleEnabled')==='true',originalTitle,preview:singlePreview,previewAssetId,coverAssetId,tracks:tracks.map(({file,...track})=>track)};}
   async function uploadFile(file,kind){if(kind==='preview'&&!checkManualPreview(file))throw new Error('Preview file exceeds 1.5 MB: '+file.name);const data=await fileToBase64(file);return api('/api/upload',{method:'POST',body:JSON.stringify({...data,kind})});}
   async function storeFiles(){
     const oversize=[...(selectedPreview?[selectedPreview]:[]),...tracks.map(t=>t.file).filter(Boolean)].find(f=>f.size>MAX_MANUAL_PREVIEW_BYTES);
