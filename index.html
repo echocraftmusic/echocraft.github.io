@@ -4281,10 +4281,6 @@ text-shadow:
     <style>
     /* ===== Desktop Premium Art Direction — visual only ===== */
     @media (min-width: 1025px) {
-        .main-content {
-            padding-left: 280px;
-        }
-
         section.home {
             padding: 52px 5vw 56px;
         }
@@ -4508,6 +4504,106 @@ text-shadow:
     }
     </style>
 
+    <style>
+    /* Desktop sidebar controls; the phone menu stays independent. */
+    .sidebar-toggle, .sidebar-link-icon, .sidebar-subscribe-toggle {
+        display: none;
+    }
+
+    @media (min-width: 769px) {
+        .sidebar { z-index: 20; }
+        .sidebar-toggle {
+            display: grid;
+            place-items: center;
+            position: absolute;
+            top: 8px;
+            right: 10px;
+            width: 32px;
+            height: 32px;
+            border: 1px solid rgba(0,217,255,.65);
+            border-radius: 9px;
+            background: rgba(4,19,33,.88);
+            color: #4ae9ff;
+            font-size: 24px;
+            line-height: 1;
+            cursor: pointer;
+            box-shadow: 0 0 12px rgba(0,217,255,.25);
+        }
+        .sidebar-toggle:hover, .sidebar-toggle:focus-visible {
+            background: #103747;
+            outline: 2px solid #00d9ff;
+            outline-offset: 2px;
+        }
+        .sidebar-collapsed .sidebar { width: 72px; }
+        .sidebar-collapsed .main-content {
+            margin-left: 72px;
+            width: calc(100% - 72px);
+        }
+        .sidebar-collapsed .sidebar-logo {
+            padding: 24px 9px 16px;
+            margin-bottom: 16px;
+        }
+        .sidebar-collapsed .sidebar-logo-image {
+            width: 52px;
+            height: 52px;
+            margin-bottom: 0;
+        }
+        .sidebar-collapsed .sidebar-logo h1,
+        .sidebar-collapsed .sidebar-link-label,
+        .sidebar-collapsed .sidebar-admin-label,
+        .sidebar-collapsed .subscribe-box { display: none; }
+        .sidebar-collapsed .sidebar-nav { padding: 0 10px; }
+        .sidebar-collapsed .sidebar-nav li { margin-bottom: 8px; }
+        .sidebar-collapsed .sidebar-nav a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 52px;
+            height: 46px;
+            padding: 0;
+            letter-spacing: 0;
+        }
+        .sidebar-collapsed .sidebar-nav a:hover,
+        .sidebar-collapsed .sidebar-nav a.active { transform: none; }
+        .sidebar-collapsed .sidebar-link-icon {
+            display: inline-block;
+            font-size: 19px;
+        }
+        .sidebar-collapsed .sidebar-footer {
+            position: static;
+            margin-top: 20px;
+            padding: 16px 10px 0;
+        }
+        .sidebar-collapsed .sidebar-admin-link {
+            width: 40px;
+            height: 40px;
+            padding: 0;
+            margin: 0 auto 16px;
+        }
+        .sidebar-collapsed .sidebar-social {
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 16px;
+        }
+        .sidebar-collapsed .sidebar-social a { flex: 0 0 40px; }
+        .sidebar-collapsed .sidebar-subscribe-toggle {
+            display: grid;
+            place-items: center;
+            width: 40px;
+            height: 40px;
+            margin: 0 auto;
+            border: 1px solid rgba(0,217,255,.4);
+            border-radius: 9px;
+            background: rgba(0,217,255,.08);
+            color: #00d9ff;
+            font-size: 18px;
+            cursor: pointer;
+        }
+        #videosContainer { margin-left: auto; margin-right: auto; }
+    }
+    </style>
+
 </head>
 
 <body>
@@ -4531,7 +4627,12 @@ text-shadow:
 
     <div class="container">
         <!-- LEFT SIDEBAR -->
-        <aside class="sidebar">
+        <aside class="sidebar" id="siteSidebar">
+            <button type="button" class="sidebar-toggle" id="sidebarToggle"
+                aria-controls="siteSidebar" aria-expanded="true"
+                aria-label="Collapse sidebar" title="Collapse sidebar">
+                <span aria-hidden="true">‹</span>
+            </button>
             <div class="sidebar-logo">
                 <div class="sidebar-logo-image">
                    <img src="assets/images/ec-icon.webp" alt="Echo Craft">
@@ -4540,19 +4641,19 @@ text-shadow:
             </div>
 
          <nav class="sidebar-nav">
-    <li><a href="#home" class="nav-link active">HOME</a></li>
-    <li><a href="#videos" class="nav-link">VIDEOS</a></li>
-    <li><a href="#albums" class="nav-link">💿 ALBUMS</a></li>
-    <li><a href="#music" class="nav-link">🎵 MUSIC</a></li>
-    <li><a href="get-a-track.html">🎧 GET A TRACK!</a></li>
-    <li><a href="sync-licensing.html">🎬 SYNC LICENSING</a></li>
-    <li><a href="https://studio.echocraftmusic.com/">🎨 CREATIVE STUDIO</a></li>
-    <li><a href="#info" class="nav-link">INFO</a></li>
+    <li><a href="#home" class="nav-link active" title="Home" aria-label="Home"><i class="fas fa-home sidebar-link-icon" aria-hidden="true"></i><span class="sidebar-link-label">HOME</span></a></li>
+    <li><a href="#videos" class="nav-link" title="Videos" aria-label="Videos"><i class="fas fa-video sidebar-link-icon" aria-hidden="true"></i><span class="sidebar-link-label">VIDEOS</span></a></li>
+    <li><a href="#albums" class="nav-link" title="Albums" aria-label="Albums"><i class="fas fa-compact-disc sidebar-link-icon" aria-hidden="true"></i><span class="sidebar-link-label">💿 ALBUMS</span></a></li>
+    <li><a href="#music" class="nav-link" title="Music" aria-label="Music"><i class="fas fa-music sidebar-link-icon" aria-hidden="true"></i><span class="sidebar-link-label">🎵 MUSIC</span></a></li>
+    <li><a href="get-a-track.html" title="Get a Track" aria-label="Get a Track"><i class="fas fa-headphones sidebar-link-icon" aria-hidden="true"></i><span class="sidebar-link-label">🎧 GET A TRACK!</span></a></li>
+    <li><a href="sync-licensing.html" title="Sync Licensing" aria-label="Sync Licensing"><i class="fas fa-film sidebar-link-icon" aria-hidden="true"></i><span class="sidebar-link-label">🎬 SYNC LICENSING</span></a></li>
+    <li><a href="https://studio.echocraftmusic.com/" title="Creative Studio" aria-label="Creative Studio"><i class="fas fa-palette sidebar-link-icon" aria-hidden="true"></i><span class="sidebar-link-label">🎨 CREATIVE STUDIO</span></a></li>
+    <li><a href="#info" class="nav-link" title="Info" aria-label="Info"><i class="fas fa-info-circle sidebar-link-icon" aria-hidden="true"></i><span class="sidebar-link-label">INFO</span></a></li>
 </nav>
 
             <div class="sidebar-footer">
                 <a class="sidebar-admin-link" href="admin/" title="Echo Craft Admin">
-                    <i class="fas fa-lock"></i> ADMIN
+                    <i class="fas fa-lock"></i> <span class="sidebar-admin-label">ADMIN</span>
                 </a>
                 <div class="sidebar-social">
                     <a href="https://www.instagram.com/echocraft.music/" target="_blank" title="Instagram">
@@ -4571,6 +4672,10 @@ text-shadow:
                         <i class="fas fa-envelope"></i>
                     </a>
                 </div>
+                <button type="button" class="sidebar-subscribe-toggle" id="sidebarSubscribeToggle"
+                    aria-label="Expand sidebar to subscribe" title="Subscribe for updates">
+                    <i class="fas fa-envelope-open-text" aria-hidden="true"></i>
+                </button>
                 <div class="subscribe-box">
                     <p>Subscribe for updates</p>
                     <form id="subscribeForm" method="POST" action="https://formspree.io/f/mgoqppve">
@@ -4746,10 +4851,6 @@ text-shadow:
             </div>
 
         </aside>
-
-    </div>
-                    <!-- Auto-populated from music.json -->
-                        </div>
 
     </div>
 
@@ -5271,6 +5372,45 @@ videoHtml += `
             }
         });
     </script>
+    </script>
+
+    <script>
+    (function setupSidebarCollapse() {
+        const toggle = document.getElementById('sidebarToggle');
+        const subscribeToggle = document.getElementById('sidebarSubscribeToggle');
+        const desktop = window.matchMedia('(min-width: 769px)');
+        let collapsed = false;
+
+        try {
+            collapsed = localStorage.getItem('echoCraftSidebarCollapsed') === 'true';
+        } catch (error) { /* Navigation still works when storage is unavailable. */ }
+
+        function applySidebarState() {
+            const isCollapsed = desktop.matches && collapsed;
+            document.documentElement.classList.toggle('sidebar-collapsed', isCollapsed);
+            toggle.setAttribute('aria-expanded', String(!isCollapsed));
+            const label = isCollapsed ? 'Expand sidebar' : 'Collapse sidebar';
+            toggle.setAttribute('aria-label', label);
+            toggle.title = label;
+            toggle.firstElementChild.textContent = isCollapsed ? '›' : '‹';
+        }
+
+        function setCollapsed(value) {
+            collapsed = value;
+            try {
+                localStorage.setItem('echoCraftSidebarCollapsed', String(value));
+            } catch (error) { /* Keep the current choice for this page session. */ }
+            applySidebarState();
+        }
+
+        toggle.addEventListener('click', function () { setCollapsed(!collapsed); });
+        subscribeToggle.addEventListener('click', function () {
+            setCollapsed(false);
+            document.getElementById('emailInput').focus();
+        });
+        desktop.addEventListener('change', applySidebarState);
+        applySidebarState();
+    }());
     </script>
 
     <script src="js/music.js?v=restore-20261010-01"></script>
