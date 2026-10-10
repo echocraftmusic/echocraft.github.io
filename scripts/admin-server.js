@@ -4,6 +4,7 @@ const http = require('http');
 const https = require('https');
 const fs = require('fs');
 const path = require('path');
+const os = require('os');
 const { URL } = require('url');
 
 const ROOT = process.cwd();
@@ -85,35 +86,36 @@ function htmlDecode(value) {
     .replace(/\\\//g, '/');
 }
 
-function fetchText(url, redirects = 0) {
-  return new Promise((resolve, reject) => {
-    if (redirects > 6) return reject(new Error('Too many redirects while loading HyperFollow.'));
-    const parsed = new URL(url);
-    const transport = parsed.protocol === 'http:' ? http : https;
-    const req = transport.get(parsed, {
-      headers: {
-        'User-Agent': 'Mozilla/5.0 EchoCraftAdmin/1.0',
-        Accept: 'text/html,application/xhtml+xml'
-      }
-    }, res => {
-      if ([301, 302, 303, 307, 308].includes(res.statusCode) && res.headers.location) {
-        const next = new URL(res.headers.location, parsed).toString();
-        res.resume();
-        return resolve(fetchText(next, redirects + 1));
-      }
-      let body = '';
-      res.setEncoding('utf8');
-      res.on('data', chunk => body += chunk);
-      res.on('end', () => {
-        if (res.statusCode < 200 || res.statusCode >= 300) {
-          return reject(new Error(`HyperFollow returned HTTP ${res.statusCode}.`));
-        }
-        resolve({ body, finalUrl: parsed.toString() });
-      });
+async function fetchText(url, redirects = 0) {
+  if (redirects > 6) throw new Error('Too many redirects while loading HyperFollow.');
+  const parsed = new URL(url);
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), 20000);
+  try {
+    // Match the native-fetch request verified on the local Windows computer.
+    const response = await fetch(parsed.toString(), {
+      headers: { 'User-Agent': 'Mozilla/5.0 EchoCraftAdmin/1.0' },
+      redirect: 'manual',
+      signal: controller.signal
     });
-    req.setTimeout(20000, () => req.destroy(new Error('HyperFollow request timed out.')));
-    req.on('error', reject);
-  });
+    const location = response.headers.get('location');
+    if ([301, 302, 303, 307, 308].includes(response.status) && location) {
+      const next = new URL(location, parsed).toString();
+      if (response.body) await response.body.cancel();
+      return fetchText(next, redirects + 1);
+    }
+    if (!response.ok) {
+      if (response.body) await response.body.cancel();
+      throw new Error(`HyperFollow returned HTTP ${response.status}.`);
+    }
+    const body = await response.text();
+    return { body, finalUrl: parsed.toString() };
+  } catch (error) {
+    if (controller.signal.aborted) throw new Error('HyperFollow request timed out.');
+    throw error;
+  } finally {
+    clearTimeout(timeout);
+  }
 }
 
 function metaContent(html, property) {
@@ -170,6 +172,98 @@ function findServiceUrl(html, hostPattern) {
   return '';
 }
 
+function isPreviewUrl(value) {
+  try {
+    const url = new URL(value);
+    return url.protocol === 'https:' && !url.username && !url.password && !url.port &&
+      ((url.hostname === 's3.amazonaws.com' && /^\/audio\.distrokid\.com\/preview_[A-Za-z0-9_-]+\.mp3$/.test(url.pathname)) ||
+       (url.hostname === 'audio.distrokid.com' && /^\/preview_[A-Za-z0-9_-]+\.mp3$/.test(url.pathname)));
+  } catch { return false; }
+}
+
+function parsePreviewTracks(html) {
+  const match = html.match(/previewData\.tracks\s*=\s*JSON\.parse\(\s*("(?:\\.|[^"\\])*")\s*\)/);
+  if (!match) return [];
+  try {
+    // Decode the embedded JSON string as data, without executing page scripts.
+    const literal = match[1].replace(/\\x([0-9a-f]{2})/gi, (_, hex) => '\\u00' + hex);
+    const tracks = JSON.parse(JSON.parse(literal));
+    if (!Array.isArray(tracks) || tracks.length > 100) return [];
+    return tracks.map(track => ({
+      title: htmlDecode(track.title).trim(),
+      previewUrl: isPreviewUrl(track.preview) ? track.preview : ''
+    }));
+  } catch { return []; }
+}
+
+async function downloadPreview(url) {
+  if (!isPreviewUrl(url)) throw new Error('This track does not have a supported DistroKid MP3 preview.');
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), 20000);
+  try {
+    const response = await fetch(url, { redirect: 'error', signal: controller.signal });
+    if (!response.ok) throw new Error(`Preview download returned HTTP ${response.status}.`);
+    const chunks = [];
+    let size = 0;
+    for await (const chunk of response.body) {
+      size += chunk.length;
+      if (size > 8 * 1024 * 1024) {
+        controller.abort();
+        throw new Error('Preview file exceeds 8 MB.');
+      }
+      chunks.push(Buffer.from(chunk));
+    }
+    const buffer = Buffer.concat(chunks);
+    const mp3 = buffer.length > 3 && (buffer.subarray(0, 3).toString() === 'ID3' ||
+      (buffer[0] === 0xff && (buffer[1] & 0xe0) === 0xe0));
+    if (!mp3) throw new Error('Preview download did not contain an MP3 file.');
+    return buffer;
+  } catch (error) {
+    if (controller.signal.aborted && error.name === 'AbortError') throw new Error('Preview download timed out.');
+    throw error;
+  } finally { clearTimeout(timer); }
+}
+
+async function importAlbumPreviews(url) {
+  const { body } = await fetchText(url);
+  const release = parseHyperFollow(body, url);
+  const tracks = release.tracks;
+  if (!release.title || !tracks.length) throw new Error('No album preview track list was found on this HyperFollow page.');
+  if (tracks.some(track => !track.title || !track.previewUrl)) {
+    throw new Error('Some tracks do not have a title or a ready MP3 preview. No previews were imported.');
+  }
+  const slug = slugFor(release.title);
+  const staging = fs.mkdtempSync(path.join(os.tmpdir(), 'echocraft-previews-'));
+  const results = new Array(tracks.length);
+  let cursor = 0;
+  let failure = null;
+  try {
+    // Keep each title attached to its original index, even when downloads finish out of order.
+    const worker = async () => {
+      while (!failure && cursor < tracks.length) {
+        const index = cursor++;
+        const track = tracks[index];
+        try {
+          const buffer = await downloadPreview(track.previewUrl);
+          const name = `${String(index + 1).padStart(2, '0')}-${slugFor(track.title)}.mp3`;
+          fs.writeFileSync(path.join(staging, name), buffer);
+          results[index] = { title: track.title, name };
+        } catch (error) { failure = new Error(`Track ${index + 1} (${track.title}): ${error.message}`); }
+      }
+    };
+    await Promise.all(Array.from({ length: Math.min(3, tracks.length) }, worker));
+    if (failure) throw failure;
+    const directory = path.join(PREVIEW_DIR, slug);
+    fs.mkdirSync(directory, { recursive: true });
+    for (const track of results) fs.copyFileSync(path.join(staging, track.name), path.join(directory, track.name));
+    return {
+      ...release,
+      tracks: results.map(track => ({ title: track.title, preview: `music/previews/${slug}/${track.name}` })),
+      totalTracks: results.length
+    };
+  } finally { fs.rmSync(staging, { recursive: true, force: true }); }
+}
+
 function parseHyperFollow(html, originalUrl) {
   const titleRaw = metaContent(html, 'og:title') || metaContent(html, 'twitter:title');
   const description = metaContent(html, 'og:description') || '';
@@ -200,7 +294,8 @@ function parseHyperFollow(html, originalUrl) {
     cover,
     spotify,
     apple,
-    description
+    description,
+    tracks: parsePreviewTracks(html)
   };
 }
 
@@ -261,6 +356,18 @@ function readBody(req, maxBytes = 30 * 1024 * 1024) {
 }
 
 async function handleApi(req, res, pathname) {
+  if (req.method === 'POST' && pathname === '/api/album-previews') {
+    try {
+      const payload = JSON.parse(await readBody(req));
+      const url = String(payload.url || '').trim();
+      if (!/^https?:\/\/(?:www\.)?distrokid\.com\/hyperfollow\//i.test(url)) {
+        return sendJson(res, 400, { error: 'Please paste a valid DistroKid HyperFollow URL.' });
+      }
+      const imported = await importAlbumPreviews(url);
+      return sendJson(res, 200, { ok: true, ...imported });
+    } catch (error) { return sendJson(res, 500, { error: error.message }); }
+  }
+
   if (req.method === 'GET' && pathname === '/api/status') {
     return sendJson(res, 200, { ok: true, mode: 'local', root: ROOT });
   }

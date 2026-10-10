@@ -71,6 +71,8 @@
         <button id="fetchHyperfollow" class="btn primary" type="button"><i class="fa-solid fa-wand-magic-sparkles"></i> Fetch</button>
       </div>
       <div class="help">The local manager will try to pull the official cover and service links. Anything it cannot find stays editable.</div>
+      <button id="importAlbumPreviews" class="btn good" type="button" style="margin-top:12px"><i class="fa-solid fa-download"></i> Import album previews</button>
+      <div class="help">Download all available preview MP3s, name them by track number and title, and fill the album track list in one step. This replaces the track list in the editor. Review it before publishing locally.</div>
       <details class="mp3box"><summary>Fetch blocked? Import a saved HyperFollow page</summary>
         <p class="help">Open your HyperFollow link in your browser. Press Ctrl+S and save as “Webpage, HTML Only.” Keep its link in the field above, then select that saved HTML file here. The manager reads the title, artwork, and streaming links without requesting DistroKid again.</p>
         <label for="hyperfollowHtml">Saved HyperFollow page (.html)</label><input id="hyperfollowHtml" type="file" accept=".html,.htm,text/html">
@@ -243,6 +245,9 @@
   const fields = ['title','artist','type','releaseDate','collectionId','cover','hyperfollow','spotify','apple','itunes','description','publicationStatus','scheduledLocal'];
   let pending = [];
   let selectedPreview = null, selectedCover = null, tracks = [], catalog = [], originalTitle = '';
+  function adminPreviewSource(value){
+    return new URL(String(value).replaceAll('\\','/'),new URL('../',window.location.href)).href;
+  }
   function renderTracks(){
     $('trackRows').replaceChildren();
     tracks.forEach((track,index)=>{
@@ -252,8 +257,14 @@
       const preview=document.createElement('input'); preview.value=track.preview||''; preview.placeholder='Existing preview path (optional)'; preview.setAttribute('aria-label',`Track ${index+1} preview path`); preview.oninput=()=>track.preview=preview.value;
       const file=document.createElement('input'); file.type='file'; file.accept='.mp3,audio/mpeg'; file.setAttribute('aria-label',`Track ${index+1} preview upload`);
       const name=document.createElement('p'); name.className='help'; name.textContent=track.file?.name||'Choose a preview MP3 or use an existing path.';
+      const player=document.createElement('audio');player.controls=true;player.preload='none';player.style.width='100%';player.setAttribute('aria-label',`Preview track ${index+1}: ${track.title}`);
+      if(track.preview){player.src=adminPreviewSource(track.preview);name.textContent='Imported preview: '+track.preview.split('/').pop()+'. No file selection needed.';}
+      else{player.hidden=true;}
+      preview.oninput=()=>{track.preview=preview.value;if(track.preview){player.src=adminPreviewSource(track.preview);player.hidden=false;}else{player.removeAttribute('src');player.hidden=true;}player.load();};
       file.onchange=()=>{track.file=file.files[0]||null;name.textContent=track.file?.name||'No new preview selected.';};
-      row.append(label,title,preview,file,name);
+      row.append(label,title,preview,player,name);
+      if(track.preview){const replacement=document.createElement('details');const summary=document.createElement('summary');summary.textContent='Replace this preview with another MP3 (optional)';replacement.append(summary,file);row.append(replacement);}
+      else{row.append(file);}
       [['Move up',-1],['Move down',1],['Remove',0]].forEach(([text,delta])=>{const b=document.createElement('button');b.type='button';b.className='btn';b.textContent=text;b.disabled=delta!==0&&(index+delta<0||index+delta>=tracks.length);b.onclick=()=>{if(delta===0)tracks.splice(index,1);else [tracks[index],tracks[index+delta]]=[tracks[index+delta],tracks[index]];renderTracks();};row.append(b);});
       $('trackRows').append(row);
     });
@@ -283,7 +294,7 @@
     updateCheck('checkTitle',!!val('title')); updateCheck('checkHyper',!!val('hyperfollow')); updateCheck('checkCover',!!cover);
     const hasSpotify=!!val('spotify'), hasApple=!!val('apple');
     $('cardSpotify').style.display=hasSpotify?'grid':'none'; $('cardApple').style.display=hasApple?'grid':'none';
-    updateCheck('checkSpotify',hasSpotify); updateCheck('checkApple',hasApple); updateCheck('checkMp3',!!selectedPreview);
+    updateCheck('checkSpotify',hasSpotify); updateCheck('checkApple',hasApple); updateCheck('checkMp3',!!selectedPreview || (val('type')==='album' && tracks.length>0 && tracks.every(track=>track.preview||track.file)));
   }
 
   async function api(url, options={}){
@@ -313,6 +324,24 @@
   });
 
   $('refreshPending').addEventListener('click',loadPending);
+  $('importAlbumPreviews').addEventListener('click',async()=>{
+    const url=val('hyperfollow');
+    if(!url)return toast('Paste the album HyperFollow URL first.',true);
+    const btn=$('importAlbumPreviews');
+    btn.disabled=true;$('publishLocal').disabled=true;$('fetchHyperfollow').disabled=true;
+    activity('Downloading the album previews and matching each file to its track title. This can take a minute…');
+    try {
+      const data=await api('/api/album-previews',{method:'POST',body:JSON.stringify({url})});
+      ['title','artist','cover','spotify','apple'].forEach(id=>$(id).value=data[id]||'');
+      $('type').value='album';originalTitle='';tracks=data.tracks;selectedPreview=null;
+      $('previewFile').value='';$('mp3Name').textContent=`${data.totalTracks} album previews imported. The first track is used on the album card.`;
+      $('audioPreview').src=adminPreviewSource(tracks[0].preview);$('audioPreview').style.display='block';
+      renderTracks();updatePreview();
+      activity(`${data.totalTracks} previews imported in album order. Track titles and MP3 files are matched. Review the tracks below, then Publish to Local Site.`, 'good');
+      toast(`${data.totalTracks} album previews ready.`);
+    }catch(e){activity(`Album preview import failed: ${e.message}`, 'bad');toast(e.message,true);}
+    finally{btn.disabled=false;$('fetchHyperfollow').disabled=false;await checkServer();}
+  });
   $('fetchHyperfollow').addEventListener('click',async()=>{
     const url=val('hyperfollow'); if(!url){ activity('HyperFollow URL is missing. Paste it first.','bad'); return toast('Paste the HyperFollow URL first.',true); }
     const btn=$('fetchHyperfollow'); btn.disabled=true; btn.innerHTML='<i class="fa-solid fa-spinner fa-spin"></i> Fetching'; activity('Reading HyperFollow and looking for cover, Spotify, and Apple Music links…');
@@ -354,7 +383,7 @@
   fields.forEach(id=>$(id).addEventListener('input',updatePreview));
   $('cardCover').addEventListener('error',()=>{ $('cardCover').style.display='none'; $('coverPlaceholder').style.display='block'; });
 
-  function currentEntry(){ return {...Object.fromEntries(fields.map(id=>[id,$(id).value.trim()])), originalTitle, preview:catalog.find(item=>item.title===originalTitle)?.preview||'', tracks:tracks.map(({file,...track})=>track)}; }
+  function currentEntry(){ return {...Object.fromEntries(fields.map(id=>[id,$(id).value.trim()])), originalTitle, preview:(val('type')==='album'?tracks[0]?.preview:'')||catalog.find(item=>item.title===originalTitle)?.preview||'', tracks:tracks.map(({file,...track})=>track)}; }
   $('saveDraft').addEventListener('click',()=>{ localStorage.setItem('echoCraftMusicDraft',JSON.stringify(currentEntry())); activity('Draft saved in this browser. No website files were changed.','good'); toast('Draft saved in this browser.'); });
 
   async function fileToBase64(file){
