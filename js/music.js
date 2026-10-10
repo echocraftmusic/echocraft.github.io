@@ -45,14 +45,6 @@ Create one premium album card
 ------------------------------------------
 */
 
-function displayMusicPrice(item,type) {
-    const raw=Number(item.price);
-    const base=item.price!==''&&item.price!=null&&Number.isFinite(raw)&&raw>=0.5&&raw<=1000?raw:(type==='album'?9.99:0.99);
-    const sale=Number(item.salePrice);
-    const final=item.saleEnabled===true&&item.salePrice!==''&&item.salePrice!=null&&Number.isFinite(sale)&&sale>=0.5&&sale<base?sale:base;
-    return '$'+final.toFixed(2);
-}
-
 function createAlbumCard(album, index) {
     const rawTitle =
         String(album.title || "Untitled Album");
@@ -182,7 +174,6 @@ function createAlbumCard(album, index) {
                 </p>
 
                 <div class="album-card-actions">
-                    <button type="button" class="ec-add-cart" data-ec-album="${index}">+ Add Album · $9.99</button>
                     <a
                         href="albums/album.html?title=${encodeURIComponent(rawTitle)}"
                         class="album-explore-btn"
@@ -497,7 +488,6 @@ function createMusicCard(track, index) {
 
                 ${audioPlayer}
 
-                <button type="button" class="ec-add-cart" data-ec-single="${index}">+ Add to Cart · $0.99</button>
                 <div class="music-actions">
                     ${hyperfollowButton}
 
@@ -1123,15 +1113,6 @@ async function loadMusicTracks() {
         );
 
         setupAlbumCarousel();
-        if (!window.echoCraftCartDelegation) {
-            window.echoCraftCartDelegation = true;
-            document.addEventListener('click', event => {
-                const albumButton = event.target.closest('[data-ec-album]');
-                const singleButton = event.target.closest('[data-ec-single]');
-                if (albumButton && window.EchoCraftCart) window.EchoCraftCart.add({...echoCraftAlbums[Number(albumButton.dataset.ecAlbum)], type:'album'});
-                if (singleButton && window.EchoCraftCart) window.EchoCraftCart.add({...echoCraftTracks[Number(singleButton.dataset.ecSingle)], type:'single'});
-            });
-        }
         activateSingleAudioPlayback();
         activateMobileMusicScrollTracking();
 
