@@ -58,8 +58,14 @@ async function publish(env,entry){
   const tracks=[];
   if(type==='album'){requireValue(Array.isArray(entry.tracks)&&entry.tracks.length>0&&entry.tracks.length<=100,'An album needs 1–100 tracks.');for(const t of entry.tracks){requireValue(String(t.title||'').trim()&&String(t.title).length<=250,'Give each track a title.');const preview=await resolve(t.assetId,t.preview,'preview');requireValue(preview,'Every album track needs a preview.');tracks.push({title:String(t.title).trim(),preview});}}
   const preview=type==='album'?tracks[0].preview:await resolve(entry.previewAssetId,entry.preview,'preview');requireValue(preview,'Add a preview MP3 before publishing.');
+  const regularPrice=entry.price===''||entry.price==null?(type==='album'?9.99:0.99):Number(entry.price);
+  requireValue(Number.isFinite(regularPrice)&&regularPrice>=0.5&&regularPrice<=1000&&Number.isInteger(Math.round(regularPrice*100)),'Enter a valid regular price.');
+  const saleEnabled=entry.saleEnabled===true||entry.saleEnabled==='true';
+  const salePrice=entry.salePrice===''||entry.salePrice==null?null:Number(entry.salePrice);
+  requireValue(!saleEnabled||(Number.isFinite(salePrice)&&salePrice>=0.5&&salePrice<regularPrice),'Active sale price must be lower than the regular price.');
+  requireValue(salePrice===null||(Number.isFinite(salePrice)&&salePrice>=0.5&&salePrice<regularPrice),'Sale price must be less than the regular price.');
   const cover=await resolve(entry.coverAssetId,entry.cover,'cover');
-  const finished={type,title,artist:String(entry.artist||'Echo Craft').trim().slice(0,250),releaseDate:String(entry.releaseDate||''),cover,preview,description:String(entry.description||'').slice(0,10000),publicationStatus:status,scheduledLocal:status==='scheduled'?entry.scheduledLocal:'',publishAt,hyperfollow:entry.hyperfollow?hyperUrl(entry.hyperfollow):'',spotify:webUrl(entry.spotify,/^open\.spotify\.com$/),apple:webUrl(entry.apple,/^(music|itunes)\.apple\.com$/),itunes:webUrl(entry.itunes,/^(music|itunes)\.apple\.com$/),...(type==='album'?{tracks}:{})};
+  const finished={type,title,price:regularPrice,salePrice,saleEnabled,artist:String(entry.artist||'Echo Craft').trim().slice(0,250),releaseDate:String(entry.releaseDate||''),cover,preview,description:String(entry.description||'').slice(0,10000),publicationStatus:status,scheduledLocal:status==='scheduled'?entry.scheduledLocal:'',publishAt,hyperfollow:entry.hyperfollow?hyperUrl(entry.hyperfollow):'',spotify:webUrl(entry.spotify,/^open\.spotify\.com$/),apple:webUrl(entry.apple,/^(music|itunes)\.apple\.com$/),itunes:webUrl(entry.itunes,/^(music|itunes)\.apple\.com$/),...(type==='album'?{tracks}:{})};
   for(let attempt=0;attempt<3;attempt++){
     const head=(await gh(env,'git/ref/heads/main')).object.sha;
     const commit=await gh(env,'git/commits/'+head),catalog=await catalogFile(env,'music/music.json',head),pending=await catalogFile(env,'music/pending-releases.json',head,true);
