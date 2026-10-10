@@ -90,6 +90,7 @@ async function squareSandboxCheckout(request,env){
   requireValue(env.SQUARE_ENVIRONMENT==='sandbox','Checkout is unavailable until the payment configuration is verified.',503);
   requireValue(env.SQUARE_ACCESS_TOKEN&&env.SQUARE_LOCATION_ID,'Square Sandbox is not configured.',503);
   const payload=await jsonBody(request,16*1024);
+  requireValue(payload.digitalPurchaseAgreementAccepted===true,'Accept the digital purchase agreement before checkout.',400);
   requireValue(Array.isArray(payload.items)&&payload.items.length>0&&payload.items.length<=25,'Select up to 25 items.',400);
   const catalog=await catalogFile(env);
   const now=Date.now(),selected=new Map();
