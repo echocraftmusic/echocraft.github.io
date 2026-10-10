@@ -6,6 +6,13 @@ const REPO = 'echocraftmusic/echocraft.github.io';
 const EMAILS = new Set(['troy.saha@gmail.com', 'echocraft.aimusic@gmail.com']);
 const ORIGINS = new Set(['https://echocraftmusic.com', 'https://www.echocraftmusic.com', 'https://echocraftmusic.github.io']);
 
+async function timedFetch(url, options) {
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), 15000);
+  try { return await fetch(url, { ...options, signal: controller.signal }); }
+  finally { clearTimeout(timer); }
+}
+
 export default {
   async fetch(request, env) {
     const origin = request.headers.get('Origin');
@@ -29,7 +36,7 @@ export default {
     if (path === '/' || path === '/health') {
       return reply({
         service: 'EchoCraft Music Admin',
-        stage: 'Authentication foundation',
+        stage: 'Authentication foundation — request diagnostics v3',
         githubSecretConfigured: Boolean(env.GITHUB_TOKEN),
         message: 'Worker is running. Album import and publishing are not connected yet.'
       });
@@ -39,10 +46,9 @@ export default {
     if (!/^Bearer [^\s]+$/.test(authorization)) return reply({ error: 'Please sign in.' }, 401);
     let step = 'Supabase sign-in request';
     try {
-      const auth = await fetch(SUPABASE_URL + '/auth/v1/user', {
+      const auth = await timedFetch(SUPABASE_URL + '/auth/v1/user', {
         headers: { apikey: SUPABASE_KEY, Authorization: authorization },
-        redirect: 'error',
-        signal: AbortSignal.timeout(15000)
+        redirect: 'manual'
       });
       if (!auth.ok) return reply({ error: 'Session could not be verified. Please sign in again.' }, 401);
       step = 'Supabase sign-in response';
@@ -54,15 +60,14 @@ export default {
       const githubToken = String(env.GITHUB_TOKEN).trim();
       if (!/^[A-Za-z0-9_]+$/.test(githubToken)) return reply({ error: 'The saved GitHub token contains unexpected characters. Replace the secret with only the copied token.' }, 503);
       step = 'GitHub catalog request';
-      const github = await fetch('https://api.github.com/repos/' + REPO + '/contents/music/music.json?ref=main', {
+      const github = await timedFetch('https://api.github.com/repos/' + REPO + '/contents/music/music.json?ref=main', {
         headers: {
           Authorization: 'Bearer ' + githubToken,
           Accept: 'application/vnd.github+json',
           'User-Agent': 'EchoCraft-Music-Admin',
           'X-GitHub-Api-Version': '2022-11-28'
         },
-        redirect: 'error',
-        signal: AbortSignal.timeout(15000)
+        redirect: 'manual'
       });
       if (!github.ok) return reply({ error: 'GitHub catalog connection failed.', githubStatus: github.status }, 502);
       step = 'GitHub catalog response';
@@ -75,8 +80,13 @@ export default {
       return reply({ ok: true, catalogReadable: true, itemCount: catalog.items.length, publishingReady: false });
     } catch (error) {
       const kind = ['TypeError', 'SyntaxError', 'TimeoutError', 'AbortError'].includes(error?.name) ? error.name : 'ConnectionError';
-      console.error(JSON.stringify({ event: 'admin_connection_failed', step, kind }));
-      return reply({ error: 'Connection check failed at: ' + step + ' (' + kind + ').' }, 502);
+      let detail = String(error?.message || 'No further detail.');
+      for (const sensitive of [String(env.GITHUB_TOKEN || '').trim(), authorization, authorization.slice(7)]) {
+        if (sensitive) detail = detail.split(sensitive).join('[redacted]');
+      }
+      detail = detail.replace(/(?:github_pat_|ghp_|sb_secret_)[A-Za-z0-9_]+/g, '[redacted]').slice(0, 240);
+      console.error(JSON.stringify({ event: 'admin_connection_failed', step, kind, detail }));
+      return reply({ error: 'Connection check failed at: ' + step + ' (' + kind + '). ' + detail }, 502);
     }
   }
 };
