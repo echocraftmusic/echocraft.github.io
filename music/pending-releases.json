@@ -35,21 +35,6 @@
       "note": "Detected automatically. Add HyperFollow/Spotify/preview details before publishing to music/music.json."
     },
     {
-      "collectionId": "1895450402",
-      "type": "album",
-      "title": "Stinking Overthinking",
-      "artist": "Echo Craft",
-      "releaseDate": "2026-04-28",
-      "cover": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/80/45/73/80457318-8e62-c857-1257-5013b4a5f3e9/artwork.jpg/1200x1200bb.jpg",
-      "apple": "https://music.apple.com/us/album/stinking-overthinking/1895450402?uo=4",
-      "trackCount": 28,
-      "genre": "Hip-Hop/Rap",
-      "source": "apple-music-catalog",
-      "status": "pending",
-      "detectedAt": "2026-09-05T09:29:44.875Z",
-      "note": "Detected automatically. Add HyperFollow/Spotify/preview details before publishing to music/music.json."
-    },
-    {
       "collectionId": "1892776244",
       "type": "album",
       "title": "Echo Craft Christmas: Volume 1",
