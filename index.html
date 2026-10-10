@@ -2244,17 +2244,18 @@ section.music {
 
 .music-layout {
     display: grid;
-    grid-template-columns: minmax(0, 1fr) 165px;
+    /* Three 320px cards + two 28px gaps, followed by the alphabet rail. */
+    grid-template-columns: 1016px 165px;
     align-items: start;
-    gap: 34px;
+    gap: 28px;
     width: 100%;
-    max-width: 1320px;
+    max-width: 1209px;
     margin: 0 auto;
 }
 
 .music-grid {
     display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-columns: repeat(3, 320px);
     gap: 28px;
     width: 100%;
     max-width: none;
@@ -2712,29 +2713,19 @@ section.music {
     text-shadow: 0 0 15px rgba(0, 217, 255, 0.18);
 }
 
-/* Tablet */
-@media (max-width: 1180px) {
+/* Keep desktop/laptop cards fixed; scroll the catalog when it cannot fit.
+   Phone carousel rules below remain independent. */
+@media (min-width: 769px) {
     .music-layout {
-        grid-template-columns: minmax(0, 1fr) 145px;
-        gap: 24px;
+        min-width: 0;
+        overflow-x: auto;
+        padding-top: 12px;
+        padding-bottom: 24px;
+        scrollbar-color: #00a6c4 #101b2e;
     }
 
-    .music-grid {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
-
-    .browse-music {
-        width: 145px;
-    }
-
-    .letter-nav {
-        column-gap: 10px;
-        row-gap: 13px;
-    }
-
-    .letter-nav button {
-        width: 44px;
-        height: 44px;
+    .music-card .music-title {
+        min-height: 44px;
     }
 }
 
