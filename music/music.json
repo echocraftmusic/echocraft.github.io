@@ -134,6 +134,66 @@
       "created": "2026-07-17T01:58:11.214Z"
     },
     {
+      "type": "album",
+      "title": "HEAVY & CHUNKY",
+      "artist": "Echo Craft",
+      "releaseDate": "",
+      "cover": "https://distrokid.imgix.net/http%3A%2F%2Fgather.fandalism.com%2F12103955--02583C57-12E8-42D1-BB7A839B60A8CD51--0--3044436--albumcoversq.jpg?fm=jpg&mark-y=568&mark-x=620&mark-w=180&q=75&w=800&mark=http%3A%2F%2Fgather.fandalism.com%2Fdistrokid-sticker-sm.png&s=55ece8b9e7d1d0932df7f898301850f8",
+      "preview": "music/previews/online/34138403-9b6e-455b-9564-271a2158489f-01-storm-of-the-barbarian.mp3",
+      "description": "",
+      "publicationStatus": "published",
+      "scheduledLocal": "",
+      "publishAt": null,
+      "hyperfollow": "https://distrokid.com/hyperfollow/echocraft11/requiem-of-his-grace?ref=release",
+      "spotify": "https://open.spotify.com/album/3FqDxdQK3CpYO0Tw6inxkR",
+      "apple": "https://music.apple.com/us/album/heavy-chunky/1895243608?uo=4",
+      "itunes": "",
+      "tracks": [
+        {
+          "title": "Storm Of The Barbarian",
+          "preview": "music/previews/online/34138403-9b6e-455b-9564-271a2158489f-01-storm-of-the-barbarian.mp3"
+        },
+        {
+          "title": "I Am The Paladin",
+          "preview": "music/previews/online/663fe69e-7e6c-4601-9b33-25cc43775860-02-i-am-the-paladin.mp3"
+        },
+        {
+          "title": "Rogue",
+          "preview": "music/previews/online/db8fac5f-2681-4454-ad42-eb8e26a3307a-03-rogue.mp3"
+        },
+        {
+          "title": "Unstoppable (Say My Name)",
+          "preview": "music/previews/online/19ecbcae-48ea-41f6-b535-88b31fa0f8b4-04-unstoppable-say-my-name.mp3"
+        },
+        {
+          "title": "The Darkest Knight",
+          "preview": "music/previews/online/4595f319-e98d-4e87-8a2e-04d377fcad83-05-the-darkest-knight.mp3"
+        },
+        {
+          "title": "The Man Without Fear",
+          "preview": "music/previews/online/3ba4e61f-8d25-4e63-b930-aa0293c7601d-06-the-man-without-fear.mp3"
+        },
+        {
+          "title": "The Mask I Wear",
+          "preview": "music/previews/online/7e185c11-f448-44d9-b492-137790c68a86-07-the-mask-i-wear.mp3"
+        },
+        {
+          "title": "Don't Make Me Angry",
+          "preview": "music/previews/online/272d9515-50df-47de-b4dd-3862adeebecb-08-don-t-make-me-angry.mp3"
+        },
+        {
+          "title": "FASTER (ULTIMATE VERSION)",
+          "preview": "music/previews/online/2a240e3e-3206-4a62-8484-535e821b8bfd-09-faster-ultimate-version.mp3"
+        },
+        {
+          "title": "Don't Judge Me",
+          "preview": "music/previews/online/502afd9a-9b25-4987-b944-cc89c882373b-10-don-t-judge-me.mp3"
+        }
+      ],
+      "created": "2026-10-10T02:29:29.003Z",
+      "updated": "2026-10-10T02:50:30.071Z"
+    },
+    {
       "title": "I am the Paladin",
       "artist": "Echo Craft",
       "releaseDate": "",
@@ -257,58 +317,6 @@
       "itunes": "https://itunes.apple.com/lookup?upc=825417646517&entity=song&callback=iTunesCallback",
       "updated": "2026-07-17T01:44:18.768Z",
       "created": "2026-07-17T01:44:18.768Z"
-    },
-    {
-      "type": "album",
-      "title": "Requiem Of His Grace",
-      "artist": "Echo Craft",
-      "releaseDate": "",
-      "cover": "https://distrokid.imgix.net/http%3A%2F%2Fgather.fandalism.com%2F12103955--B1B2C640-FE7C-49A2-A43ABBC2C86B1BA5--0--1481144--ROHG.jpg?fm=jpg&mark-y=568&mark-x=620&mark-w=180&q=75&w=800&mark=http%3A%2F%2Fgather.fandalism.com%2Fdistrokid-sticker-sm.png&s=0fffc542810baff34ce4a63a32c7e2fa",
-      "preview": "music/previews/online/03e76138-1ad2-408b-be7d-b4d14581db4b-01-anger-prov-15-1.mp3",
-      "description": "",
-      "publicationStatus": "published",
-      "scheduledLocal": "",
-      "publishAt": null,
-      "hyperfollow": "https://distrokid.com/hyperfollow/echocraft11/requiem-of-his-grace?ref=release",
-      "spotify": "https://open.spotify.com/album/7462FY94Je6nt9iILeXWZ8",
-      "apple": "https://music.apple.com/us/album/requiem-of-his-grace/6765493652?uo=4",
-      "itunes": "",
-      "tracks": [
-        {
-          "title": "Anger (Prov. 15:1)",
-          "preview": "music/previews/online/03e76138-1ad2-408b-be7d-b4d14581db4b-01-anger-prov-15-1.mp3"
-        },
-        {
-          "title": "Fear (2 Tim. 1:7)",
-          "preview": "music/previews/online/ecc2ba64-ad57-4e39-b7dd-b9cfde8d700b-02-fear-2-tim-1-7.mp3"
-        },
-        {
-          "title": "Pride (Prov. 16:18)",
-          "preview": "music/previews/online/8b34fa5d-6a9f-4cc2-8ac8-e3c412caaef7-03-pride-prov-16-18.mp3"
-        },
-        {
-          "title": "Lying (John 8:32)",
-          "preview": "music/previews/online/ba603ec1-9356-4750-b895-27c3351a9eaa-04-lying-john-8-32.mp3"
-        },
-        {
-          "title": "Doubt (Mark 9:24)",
-          "preview": "music/previews/online/c3a6dcdf-9109-46d1-bc33-c761b76f2a7b-05-doubt-mark-9-24.mp3"
-        },
-        {
-          "title": "Worry (Matt. 6:25-27)",
-          "preview": "music/previews/online/c128d7fe-c033-4931-925d-3a6d1c43033b-06-worry-matt-6-25-27.mp3"
-        },
-        {
-          "title": "Sickness (Isaiah 53:5)",
-          "preview": "music/previews/online/6b1fab17-10f5-4063-89b7-7d01389db5ec-07-sickness-isaiah-53-5.mp3"
-        },
-        {
-          "title": "Brokenness (Psalm 34:18)",
-          "preview": "music/previews/online/70e1b1fa-28e8-478d-bf95-17d7f2b1c159-08-brokenness-psalm-34-18.mp3"
-        }
-      ],
-      "created": "2026-10-10T02:29:29.003Z",
-      "updated": "2026-10-10T02:29:29.003Z"
     },
     {
       "title": "Rogue",

@@ -35,21 +35,6 @@
       "note": "Detected automatically. Add HyperFollow/Spotify/preview details before publishing to music/music.json."
     },
     {
-      "collectionId": "1895243608",
-      "type": "album",
-      "title": "HEAVY & CHUNKY",
-      "artist": "Echo Craft",
-      "releaseDate": "2026-05-15",
-      "cover": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/18/3e/11/183e111b-efab-f039-892d-5d906b191daf/artwork.jpg/1200x1200bb.jpg",
-      "apple": "https://music.apple.com/us/album/heavy-chunky/1895243608?uo=4",
-      "trackCount": 10,
-      "genre": "Rock",
-      "source": "apple-music-catalog",
-      "status": "pending",
-      "detectedAt": "2026-09-05T09:29:44.875Z",
-      "note": "Detected automatically. Add HyperFollow/Spotify/preview details before publishing to music/music.json."
-    },
-    {
       "collectionId": "1895450402",
       "type": "album",
       "title": "Stinking Overthinking",
