@@ -65,21 +65,6 @@
       "note": "Detected automatically. Add HyperFollow/Spotify/preview details before publishing to music/music.json."
     },
     {
-      "collectionId": "6766702864",
-      "type": "album",
-      "title": "Midnight Series, Vol. 1",
-      "artist": "Echo Craft",
-      "releaseDate": "2026-05-04",
-      "cover": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/5b/b7/cf/5bb7cfe5-0ff8-b74d-fc3d-acdbe27286fd/artwork.jpg/1200x1200bb.jpg",
-      "apple": "https://music.apple.com/us/album/midnight-series-vol-1/6766702864?uo=4",
-      "trackCount": 10,
-      "genre": "Hip-Hop/Rap",
-      "source": "apple-music-catalog",
-      "status": "pending",
-      "detectedAt": "2026-09-05T09:29:44.875Z",
-      "note": "Detected automatically. Add HyperFollow/Spotify/preview details before publishing to music/music.json."
-    },
-    {
       "collectionId": "1895450402",
       "type": "album",
       "title": "Stinking Overthinking",

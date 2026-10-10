@@ -173,6 +173,66 @@
       "created": "2026-07-17T02:03:13.459Z"
     },
     {
+      "type": "album",
+      "title": "Midnight Series, Vol. 1",
+      "artist": "Echo Craft",
+      "releaseDate": "",
+      "cover": "https://distrokid.imgix.net/http%3A%2F%2Fgather.fandalism.com%2F12103955--752C12BD-BCCE-450B-8951893AC7DB2C48--0--1841556--MS.jpg?fm=jpg&mark-y=568&mark-x=620&mark-w=180&q=75&w=800&mark=http%3A%2F%2Fgather.fandalism.com%2Fdistrokid-sticker-sm.png&s=262aa7b638a6a7841115976cf6a1ac7e",
+      "preview": "music/previews/online/581e0d75-8abb-4c9a-9990-0d159584e533-01-focus-flow.mp3",
+      "description": "",
+      "publicationStatus": "published",
+      "scheduledLocal": "",
+      "publishAt": null,
+      "hyperfollow": "https://distrokid.com/hyperfollow/echocraft11/midnight-series-vol-1?ref=release",
+      "spotify": "https://open.spotify.com/album/3PvOg8lZMqpmcNpy9abBv3",
+      "apple": "https://music.apple.com/us/album/midnight-series-vol-1/6766702864?uo=4",
+      "itunes": "",
+      "tracks": [
+        {
+          "title": "Focus Flow",
+          "preview": "music/previews/online/581e0d75-8abb-4c9a-9990-0d159584e533-01-focus-flow.mp3"
+        },
+        {
+          "title": "Midnight Cipher",
+          "preview": "music/previews/online/738d6394-729f-43f9-8dc1-555630cbb64e-02-midnight-cipher.mp3"
+        },
+        {
+          "title": "Floating Hours",
+          "preview": "music/previews/online/06566ecf-8efb-49a7-b877-be946e14a204-03-floating-hours.mp3"
+        },
+        {
+          "title": "Cipher Sessions",
+          "preview": "music/previews/online/09b45705-600e-4caf-a5be-4ab097ec8d28-04-cipher-sessions.mp3"
+        },
+        {
+          "title": "Nocturne Study",
+          "preview": "music/previews/online/dd4f6a9f-b8f9-4ed0-b852-73d241c9581a-05-nocturne-study.mp3"
+        },
+        {
+          "title": "Golden Hour",
+          "preview": "music/previews/online/574669ee-2167-47ee-b34b-2e64cc8d2f8c-06-golden-hour.mp3"
+        },
+        {
+          "title": "Blueprint Flow",
+          "preview": "music/previews/online/a2f2f87a-7330-473d-a980-66ef06655779-07-blueprint-flow.mp3"
+        },
+        {
+          "title": "Stillness Motion",
+          "preview": "music/previews/online/e0e4e399-6c22-44b7-a66d-a140920695d1-08-stillness-motion.mp3"
+        },
+        {
+          "title": "Velocity Study",
+          "preview": "music/previews/online/e1c6cd09-f950-429a-9b06-917e7e86d0e7-09-velocity-study.mp3"
+        },
+        {
+          "title": "Twilight Session",
+          "preview": "music/previews/online/d0d0f3f2-8d54-45e0-a194-6dc0b02c6f13-10-twilight-session.mp3"
+        }
+      ],
+      "created": "2026-10-10T02:18:31.227Z",
+      "updated": "2026-10-10T02:18:31.227Z"
+    },
+    {
       "title": "O Peter",
       "artist": "Echo Craft",
       "releaseDate": "",
