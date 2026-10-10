@@ -4604,6 +4604,118 @@ text-shadow:
     }
     </style>
 
+<style>
+/* Album storefront cards: fixed desktop geometry, stacked phone layout. */
+section.albums{padding:64px 0 56px;overflow-x:auto;position:relative}
+#albums .ac-canvas{width:1190px;margin:0 auto;padding:0 50px}
+#albums .albums-heading{max-width:none;width:1090px;margin:0 0 30px}
+#albums .albums-kicker{font-size:14px;letter-spacing:1.4px;margin:0 0 18px}
+#albums .section-title{font-size:44px;line-height:1.2;letter-spacing:1px;margin:0 0 14px}
+#albums .albums-heading p{font-size:15px;line-height:1.5;margin:0;color:#d9e9fa}
+#albums .ac-stage{position:relative}
+#albumsContainer{width:1090px}
+#albums .ac-card{width:1090px;padding:27px 26px 22px;border:1px solid #00d9ff;border-radius:21px;background:linear-gradient(110deg,#051325ed,#001020f2);box-shadow:0 14px 60px #0005;color:#eef6ff;font-family:Inter,Arial,sans-serif}
+#albums .ac-card[hidden]{display:none!important}
+#albums .ac-upper{display:grid;grid-template-columns:400px 596px;gap:36px;height:400px}
+#albums .ac-cover{width:400px;height:400px;object-fit:contain;display:block;border:1px solid #768ba944;border-radius:9px;background:#081b2f}
+#albums .ac-details{min-width:0}
+#albums .ac-badge{display:inline-flex;border:1px solid #00d9ff;border-radius:20px;padding:7px 14px;color:#52ecff;font-size:13px;line-height:16px;letter-spacing:.4px;font-weight:700}
+#albums .ac-title{font:600 40px/1.1 Orbitron,Arial,sans-serif;letter-spacing:-.5px;margin:9px 0 6px;height:45px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:#eef6ff}
+#albums .ac-title a{color:inherit;text-decoration:none}
+#albums .ac-artist{margin:0 0 12px;font-size:15px;line-height:19px;color:#eef6ff}
+#albums .ac-pills{display:flex;gap:12px;margin-bottom:10px}
+#albums .ac-pills span{padding:8px 14px;border:1px solid #3b647f66;border-radius:22px;background:#152c40;font-size:12px;line-height:15px}
+#albums .ac-description{font-size:15px;line-height:22.5px;color:#d9e2ee;margin:0 0 12px;height:45px;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
+#albums .ac-tracks{height:210px;overflow-y:auto;border:1px solid #31516955;border-radius:9px;scrollbar-color:#b8d5eb #102136;scrollbar-width:thin}
+#albums .ac-track{display:grid;grid-template-columns:23px 30px minmax(0,1fr) 63px;gap:14px;align-items:center;height:42px;padding:0 18px;border-bottom:1px solid #7185a21c;font-size:14px;line-height:18px}
+#albums .ac-track:last-child{border-bottom:0}
+#albums .ac-playing{background:#00d9ff16;color:#62edff}
+#albums .ac-play{border:1px solid transparent;background:#152335;border-radius:50%;width:28px;height:28px;display:grid;place-items:center;color:#ecf5ff;padding:0;cursor:pointer;font-size:11px}
+#albums .ac-play[aria-pressed=true]{border-color:#00d9ff;color:#00d9ff}
+#albums .ac-play:disabled{opacity:.45;cursor:default}
+#albums .ac-clip{font-size:12px;color:#a6bdcf;text-align:right}
+#albums .ac-track-title{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#albums .ac-no-tracks{padding:16px;font-size:14px;color:#bad0e2}
+#albums .ac-streaming{display:flex;align-items:end;gap:16px;margin-top:26px;height:58px}
+#albums .ac-listen,#albums .ac-add{background:linear-gradient(105deg,#00c9ef,#9644ff);border:1px solid #05d8ff55;color:#fff;box-shadow:0 6px 22px #00b6e71a;font-weight:700;border-radius:10px}
+#albums .ac-listen{width:314px;height:58px;display:flex;align-items:center;justify-content:center;gap:12px;font-size:17px;text-decoration:none}
+#albums .ac-platform{width:180px;height:40px;display:flex;gap:10px;align-items:center;justify-content:center;border:1px solid #46708766;border-radius:9px;background:#0d1b2b;font-size:14px;font-weight:600;color:#fff;text-decoration:none}
+#albums .ac-platform.ac-spotify{color:#00ea74;border-color:#00ad6744;background:#032223}
+#albums .ac-platform i{font-size:20px}
+#albums .ac-purchase{display:flex;align-items:center;gap:20px;border-top:1px solid #00d9ff;margin-top:22px;padding-top:18px;height:77px}
+#albums .ac-cart-icon{width:75px;height:58px;background:#00232e77;border-radius:10px;display:grid;place-items:center;color:#00d9ff;font-size:36px;flex-shrink:0}
+#albums .ac-purchase-copy{flex:1}
+#albums .ac-purchase-copy strong{display:block;font-size:20px;line-height:25px;margin-bottom:5px}
+#albums .ac-purchase-copy span{color:#c1d1e3;font-size:14px;line-height:18px}
+#albums .ac-price{width:136px;height:58px;border:1px solid #00d9ff55;border-radius:10px;text-align:center;padding:6px 0;color:#00d9ff;background:#071626;flex-shrink:0}
+#albums .ac-price strong{display:block;font-size:25px;line-height:30px}
+#albums .ac-price small{font-size:10px;line-height:12px;color:#a6c0d2}
+#albums .ac-add{width:258px;height:58px;display:flex;align-items:center;justify-content:center;gap:13px;font-size:18px;cursor:pointer;font-family:inherit;flex-shrink:0}
+#albums .ac-arrow{position:absolute;top:250px;width:53px;height:53px;border:1px solid #00d9ff;border-radius:50%;background:#00101de8;color:#00d9ff;display:grid;place-items:center;font-size:22px;cursor:pointer;z-index:2}
+#albums .ac-arrow:disabled{opacity:.35;cursor:default}
+#albums .ac-prev{left:-49px}#albums .ac-next{right:-49px}
+#albums .ac-navigation{display:flex;justify-content:space-between;height:22px;margin-top:8px;font-size:12px;line-height:18px;color:#85efff}
+#albums #albumsPosition{font:600 12px/18px Orbitron,Arial,sans-serif;white-space:nowrap}
+#albums .ac-gallery-heading{display:flex;align-items:center;justify-content:space-between;margin:5px 5px 18px}
+#albums .ac-gallery-heading h3{margin:0;color:#75e1ff;font:700 18px/24px Orbitron,Arial,sans-serif}
+#albums .ac-gallery-heading span{color:#00d9ff;font-size:14px}
+#albums .ac-gallery{display:flex;gap:23px;padding:4px 14px 8px;overflow-x:auto;scrollbar-color:#1b7697 #0b1929;scrollbar-width:thin}
+#albums .ac-thumbnail{width:194px;flex:none;padding:0;border:1px solid #00d9ff90;border-radius:10px;overflow:hidden;background:#061829;color:#fff;text-align:left;cursor:pointer;font-family:inherit}
+#albums .ac-thumbnail img{display:block;width:192px;height:192px;object-fit:contain}
+#albums .ac-thumbnail span{display:block;padding:11px;font-size:13px;line-height:17px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#albums .ac-thumbnail[aria-pressed=true]{box-shadow:0 0 0 3px #00c8ef,0 0 18px #9354ff;border-color:#8758ff}
+#albums .ac-store-note{font-size:12px;line-height:18px;color:#b9cedf;margin:16px 14px 0}
+#albums button:focus-visible,#albums a:focus-visible{outline:3px solid white;outline-offset:3px}
+#albums .ac-cart{width:440px;max-width:calc(100vw - 30px);background:#07172a;color:#eaf6ff;border:1px solid #00d9ff;border-radius:16px;padding:25px;position:fixed;inset:0;margin:auto}
+#albums .ac-cart::backdrop{background:#000a}
+#albums .ac-cart h2{font:600 21px/1.4 Orbitron,Arial,sans-serif;margin:0 0 16px}
+#albums .ac-cart p{font-size:14px;line-height:1.5;color:#bad0e2}
+#albums .ac-cart-row{padding:14px 0;display:flex;align-items:center;justify-content:space-between;gap:12px;border-bottom:1px solid #41637755;font-size:14px}
+#albums .ac-remove{background:#10283e;border:1px solid #446d88;border-radius:7px;color:#fff;padding:8px 12px;font:14px Inter,Arial,sans-serif;cursor:pointer}
+#albums #storeAlbumCartClose{margin-top:20px}
+@media(max-width:768px){
+ section.albums{padding:50px 12px 40px;overflow-x:hidden}
+ #albums .ac-canvas{width:100%;padding:0}
+ #albums .albums-heading{width:100%;margin-bottom:24px}
+ #albums .section-title{font-size:25px;line-height:1.3;letter-spacing:0}
+ #albums .albums-kicker{font-size:11px;letter-spacing:1px;margin-bottom:12px}
+ #albums .albums-heading p{font-size:13px;line-height:1.6}
+ #albumsContainer{width:100%}
+ #albums .ac-card{width:100%;padding:18px 16px;border-radius:17px}
+ #albums .ac-upper{display:flex;flex-direction:column;gap:20px;height:auto}
+ #albums .ac-cover{width:min(280px,100%);height:auto;aspect-ratio:1;margin:0 auto}
+ #albums .ac-title{font-size:24px;line-height:1.3;height:auto;max-height:94px;white-space:normal;overflow-wrap:anywhere;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;margin:10px 0 8px}
+ #albums .ac-badge{font-size:11px}
+ #albums .ac-artist{font-size:14px}
+ #albums .ac-description{font-size:14px;line-height:21px;height:auto;max-height:84px;-webkit-line-clamp:4}
+ #albums .ac-tracks{height:240px}
+ #albums .ac-track{grid-template-columns:18px 30px minmax(0,1fr);gap:10px;padding:0 10px;height:48px;font-size:13px}
+ #albums .ac-clip{display:none}
+ #albums .ac-play{width:30px;height:30px}
+ #albums .ac-streaming{display:grid;grid-template-columns:1fr 1fr;gap:10px;height:auto;margin-top:20px}
+ #albums .ac-listen{grid-column:1/-1;width:100%;height:52px;font-size:16px}
+ #albums .ac-platform{width:100%;height:44px;font-size:13px}
+ #albums .ac-purchase{display:grid;grid-template-columns:1fr 110px;gap:14px;height:auto;margin-top:20px;padding-top:18px}
+ #albums .ac-cart-icon{display:none}
+ #albums .ac-purchase-copy strong{font-size:16px;line-height:20px}
+ #albums .ac-purchase-copy span{font-size:12px;line-height:16px;display:block}
+ #albums .ac-price{width:110px;height:58px}
+ #albums .ac-price strong{font-size:23px}
+ #albums .ac-add{grid-column:1/-1;width:100%;height:52px;font-size:16px}
+ #albums .ac-arrow{top:118px;width:40px;height:40px;font-size:16px}
+ #albums .ac-prev{left:0}#albums .ac-next{right:0}
+ #albums .ac-navigation{height:38px;font-size:11px;gap:10px}
+ #albums .ac-gallery-heading{margin:14px 0;font-size:12px}
+ #albums .ac-gallery-heading h3{font-size:15px}
+ #albums .ac-gallery-heading span{font-size:11px}
+ #albums .ac-gallery{gap:15px;padding:4px 4px 10px}
+ #albums .ac-thumbnail{width:134px}
+ #albums .ac-thumbnail img{width:132px;height:132px}
+ #albums .ac-thumbnail span{font-size:11px;padding:9px}
+ #albums .ac-store-note{margin:14px 0 0;font-size:11px}
+}
+
+</style>
 </head>
 
 <body>
@@ -4788,47 +4900,20 @@ text-shadow:
 
             <!-- ALBUMS & COLLECTIONS SECTION -->
             <section class="albums" id="albums">
-                <div class="albums-heading">
-                    <span class="albums-kicker">Complete Musical Experiences</span>
-                    <h2 class="section-title">ALBUMS &amp; COLLECTIONS</h2>
-                    <p>
-                        Explore complete Echo Craft projects, hear every available
-                        preview in order, and continue listening on your preferred platform.
-                    </p>
-                </div>
-
-                <div class="albums-carousel-shell">
-                    <button
-                        type="button"
-                        class="albums-carousel-arrow"
-                        id="previousAlbum"
-                        aria-label="Previous album"
-                    >
-                        <i class="fas fa-chevron-left"></i>
-                    </button>
-
-                    <div
-                        class="albums-grid"
-                        id="albumsContainer"
-                        aria-live="polite"
-                    >
-                        <div class="albums-loading">
-                            <i class="fas fa-circle-notch fa-spin"></i>
-                            Loading albums and collections...
-                        </div>
+                <div class="ac-canvas">
+                    <div class="albums-heading"><span class="albums-kicker">Complete Musical Experiences</span><h2 class="section-title">ALBUMS &amp; COLLECTIONS</h2><p>Explore complete Echo Craft projects, hear every available preview in order, and continue listening on your preferred platform.</p></div>
+                    <div class="ac-stage">
+                        <button type="button" class="ac-arrow ac-prev" id="previousAlbum" aria-label="Previous album" disabled><i class="fas fa-chevron-left" aria-hidden="true"></i></button>
+                        <div id="albumsContainer"><div class="albums-loading">Loading albums and collections…</div></div>
+                        <button type="button" class="ac-arrow ac-next" id="nextAlbum" aria-label="Next album" disabled><i class="fas fa-chevron-right" aria-hidden="true"></i></button>
                     </div>
-
-                    <button
-                        type="button"
-                        class="albums-carousel-arrow"
-                        id="nextAlbum"
-                        aria-label="Next album"
-                    >
-                        <i class="fas fa-chevron-right"></i>
-                    </button>
+                    <div class="ac-navigation"><span id="storeAlbumStatus" role="status" aria-live="polite"></span><span id="albumsPosition" aria-live="polite">0 / 0</span></div>
+                    <div class="ac-gallery-heading"><h3>MORE ALBUMS</h3><span>Select an album below</span></div>
+                    <div class="ac-gallery" id="storeAlbumGallery" role="group" aria-label="Choose an album"></div>
+                    <p class="ac-store-note">Store preview: prices are illustrative. Checkout and downloads are not enabled yet.</p>
                 </div>
-
-                <div class="albums-position" id="albumsPosition">1 / 1</div>
+                <audio id="storeAlbumAudio" preload="none"></audio>
+                <dialog id="storeAlbumCart" class="ac-cart" aria-labelledby="storeAlbumCartTitle"><h2 id="storeAlbumCartTitle">Preview cart</h2><p>This tests the store layout. Prices are illustrative; no payment or download will be processed.</p><div id="storeAlbumCartItems"></div><button type="button" class="ac-remove" id="storeAlbumCartClose">Close</button></dialog>
             </section>
 
             <!-- MUSIC SECTION -->
@@ -5413,7 +5498,7 @@ videoHtml += `
     }());
     </script>
 
-    <script src="js/music.js?v=restore-20261010-01"></script>
+    <script src="js/music.js?v=album-cards-20261010-01"></script>
 
     <script src="js/analytics.js"></script>
 

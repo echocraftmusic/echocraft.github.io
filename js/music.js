@@ -39,322 +39,137 @@ function escapeMusicAttribute(value) {
 }
 
 
-/*
-------------------------------------------
-Create one premium album card
-------------------------------------------
-*/
+/* Catalog-driven album cards: no separate page or manual layout per release. */
+let storeAlbumTrack = null;
+let storeAlbumPlayGeneration = 0;
+const storeAlbumCart = new Set(); // Demonstration only; never touches the production cart.
+
+function storeAlbumURL(value) {
+    if (!value) return '';
+    try {
+        const url = new URL(String(value).replaceAll('\\', '/'), window.location.href);
+        return ['http:', 'https:'].includes(url.protocol) ? url.href : '';
+    } catch { return ''; }
+}
 
 function createAlbumCard(album, index) {
-    const rawTitle =
-        String(album.title || "Untitled Album");
-
-    const title =
-        escapeMusicText(rawTitle);
-
-    const artist =
-        escapeMusicText(
-            album.artist || "Echo Craft"
-        );
-
-    const cover =
-        album.cover && album.cover.trim() !== ""
-            ? escapeMusicAttribute(album.cover)
-            : "assets/images/ec-icon.webp";
-
-    const hyperfollow =
-        album.hyperfollow && album.hyperfollow.trim() !== ""
-            ? escapeMusicAttribute(album.hyperfollow)
-            : "";
-
-    const spotify =
-        album.spotify && album.spotify.trim() !== ""
-            ? escapeMusicAttribute(album.spotify)
-            : "";
-
-    const apple =
-        album.apple && album.apple.trim() !== ""
-            ? escapeMusicAttribute(album.apple)
-            : "";
-
-    const trackCount =
-        Array.isArray(album.tracks)
-            ? album.tracks.length
-            : 0;
-
-    const description =
-        album.description &&
-        album.description.trim() !== ""
-            ? escapeMusicText(album.description)
-            : "A complete Echo Craft listening experience.";
-
-    const slug =
-        rawTitle
-            .trim()
-            .toLowerCase()
-            .replace(/&/g, "and")
-            .replace(/[^a-z0-9]+/g, "-")
-            .replace(/^-|-$/g, "");
-
-    const hyperfollowButton = hyperfollow
-        ? `
-            <a
-                href="${hyperfollow}"
-                target="_blank"
-                rel="noopener noreferrer"
-                class="album-explore-btn"
-            >
-                <i class="fas fa-headphones"></i>
-                Listen Everywhere
-            </a>
-        `
-        : "";
-
-    const spotifyButton = spotify
-        ? `
-            <a
-                href="${spotify}"
-                target="_blank"
-                rel="noopener noreferrer"
-                class="album-platform-btn spotify"
-                aria-label="Listen to ${title} on Spotify"
-                title="Spotify"
-            >
-                <i class="fab fa-spotify"></i>
-                <span>Spotify</span>
-            </a>
-        `
-        : "";
-
-    const appleButton = apple
-        ? `
-            <a
-                href="${apple}"
-                target="_blank"
-                rel="noopener noreferrer"
-                class="album-platform-btn"
-                aria-label="Listen to ${title} on Apple Music"
-                title="Apple Music"
-            >
-                <i class="fab fa-apple"></i>
-                <span>Apple Music</span>
-            </a>
-        `
-        : "";
-
-    return `
-        <article
-            class="album-card"
-            data-album-index="${index}"
-        >
-            <div class="album-card-art">
-                <img
-                    src="${cover}"
-                    alt="${title} album cover"
-                    loading="lazy"
-                    onerror="this.src='assets/images/ec-icon.webp';"
-                >
+    const title = escapeMusicText(album.title || 'Untitled Album');
+    const tracks = Array.isArray(album.tracks) ? album.tracks : [];
+    const description = escapeMusicText(album.description || 'A complete Echo Craft listening experience. Hear the available track previews below, then continue listening on your preferred platform.');
+    const platform = (url, label, icon, className) => storeAlbumURL(url) ? `<a href="${escapeMusicAttribute(storeAlbumURL(url))}" class="ac-${className}" target="_blank" rel="noopener noreferrer"><i class="${icon}" aria-hidden="true"></i><span>${label}</span></a>` : '';
+    return `<article class="ac-card" data-album-index="${index}" aria-labelledby="ac-title-${index}" ${index ? 'hidden' : ''}>
+        <div class="ac-upper">
+            <img class="ac-cover" src="${escapeMusicAttribute(storeAlbumURL(album.cover) || 'assets/images/no-cover.webp')}" alt="${title} album cover" loading="lazy" onerror="this.onerror=null;this.src='assets/images/no-cover.webp'">
+            <div class="ac-details">
+                <div class="ac-badge">ALBUM • ${tracks.length} TRACKS</div>
+                <h3 class="ac-title" id="ac-title-${index}" title="${title}"><a href="albums/album.html?title=${encodeURIComponent(album.title || '')}">${title}</a></h3>
+                <p class="ac-artist">${escapeMusicText(album.artist || 'Echo Craft')}</p>
+                <div class="ac-pills"><span>Album</span><span>Track previews</span></div>
+                <p class="ac-description" title="${description}">${description}</p>
+                <div class="ac-tracks" role="group" aria-label="${title} track previews">${tracks.length ? tracks.map((track, trackIndex) => `<div class="ac-track"><span class="ac-number">${trackIndex + 1}</span><button class="ac-play" type="button" data-track-index="${trackIndex}" aria-label="Play preview: ${escapeMusicAttribute(track.title)}" aria-pressed="false" ${storeAlbumURL(track.preview) ? '' : 'disabled'}><i class="fas fa-play" aria-hidden="true"></i></button><span class="ac-track-title" title="${escapeMusicAttribute(track.title)}">${escapeMusicText(track.title)}</span><span class="ac-clip">${storeAlbumURL(track.preview) ? 'Preview' : 'Unavailable'}</span></div>`).join('') : '<p class="ac-no-tracks">Track previews are not available yet.</p>'}</div>
             </div>
-
-            <div class="album-card-body">
-                <div class="album-card-badge">
-                    Album · ${trackCount} Tracks
-                </div>
-
-                <h3 class="album-card-title">
-                    ${title}
-                </h3>
-
-                <div class="album-card-artist">
-                    ${artist}
-                </div>
-
-                <p class="album-card-description">
-                    ${description}
-                </p>
-
-                <div class="album-card-actions">
-                    <a
-                        href="albums/album.html?title=${encodeURIComponent(rawTitle)}"
-                        class="album-explore-btn"
-                    >
-                        <i class="fas fa-compact-disc"></i>
-                        Explore Album
-                    </a>
-
-                    ${hyperfollowButton}
-                    ${spotifyButton}
-                    ${appleButton}
-                </div>
-            </div>
-        </article>
-    `;
+        </div>
+        <div class="ac-streaming">${platform(album.hyperfollow, 'Listen Everywhere', 'fas fa-headphones', 'listen')}${platform(album.spotify, 'Spotify', 'fab fa-spotify', 'platform ac-spotify')}${platform(album.apple, 'Apple Music', 'fab fa-apple', 'platform')}</div>
+        <div class="ac-purchase"><div class="ac-cart-icon"><i class="fas fa-shopping-cart" aria-hidden="true"></i></div><div class="ac-purchase-copy"><strong>Get This Album</strong><span>Digital album · Store preview</span></div><div class="ac-price"><strong>$9.99</strong><small>Illustrative price</small></div><button class="ac-add" type="button"><i class="fas fa-shopping-cart" aria-hidden="true"></i>Add to Cart</button></div>
+    </article>`;
 }
 
-/*
-------------------------------------------
-Album carousel controls
-------------------------------------------
-*/
+function stopStoreAlbumPreview() {
+    storeAlbumPlayGeneration++;
+    const audio = document.getElementById('storeAlbumAudio');
+    if (audio) { audio.pause(); audio.removeAttribute('src'); audio.load(); }
+    storeAlbumTrack = null;
+    updateStoreAlbumPlayButtons();
+}
+
+function storeAlbumStatus(message = '') {
+    const status = document.getElementById('storeAlbumStatus');
+    if (status) status.textContent = message;
+}
+
+function updateStoreAlbumPlayButtons() {
+    const audio = document.getElementById('storeAlbumAudio');
+    document.querySelectorAll('.ac-play').forEach(button => {
+        const albumIndex = Number(button.closest('.ac-card').dataset.albumIndex);
+        const trackIndex = Number(button.dataset.trackIndex);
+        const playing = storeAlbumTrack && storeAlbumTrack.albumIndex === albumIndex && storeAlbumTrack.trackIndex === trackIndex && audio && !audio.paused;
+        button.setAttribute('aria-pressed', String(Boolean(playing)));
+        button.querySelector('i').className = playing ? 'fas fa-pause' : 'fas fa-play';
+        const title = echoCraftAlbums[albumIndex]?.tracks?.[trackIndex]?.title || '';
+        button.setAttribute('aria-label', (playing ? 'Pause preview: ' : 'Play preview: ') + title);
+        button.closest('.ac-track').classList.toggle('ac-playing', Boolean(playing));
+    });
+}
+
+async function playStoreAlbumTrack(albumIndex, trackIndex) {
+    const audio = document.getElementById('storeAlbumAudio');
+    const track = echoCraftAlbums[albumIndex]?.tracks?.[trackIndex];
+    const source = storeAlbumURL(track?.preview);
+    if (!audio || !source) return;
+    const generation = ++storeAlbumPlayGeneration;
+    const sameTrack = storeAlbumTrack?.albumIndex === albumIndex && storeAlbumTrack?.trackIndex === trackIndex;
+    if (sameTrack && !audio.paused) { audio.pause(); storeAlbumStatus('Preview paused.'); return; }
+    if (!sameTrack) { audio.pause(); audio.src = source; storeAlbumTrack = { albumIndex, trackIndex }; }
+    document.querySelectorAll('#musicContainer audio').forEach(player => player.pause());
+    storeAlbumStatus('Loading preview: ' + track.title);
+    try {
+        await audio.play();
+        if (generation === storeAlbumPlayGeneration) storeAlbumStatus('Playing preview: ' + track.title);
+    } catch {
+        if (generation === storeAlbumPlayGeneration) storeAlbumStatus('This preview could not start. Please try again or listen on a streaming platform.');
+    }
+    updateStoreAlbumPlayButtons();
+}
+
+function renderStoreAlbumCart() {
+    const container = document.getElementById('storeAlbumCartItems');
+    container.replaceChildren();
+    if (!storeAlbumCart.size) { const p = document.createElement('p'); p.textContent = 'Your preview cart is empty.'; container.append(p); }
+    storeAlbumCart.forEach(title => {
+        const row = document.createElement('div'); row.className = 'ac-cart-row';
+        const label = document.createElement('span'); label.textContent = title + ' · $9.99';
+        const remove = document.createElement('button'); remove.className = 'ac-remove'; remove.textContent = 'Remove'; remove.setAttribute('aria-label', 'Remove ' + title);
+        remove.onclick = () => { storeAlbumCart.delete(title); renderStoreAlbumCart(); };
+        row.append(label, remove); container.append(row);
+    });
+}
+
+function selectStoreAlbum(index) {
+    if (!echoCraftAlbums.length) return;
+    stopStoreAlbumPreview();
+    activeAlbumIndex = (index + echoCraftAlbums.length) % echoCraftAlbums.length;
+    document.querySelectorAll('#albumsContainer .ac-card').forEach((card, i) => { card.hidden = i !== activeAlbumIndex; });
+    document.querySelectorAll('.ac-thumbnail').forEach((button, i) => button.setAttribute('aria-pressed', String(i === activeAlbumIndex)));
+    document.getElementById('albumsPosition').textContent = `${activeAlbumIndex + 1} / ${echoCraftAlbums.length}`;
+    storeAlbumStatus();
+}
 
 function setupAlbumCarousel() {
-    const container =
-        document.getElementById(
-            "albumsContainer"
-        );
-
-    const previousButton =
-        document.getElementById(
-            "previousAlbum"
-        );
-
-    const nextButton =
-        document.getElementById(
-            "nextAlbum"
-        );
-
-    if (
-        !container ||
-        !previousButton ||
-        !nextButton
-    ) {
-        return;
-    }
-
-    function updatePosition() {
-        const cards = [
-            ...container.querySelectorAll(
-                ".album-card"
-            )
-        ];
-
-        const position =
-            document.getElementById(
-                "albumsPosition"
-            );
-
-        if (!cards.length) {
-            if (position) {
-                position.textContent = "0 / 0";
-            }
-
-            previousButton.disabled = true;
-            nextButton.disabled = true;
-            return;
-        }
-
-        const containerCenter =
-            container.scrollLeft +
-            container.clientWidth / 2;
-
-        let nearestIndex = 0;
-        let nearestDistance =
-            Number.POSITIVE_INFINITY;
-
-        cards.forEach((card, index) => {
-            const cardCenter =
-                card.offsetLeft +
-                card.clientWidth / 2;
-
-            const distance =
-                Math.abs(
-                    containerCenter -
-                    cardCenter
-                );
-
-            if (distance < nearestDistance) {
-                nearestDistance = distance;
-                nearestIndex = index;
-            }
-        });
-
-        activeAlbumIndex =
-            nearestIndex;
-
-        if (position) {
-            position.textContent =
-                `${nearestIndex + 1} / ${cards.length}`;
-        }
-
-        const onlyOne =
-            cards.length <= 1;
-
-        previousButton.disabled =
-            onlyOne;
-
-        nextButton.disabled =
-            onlyOne;
-    }
-
-    function moveAlbum(direction) {
-        const cards = [
-            ...container.querySelectorAll(
-                ".album-card"
-            )
-        ];
-
-        if (!cards.length) {
-            return;
-        }
-
-        const nextIndex =
-            (
-                activeAlbumIndex +
-                direction +
-                cards.length
-            ) % cards.length;
-
-        const target =
-            cards[nextIndex];
-
-        const left =
-            target.offsetLeft -
-            (
-                container.clientWidth -
-                target.clientWidth
-            ) / 2;
-
-        container.scrollTo({
-            left,
-            behavior: "smooth"
-        });
-
-        activeAlbumIndex =
-            nextIndex;
-
-        window.setTimeout(
-            updatePosition,
-            350
-        );
-    }
-
-    previousButton.onclick =
-        () => moveAlbum(-1);
-
-    nextButton.onclick =
-        () => moveAlbum(1);
-
-    let timer = null;
-
-    container.addEventListener(
-        "scroll",
-        () => {
-            window.clearTimeout(timer);
-
-            timer =
-                window.setTimeout(
-                    updatePosition,
-                    80
-                );
-        },
-        {
-            passive: true
-        }
-    );
-
-    updatePosition();
+    const container = document.getElementById('albumsContainer');
+    const previous = document.getElementById('previousAlbum'), next = document.getElementById('nextAlbum');
+    if (!container || !previous || !next) return;
+    stopStoreAlbumPreview();
+    previous.disabled = next.disabled = echoCraftAlbums.length < 2;
+    previous.onclick = () => selectStoreAlbum(activeAlbumIndex - 1);
+    next.onclick = () => selectStoreAlbum(activeAlbumIndex + 1);
+    document.getElementById('albumsPosition').textContent = echoCraftAlbums.length ? `1 / ${echoCraftAlbums.length}` : '0 / 0';
+    const gallery = document.getElementById('storeAlbumGallery'); gallery.replaceChildren();
+    echoCraftAlbums.forEach((album, index) => {
+        const button = document.createElement('button'); button.className = 'ac-thumbnail'; button.type = 'button';
+        button.setAttribute('aria-label', 'Show ' + album.title); button.setAttribute('aria-pressed', String(index === 0));
+        const image = document.createElement('img'); image.src = storeAlbumURL(album.cover) || 'assets/images/no-cover.webp'; image.alt = ''; image.loading = 'lazy'; image.onerror = () => { image.onerror = null; image.src = 'assets/images/no-cover.webp'; };
+        const label = document.createElement('span'); label.textContent = album.title; label.title = album.title;
+        button.append(image, label); button.onclick = () => selectStoreAlbum(index); gallery.append(button);
+    });
+    container.querySelectorAll('.ac-play').forEach(button => { button.onclick = () => playStoreAlbumTrack(Number(button.closest('.ac-card').dataset.albumIndex), Number(button.dataset.trackIndex)); });
+    container.querySelectorAll('.ac-add').forEach(button => { button.onclick = () => { storeAlbumCart.add(echoCraftAlbums[Number(button.closest('.ac-card').dataset.albumIndex)].title); renderStoreAlbumCart(); document.getElementById('storeAlbumCart').showModal(); }; });
+    document.getElementById('storeAlbumCartClose').onclick = () => document.getElementById('storeAlbumCart').close();
+    const audio = document.getElementById('storeAlbumAudio');
+    audio.onplay = updateStoreAlbumPlayButtons; audio.onpause = updateStoreAlbumPlayButtons;
+    audio.onended = () => { updateStoreAlbumPlayButtons(); storeAlbumStatus('Preview finished. Choose another track to listen.'); };
+    audio.onerror = () => { if (storeAlbumTrack) storeAlbumStatus('This preview is unavailable. Please try another track or a streaming platform.'); };
+    activeAlbumIndex = 0;
 }
-
 
 /*
 ------------------------------------------
@@ -509,12 +324,15 @@ Pause other previews
 
 function activateSingleAudioPlayback() {
     const players = document.querySelectorAll(
-        "#musicContainer audio"
+        "#musicContainer audio, #storeAlbumAudio"
     );
 
     players.forEach(player => {
+        if (player.dataset.singlePlaybackBound) return;
+        player.dataset.singlePlaybackBound = "true";
         player.addEventListener("play", () => {
-            players.forEach(otherPlayer => {
+            if (player.paused) return;
+            document.querySelectorAll("#musicContainer audio, #storeAlbumAudio").forEach(otherPlayer => {
                 if (otherPlayer !== player) {
                     otherPlayer.pause();
                 }
