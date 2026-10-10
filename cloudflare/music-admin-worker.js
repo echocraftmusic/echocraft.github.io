@@ -79,6 +79,38 @@ async function publish(env,entry){
     catch(e){if(e.status!==409||attempt===2)throw e;}
   }
 }
+// Public Square Sandbox checkout. Catalog prices are always determined server-side.
+async function squareSandboxCheckout(request,env){
+  requireValue(env.SQUARE_ENVIRONMENT==='sandbox','Checkout is unavailable until the payment configuration is verified.',503);
+  requireValue(env.SQUARE_ACCESS_TOKEN&&env.SQUARE_LOCATION_ID,'Square Sandbox is not configured.',503);
+  const payload=await jsonBody(request,16*1024);
+  requireValue(Array.isArray(payload.items)&&payload.items.length>0&&payload.items.length<=25,'Select up to 25 items.',400);
+  const catalog=await catalogFile(env);
+  const now=Date.now(),selected=new Map();
+  for(const entry of payload.items){
+    requireValue(entry&&typeof entry.title==='string'&&['single','album'].includes(entry.type)&&Number.isInteger(entry.qty)&&entry.qty>=1&&entry.qty<=25,'Invalid cart item.',400);
+    const key=entry.type+':'+normalize(entry.title);
+    requireValue(!selected.has(key),'Duplicate cart item.',400);
+    const matches=catalog.items.filter(x=>(x.type==='album'?'album':'single')===entry.type&&normalize(x.title)===normalize(entry.title)&&x.publicationStatus!=='draft'&&(x.publicationStatus!=='scheduled'||Date.parse(x.publishAt||'')<=now));
+    requireValue(matches.length===1,'One of your cart items is no longer available.',409);
+    const product=matches[0];
+    const base=Number(product.price),sale=Number(product.salePrice);
+    const regular=Number.isFinite(base)&&base>=0.5&&base<=1000?base:(entry.type==='album'?9.99:0.99);
+    const price=product.saleEnabled===true&&Number.isFinite(sale)&&sale>=0.5&&sale<regular?sale:regular;
+    requireValue(Number.isInteger(Math.round(price*100))&&price*100>=50,'Invalid product price.',500);
+    selected.set(key,{name:String(product.title).slice(0,200),quantity:String(entry.qty),base_price_money:{amount:Math.round(price*100),currency:'USD'},note:entry.type==='album'?'Echo Craft digital album':'Echo Craft digital single'});
+  }
+  requireValue([...selected.values()].reduce((sum,x)=>sum+Number(x.quantity)*x.base_price_money.amount,0)<=100000,'Order total exceeds checkout limit.',400);
+  const square=await boundedFetch('https://connect.squareupsandbox.com/v2/online-checkout/payment-links',{
+    method:'POST',
+    headers:{'Authorization':'Bearer '+env.SQUARE_ACCESS_TOKEN,'Square-Version':'2026-09-16','Content-Type':'application/json'},
+    body:JSON.stringify({idempotency_key:uuid(),order:{location_id:env.SQUARE_LOCATION_ID,line_items:[...selected.values()]},checkout_options:{redirect_url:'https://echocraftmusic.com/thank-you.html'}})
+  },64*1024);
+  if(!square.ok){console.error(JSON.stringify({event:'square_sandbox_checkout_failed',status:square.status}));throw new Problem('Square Sandbox could not start checkout. Please try again.',502);}
+  const data=await square.json(),checkoutUrl=data.payment_link?.url||'';
+  requireValue(/^https:\/\/(?:square\.link|checkout\.square\.site)\//.test(checkoutUrl),'Square did not return a valid checkout URL.',502);
+  return {checkoutUrl,environment:'sandbox'};
+}
 export default {async fetch(request,env){
   const origin=request.headers.get('Origin'),headers={'Content-Type':'application/json; charset=utf-8','Cache-Control':'no-store','X-Content-Type-Options':'nosniff',Vary:'Origin'};
   const reply=(data,status=200)=>new Response(JSON.stringify(data),{status,headers});
@@ -86,6 +118,10 @@ export default {async fetch(request,env){
   if(request.method==='OPTIONS')return new Response(null,{status:204,headers:{...headers,'Access-Control-Allow-Methods':'GET, POST, PUT, OPTIONS','Access-Control-Allow-Headers':'Authorization, Content-Type'}});
   const url=new URL(request.url),path=url.pathname;
   if(request.method==='GET'&&(path==='/'||path==='/health'))return reply({service:'EchoCraft Music Admin',version:'online-v1',githubSecretConfigured:Boolean(env.GITHUB_TOKEN),storageConfigured:Boolean(env.ADMIN_STAGING)});
+  if(path==='/api/checkout/sandbox'&&request.method==='POST'){
+    try{requireValue(origin&&ORIGINS.has(origin),'Checkout must begin on the Echo Craft website.',403);return reply(await squareSandboxCheckout(request,env));}
+    catch(e){if(e instanceof Problem)return reply({error:e.message},e.status);console.error(JSON.stringify({event:'checkout_failed',kind:e?.name||'Error'}));return reply({error:'Unable to start Square Sandbox checkout.'},502);}
+  }
   let step='Sign-in verification';
   try{
     const authorization=request.headers.get('Authorization')||'';requireValue(/^Bearer [^\s]+$/.test(authorization),'Please sign in.',401);
