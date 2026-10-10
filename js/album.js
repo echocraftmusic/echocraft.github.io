@@ -408,6 +408,12 @@ async function loadAlbum() {
         buildAlbumLinks(
             currentAlbum
         );
+        const add = document.createElement('button');
+        add.type = 'button';
+        add.className = 'ec-add-cart';
+        add.textContent = '+ Add Album to Cart · $9.99';
+        add.addEventListener('click', () => window.EchoCraftCart?.add({ ...currentAlbum, type: 'album' }));
+        document.getElementById('albumLinks').appendChild(add);
 
         renderTrackList();
 
