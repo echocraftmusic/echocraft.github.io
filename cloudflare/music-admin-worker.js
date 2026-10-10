@@ -110,7 +110,7 @@ async function squareSandboxCheckout(request,env){
   const square=await boundedFetch('https://connect.squareupsandbox.com/v2/online-checkout/payment-links',{
     method:'POST',
     headers:{'Authorization':'Bearer '+env.SQUARE_ACCESS_TOKEN,'Square-Version':'2026-09-16','Content-Type':'application/json'},
-    body:JSON.stringify({idempotency_key:uuid(),order:{location_id:env.SQUARE_LOCATION_ID,line_items:[...selected.values()]},checkout_options:{redirect_url:'https://echocraftmusic.com/thank-you.html'}})
+    body:JSON.stringify({idempotency_key:uuid(),order:{location_id:env.SQUARE_LOCATION_ID,line_items:[...selected.values()]},checkout_options:{redirect_url:'https://echocraftmusic.com/square-sandbox-return.html'}})
   },64*1024);
   if(!square.ok){console.error(JSON.stringify({event:'square_sandbox_checkout_failed',status:square.status}));throw new Problem('Square Sandbox could not start checkout. Please try again.',502);}
   const data=await square.json(),checkoutUrl=data.payment_link?.url||'';
