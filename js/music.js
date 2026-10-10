@@ -42,7 +42,7 @@ function escapeMusicAttribute(value) {
 /* Catalog-driven album cards: no separate page or manual layout per release. */
 let storeAlbumTrack = null;
 let storeAlbumPlayGeneration = 0;
-const storeAlbumCart = new Set(); // Demonstration only; never touches the production cart.
+const storePreviewCart = new Map(); // Demonstration only; never touches the production cart.
 
 function storeAlbumURL(value) {
     if (!value) return '';
@@ -129,15 +129,23 @@ async function playStoreAlbumTrack(albumIndex, trackIndex) {
     updateStoreAlbumPlayButtons();
 }
 
+function addStorePreviewItem(type, item) {
+    const title = String(item.title || 'Untitled Release');
+    const price = type === 'album' ? storeAlbumPrice(item) : storeSinglePrice(item);
+    storePreviewCart.set(type + ':' + title, { title, type, price });
+    renderStoreAlbumCart();
+    document.getElementById('storeAlbumCart').showModal();
+}
+
 function renderStoreAlbumCart() {
     const container = document.getElementById('storeAlbumCartItems');
     container.replaceChildren();
-    if (!storeAlbumCart.size) { const p = document.createElement('p'); p.textContent = 'Your preview cart is empty.'; container.append(p); }
-    storeAlbumCart.forEach(title => {
+    if (!storePreviewCart.size) { const p = document.createElement('p'); p.textContent = 'Your preview cart is empty.'; container.append(p); }
+    storePreviewCart.forEach((item, key) => {
         const row = document.createElement('div'); row.className = 'ac-cart-row';
-        const label = document.createElement('span'); label.textContent = title + ' · $' + storeAlbumPrice(echoCraftAlbums.find(album => album.title === title)).toFixed(2);
-        const remove = document.createElement('button'); remove.className = 'ac-remove'; remove.textContent = 'Remove'; remove.setAttribute('aria-label', 'Remove ' + title);
-        remove.onclick = () => { storeAlbumCart.delete(title); renderStoreAlbumCart(); };
+        const label = document.createElement('span'); label.textContent = item.title + ' · $' + item.price.toFixed(2);
+        const remove = document.createElement('button'); remove.className = 'ac-remove'; remove.textContent = 'Remove'; remove.setAttribute('aria-label', 'Remove ' + item.title);
+        remove.onclick = () => { storePreviewCart.delete(key); renderStoreAlbumCart(); };
         row.append(label, remove); container.append(row);
     });
 }
@@ -170,7 +178,7 @@ function setupAlbumCarousel() {
         button.append(image, label); button.onclick = () => selectStoreAlbum(index); gallery.append(button);
     });
     container.querySelectorAll('.ac-play').forEach(button => { button.onclick = () => playStoreAlbumTrack(Number(button.closest('.ac-card').dataset.albumIndex), Number(button.dataset.trackIndex)); });
-    container.querySelectorAll('.ac-add').forEach(button => { button.onclick = () => { storeAlbumCart.add(echoCraftAlbums[Number(button.closest('.ac-card').dataset.albumIndex)].title); renderStoreAlbumCart(); document.getElementById('storeAlbumCart').showModal(); }; });
+    container.querySelectorAll('.ac-add').forEach(button => { button.onclick = () => { addStorePreviewItem('album', echoCraftAlbums[Number(button.closest('.ac-card').dataset.albumIndex)]); }; });
     document.getElementById('storeAlbumCartClose').onclick = () => document.getElementById('storeAlbumCart').close();
     const audio = document.getElementById('storeAlbumAudio');
     audio.onplay = updateStoreAlbumPlayButtons; audio.onpause = updateStoreAlbumPlayButtons;
@@ -185,9 +193,24 @@ Create one premium music card
 ------------------------------------------
 */
 
+function storeSinglePrice(track) {
+    const price = Number(track?.price);
+    return Number.isFinite(price) && price >= 0.5 ? price : 0.99;
+}
+
+function activateSinglePurchaseButtons() {
+    document.querySelectorAll('#musicContainer .single-buy').forEach(button => {
+        button.onclick = () => {
+            const track = echoCraftTracks[Number(button.closest('.music-card').dataset.index)];
+            if (track) addStorePreviewItem('single', track);
+        };
+    });
+}
+
 function createMusicCard(track, index) {
     const rawTitle = String(track.title || "Untitled Release");
     const title = escapeMusicText(rawTitle);
+    const price = storeSinglePrice(track).toFixed(2);
 
     const cover =
         track.cover && track.cover.trim() !== ""
@@ -307,17 +330,22 @@ function createMusicCard(track, index) {
             </div>
 
             <div class="music-content">
-                <h3 class="music-title">${title}</h3>
+                <h3 class="music-title" title="${title}"><span>${title}</span></h3>
 
                 ${audioPlayer}
 
                 <div class="music-actions">
-                    ${hyperfollowButton}
+                    ${hyperfollowButton || '<span class="single-stream-placeholder" aria-hidden="true"></span>'}
 
                     <div class="platform-buttons">
                         ${spotifyButton}
                         ${appleButton}
                     </div>
+                </div>
+                <div class="single-purchase">
+                    <div class="single-purchase-copy"><strong>Get This Track</strong><span>Digital single · Store preview</span></div>
+                    <div class="single-price">$${price}</div>
+                    <button type="button" class="single-buy" aria-label="Add ${title} to the preview cart"><i class="fas fa-shopping-cart" aria-hidden="true"></i>Buy Here</button>
                 </div>
             </div>
         </article>
@@ -940,6 +968,7 @@ async function loadMusicTracks() {
 
         setupAlbumCarousel();
         activateSingleAudioPlayback();
+        activateSinglePurchaseButtons();
         activateMobileMusicScrollTracking();
 
         activeMobileCardIndex = 0;
