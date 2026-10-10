@@ -35,21 +35,6 @@
       "note": "Detected automatically. Add HyperFollow/Spotify/preview details before publishing to music/music.json."
     },
     {
-      "collectionId": "1892776244",
-      "type": "album",
-      "title": "Echo Craft Christmas: Volume 1",
-      "artist": "Echo Craft",
-      "releaseDate": "2026-04-12",
-      "cover": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/65/4e/cc/654ecc74-70dd-431e-ee07-a9006befff0a/artwork.jpg/1200x1200bb.jpg",
-      "apple": "https://music.apple.com/us/album/echo-craft-christmas-volume-1/1892776244?uo=4",
-      "trackCount": 7,
-      "genre": "Holiday",
-      "source": "apple-music-catalog",
-      "status": "pending",
-      "detectedAt": "2026-09-05T09:29:44.875Z",
-      "note": "Detected automatically. Add HyperFollow/Spotify/preview details before publishing to music/music.json."
-    },
-    {
       "collectionId": "1886137982",
       "type": "single",
       "title": "Faster - Single",
