@@ -174,6 +174,7 @@ function createAlbumCard(album, index) {
                 </p>
 
                 <div class="album-card-actions">
+                    <button type="button" class="ec-add-cart" data-ec-album="${index}">+ Add Album · $9.99</button>
                     <a
                         href="albums/album.html?title=${encodeURIComponent(rawTitle)}"
                         class="album-explore-btn"
@@ -488,6 +489,7 @@ function createMusicCard(track, index) {
 
                 ${audioPlayer}
 
+                <button type="button" class="ec-add-cart" data-ec-single="${index}">+ Add to Cart · $0.99</button>
                 <div class="music-actions">
                     ${hyperfollowButton}
 
@@ -1113,6 +1115,15 @@ async function loadMusicTracks() {
         );
 
         setupAlbumCarousel();
+        if (!window.echoCraftCartDelegation) {
+            window.echoCraftCartDelegation = true;
+            document.addEventListener('click', event => {
+                const albumButton = event.target.closest('[data-ec-album]');
+                const singleButton = event.target.closest('[data-ec-single]');
+                if (albumButton && window.EchoCraftCart) window.EchoCraftCart.add({...echoCraftAlbums[Number(albumButton.dataset.ecAlbum)], type:'album'});
+                if (singleButton && window.EchoCraftCart) window.EchoCraftCart.add({...echoCraftTracks[Number(singleButton.dataset.ecSingle)], type:'single'});
+            });
+        }
         activateSingleAudioPlayback();
         activateMobileMusicScrollTracking();
 
