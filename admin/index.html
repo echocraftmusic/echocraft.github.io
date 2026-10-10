@@ -48,7 +48,7 @@
     </div>
   </div>
 
-  <div id="serverStatus" class="status">Checking the local Echo Craft Admin server…</div>
+  <div id="serverStatus" class="status">Checking the online Music Manager…</div>
   <div id="activityStatus" class="activity"><strong>Status:</strong> Ready. Nothing has been saved or published yet.</div>
 
   <div class="grid">
@@ -70,9 +70,9 @@
         <input id="hyperfollow" type="url" placeholder="https://distrokid.com/hyperfollow/...">
         <button id="fetchHyperfollow" class="btn primary" type="button"><i class="fa-solid fa-wand-magic-sparkles"></i> Fetch</button>
       </div>
-      <div class="help">The local manager will try to pull the official cover and service links. Anything it cannot find stays editable.</div>
+      <div class="help">The online manager will try to pull the official cover and service links. Anything it cannot find stays editable.</div>
       <button id="importAlbumPreviews" class="btn good" type="button" style="margin-top:12px"><i class="fa-solid fa-download"></i> Import album previews</button>
-      <div class="help">Download all available preview MP3s, name them by track number and title, and fill the album track list in one step. This replaces the track list in the editor. Review it before publishing locally.</div>
+      <div class="help">Download all available preview MP3s, name them by track number and title, and fill the album track list in one step. This replaces the track list in the editor. Listen and review it before publishing to your website.</div>
       <details class="mp3box"><summary>Fetch blocked? Import a saved HyperFollow page</summary>
         <p class="help">Open your HyperFollow link in your browser. Press Ctrl+S and save as “Webpage, HTML Only.” Keep its link in the field above, then select that saved HTML file here. The manager reads the title, artwork, and streaming links without requesting DistroKid again.</p>
         <label for="hyperfollowHtml">Saved HyperFollow page (.html)</label><input id="hyperfollowHtml" type="file" accept=".html,.htm,text/html">
@@ -110,14 +110,14 @@
         <div id="mp3Name" class="mp3name">No preview selected.</div>
         <audio id="audioPreview" controls style="width:100%;margin-top:10px;display:none"></audio>
       </div>
-      <div class="help">This MP3 will be copied into <strong>music/previews/</strong> when you publish locally.</div>
+      <div class="help">Your preview will be stored privately while you review, then published with the release.</div>
 
       <section id="albumEditor" hidden><h2>Album tracks</h2><p class="help">Add tracks in album order. Use preview clips here; full purchase files will be connected with checkout.</p><div id="trackRows"></div><button id="addTrack" class="btn" type="button">Add track</button></section>
       <div class="footerActions">
         <button id="saveDraft" class="btn" type="button"><i class="fa-solid fa-floppy-disk"></i> Save Draft</button>
-        <button id="publishLocal" class="btn good" type="button"><i class="fa-solid fa-check"></i> Publish to Local Site</button>
+        <button id="publishLocal" class="btn good" type="button"><i class="fa-solid fa-check"></i> Publish to Website</button>
       </div>
-      <div class="note">“Publish to Local Site” only changes the files in this VS Code project. It does not push anything to GitHub yet. That gives you a safe review step first.</div>
+      <div class="note">Save Draft keeps your work privately online. Publish to Website sends the release and its previews to GitHub together. The live site updates after deployment.</div>
     </section>
 
     <aside class="panel">
@@ -141,7 +141,7 @@
         <div id="checkMp3" class="check"><i class="fa-regular fa-circle"></i> Preview MP3</div>
       </div>
       <div class="sectionline"></div>
-      <div class="subtle"><strong>How this works</strong><br><br>1. Select a detected release or paste HyperFollow.<br>2. Confirm what was auto-filled.<br>3. Choose your preview MP3.<br>4. Preview the card.<br>5. Publish locally, then review the website before GitHub.</div>
+      <div class="subtle"><strong>How this works</strong><br><br>1. Select a detected release or paste HyperFollow.<br>2. Confirm what was auto-filled.<br>3. Choose your preview MP3.<br>4. Preview the card.<br>5. Publish to Website, then check the live music page.</div>
     </aside>
   </div>
 </div>
@@ -179,7 +179,8 @@
   function showAdmin(email){
     authGate.style.display = 'none';
     adminApp.classList.add('authorized');
-    signedInAs.querySelector('span').innerHTML = `Signed in as <strong>${email}</strong>`;
+    signedInAs.querySelector('span').textContent = 'Signed in as '+email;
+    window.dispatchEvent(new Event('echo-admin-session'));
     signedInAs.classList.add('show');
   }
 
@@ -191,6 +192,8 @@
   const authClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY, {
     auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true }
   });
+
+  window.echoAdminAuth=authClient;
 
   async function applySession(session){
     const email = String(session?.user?.email || '').toLowerCase();
@@ -245,27 +248,45 @@
   const fields = ['title','artist','type','releaseDate','collectionId','cover','hyperfollow','spotify','apple','itunes','description','publicationStatus','scheduledLocal'];
   let pending = [];
   let selectedPreview = null, selectedCover = null, tracks = [], catalog = [], originalTitle = '';
+  const WORKER='https://echocraft-music-admin.echocraft-aimusic.workers.dev';
+  let previewAssetId='',coverAssetId='',singlePreview='',busy=false,booted=false;
+  const objectUrls=new Set();
+  function objectUrl(blob){const u=URL.createObjectURL(blob);objectUrls.add(u);return u;}
+  function setBusy(value){busy=value;document.querySelector('.grid').inert=value;}
+  async function sampleUrl(track){
+    if(track.file)return objectUrl(track.file);
+    if(!track.assetId)return adminPreviewSource(track.preview);
+    const r=await authenticatedFetch('/api/asset?id='+encodeURIComponent(track.assetId));
+    if(!r.ok)throw new Error('Could not load the preview. Sign in again and retry.');
+    return objectUrl(await r.blob());
+  }
+  async function cardSample(){
+    const t=val('type')==='album'?tracks[0]:{assetId:previewAssetId,preview:singlePreview,file:selectedPreview};
+    if(!t||(!t.preview&&!t.assetId&&!t.file)){$('audioPreview').style.display='none';return;}
+    $('audioPreview').src=await sampleUrl(t);$('audioPreview').style.display='block';
+  }
+
   function adminPreviewSource(value){
     return new URL(String(value).replaceAll('\\','/'),new URL('../',window.location.href)).href;
   }
   function renderTracks(){
     $('trackRows').replaceChildren();
     tracks.forEach((track,index)=>{
-      const row=document.createElement('div'); row.className='mp3box';
-      const label=document.createElement('label'); label.textContent=`Track ${index+1}`;
-      const title=document.createElement('input'); title.value=track.title||''; title.placeholder='Track title'; title.setAttribute('aria-label',`Track ${index+1} title`); title.oninput=()=>track.title=title.value;
-      const preview=document.createElement('input'); preview.value=track.preview||''; preview.placeholder='Existing preview path (optional)'; preview.setAttribute('aria-label',`Track ${index+1} preview path`); preview.oninput=()=>track.preview=preview.value;
-      const file=document.createElement('input'); file.type='file'; file.accept='.mp3,audio/mpeg'; file.setAttribute('aria-label',`Track ${index+1} preview upload`);
-      const name=document.createElement('p'); name.className='help'; name.textContent=track.file?.name||'Choose a preview MP3 or use an existing path.';
-      const player=document.createElement('audio');player.controls=true;player.preload='none';player.style.width='100%';player.setAttribute('aria-label',`Preview track ${index+1}: ${track.title}`);
-      if(track.preview){player.src=adminPreviewSource(track.preview);name.textContent='Imported preview: '+track.preview.split('/').pop()+'. No file selection needed.';}
-      else{player.hidden=true;}
-      preview.oninput=()=>{track.preview=preview.value;if(track.preview){player.src=adminPreviewSource(track.preview);player.hidden=false;}else{player.removeAttribute('src');player.hidden=true;}player.load();};
-      file.onchange=()=>{track.file=file.files[0]||null;name.textContent=track.file?.name||'No new preview selected.';};
-      row.append(label,title,preview,player,name);
-      if(track.preview){const replacement=document.createElement('details');const summary=document.createElement('summary');summary.textContent='Replace this preview with another MP3 (optional)';replacement.append(summary,file);row.append(replacement);}
-      else{row.append(file);}
-      [['Move up',-1],['Move down',1],['Remove',0]].forEach(([text,delta])=>{const b=document.createElement('button');b.type='button';b.className='btn';b.textContent=text;b.disabled=delta!==0&&(index+delta<0||index+delta>=tracks.length);b.onclick=()=>{if(delta===0)tracks.splice(index,1);else [tracks[index],tracks[index+delta]]=[tracks[index+delta],tracks[index]];renderTracks();};row.append(b);});
+      const row=document.createElement('div');row.className='mp3box';
+      const label=document.createElement('label');label.textContent=`Track ${index+1}`;
+      const title=document.createElement('input');title.value=track.title||'';title.placeholder='Track title';title.oninput=()=>track.title=title.value;
+      const path=document.createElement('input');path.value=track.preview||'';path.placeholder='Existing preview path';path.readOnly=!!track.assetId;
+      path.oninput=()=>{track.preview=path.value;updatePreview();};
+      const player=document.createElement('audio');player.controls=true;player.preload='none';player.style.width='100%';
+      if(track.preview&&!track.assetId)player.src=adminPreviewSource(track.preview);
+      const play=document.createElement('button');play.className='btn';play.type='button';play.textContent='Play sample';
+      play.onclick=async()=>{play.disabled=true;try{player.src=await sampleUrl(track);await player.play();}catch(e){toast(e.message,true);}finally{play.disabled=false;}};
+      const note=document.createElement('p');note.className='help';note.textContent=track.assetId?'Imported sample stored online. No file selection needed.':track.preview?'Existing sample on the website.':'Choose a preview MP3.';
+      const file=document.createElement('input');file.type='file';file.accept='.mp3,audio/mpeg';
+      file.onchange=()=>{track.file=file.files[0]||null;note.textContent=track.file?.name||'No replacement selected.';updatePreview();};
+      const details=document.createElement('details'),summary=document.createElement('summary');summary.textContent='Upload or replace sample';details.append(summary,file);
+      row.append(label,title,path,play,player,note,details);
+      [['Move up',-1],['Move down',1],['Remove',0]].forEach(([text,delta])=>{const b=document.createElement('button');b.type='button';b.className='btn';b.textContent=text;b.disabled=delta!==0&&(index+delta<0||index+delta>=tracks.length);b.onclick=()=>{if(delta===0)tracks.splice(index,1);else [tracks[index],tracks[index+delta]]=[tracks[index+delta],tracks[index]];renderTracks();updatePreview();cardSample().catch(e=>toast(e.message,true));};row.append(b);});
       $('trackRows').append(row);
     });
   }
@@ -276,71 +297,73 @@
   $('existingRelease').onchange=()=>{
     if($('existingRelease').value===''){originalTitle='';tracks=[];fields.forEach(id=>$(id).value=id==='artist'?'Echo Craft':id==='type'?'single':id==='publicationStatus'?'published':'');}
     else{const item=catalog[Number($('existingRelease').value)];originalTitle=item.title;fields.forEach(id=>$(id).value=item[id]|| (id==='publicationStatus'?'published':''));tracks=(item.tracks||[]).map(t=>({...t}));}
-    selectedPreview=null;selectedCover=null;$('previewFile').value='';$('coverFile').value='';renderTracks();updatePreview();
+    previewAssetId='';coverAssetId='';singlePreview=catalog.find(item=>item.title===originalTitle)?.preview||'';selectedPreview=null;selectedCover=null;$('previewFile').value='';$('coverFile').value='';renderTracks();updatePreview();cardSample().catch(e=>toast(e.message,true));
   };
 
   function toast(message, bad=false){ const el=$('toast'); el.textContent=message; el.className='toast show'+(bad?' bad':''); clearTimeout(el._t); el._t=setTimeout(()=>el.className='toast',4200); }
-  function activity(message, kind=''){ const el=$('activityStatus'); const now=new Date().toLocaleTimeString([], {hour:'numeric',minute:'2-digit'}); el.className='activity'+(kind?' '+kind:''); el.innerHTML=`<strong>Status:</strong> ${message}<span class="stamp">${now}</span>`; }
+  function activity(message,kind=''){const el=$('activityStatus');el.className='activity'+(kind?' '+kind:'');el.textContent='Status: '+message;}
   function val(id){ return $(id).value.trim(); }
   function setIf(id, value, overwrite=false){ if(value && (overwrite || !val(id))) $(id).value=value; }
   function stripSingle(title){ return String(title||'').replace(/\s*-\s*Single$/i,'').trim(); }
 
   function updateCheck(id, ok){ const el=$(id); el.classList.toggle('ok',!!ok); el.querySelector('i').className=ok?'fa-solid fa-circle-check':'fa-regular fa-circle'; }
   function updatePreview(){
-    $('albumEditor').hidden=val('type')!=='album'; $('scheduledLocal').disabled=val('publicationStatus')!=='scheduled'; $('scheduleSummary').textContent=val('publicationStatus')==='scheduled' ? `Hidden until ${val('scheduledLocal')||'you select a release time'} Eastern. Save and push to GitHub before this time.` : val('publicationStatus')==='draft'?'Hidden from the public showcase.':'Visible after you save and push to GitHub.'; const title=val('title')||'New Echo Craft Release'; $('cardTitle').textContent=title;
+    $('albumEditor').hidden=val('type')!=='album'; $('scheduledLocal').disabled=val('publicationStatus')!=='scheduled'; $('scheduleSummary').textContent=val('publicationStatus')==='scheduled' ? `Hidden until ${val('scheduledLocal')||'you select a release time'} Eastern. Publish to Website before this time.` : val('publicationStatus')==='draft'?'Hidden from the public showcase.':'Visible after you publish and the website finishes updating.'; const title=val('title')||'New Echo Craft Release'; $('cardTitle').textContent=title;
     const cover=val('cover');
-    if(cover){ $('cardCover').src=cover; $('cardCover').style.display='block'; $('coverPlaceholder').style.display='none'; }
+    if(selectedCover){$('cardCover').src=objectUrl(selectedCover);$('cardCover').style.display='block';$('coverPlaceholder').style.display='none';}
+    else if(cover){ if(!coverAssetId)$('cardCover').src=adminPreviewSource(cover); $('cardCover').style.display='block'; $('coverPlaceholder').style.display='none'; }
     else { $('cardCover').style.display='none'; $('coverPlaceholder').style.display='block'; }
-    updateCheck('checkTitle',!!val('title')); updateCheck('checkHyper',!!val('hyperfollow')); updateCheck('checkCover',!!cover);
+    updateCheck('checkTitle',!!val('title')); updateCheck('checkHyper',!!val('hyperfollow')); updateCheck('checkCover',!!cover||!!selectedCover);
     const hasSpotify=!!val('spotify'), hasApple=!!val('apple');
     $('cardSpotify').style.display=hasSpotify?'grid':'none'; $('cardApple').style.display=hasApple?'grid':'none';
-    updateCheck('checkSpotify',hasSpotify); updateCheck('checkApple',hasApple); updateCheck('checkMp3',!!selectedPreview || (val('type')==='album' && tracks.length>0 && tracks.every(track=>track.preview||track.file)));
+    updateCheck('checkSpotify',hasSpotify); updateCheck('checkApple',hasApple); updateCheck('checkMp3',!!selectedPreview || !!previewAssetId || !!singlePreview || (val('type')==='album' && tracks.length>0 && tracks.every(track=>track.preview||track.file)));
   }
 
-  async function api(url, options={}){
-    const res=await fetch(url,{...options,headers:{'Content-Type':'application/json',...(options.headers||{})}});
-    const data=await res.json().catch(()=>({}));
-    if(!res.ok) throw new Error(data.error||`Request failed (${res.status})`);
-    return data;
+  async function authenticatedFetch(path,options={}){
+    const {data,error}=await window.echoAdminAuth.auth.getSession();
+    if(error||!data?.session?.access_token)throw new Error('Please sign in to the Music Manager.');
+    return fetch(WORKER+path,{...options,headers:{'Content-Type':'application/json',Authorization:'Bearer '+data.session.access_token,...(options.headers||{})}});
   }
-
+  async function api(path,options={}){
+    const res=await authenticatedFetch(path,options),data=await res.json().catch(()=>({}));
+    if(!res.ok)throw new Error(data.error||`Request failed (${res.status})`);return data;
+  }
   async function checkServer(){
-    try { await api('/api/status'); $('serverStatus').className='status good'; $('serverStatus').innerHTML='<strong>Local manager connected.</strong> Changes can be written safely into this VS Code project.'; $('publishLocal').disabled=false; }
-    catch { $('serverStatus').className='status bad'; $('serverStatus').innerHTML='<strong>Local manager is not running.</strong> In the VS Code terminal run: <code>node scripts/admin-server.js</code>, then open <code>http://127.0.0.1:3030/admin/</code>'; $('publishLocal').disabled=true; }
+    try{const data=await api('/api/status');if(!data.publishingReady)throw new Error('Deploy the updated online Worker code to finish connecting storage.');$('serverStatus').className='status good';$('serverStatus').textContent=`Online manager connected. ${data.itemCount} releases in your catalog. Import, save drafts, and publish here.`;$('publishLocal').disabled=busy;}
+    catch(e){$('serverStatus').className='status bad';$('serverStatus').textContent=e.message;$('publishLocal').disabled=true;}
   }
 
   async function loadPending(){
     try {
       const data=await api('/api/pending'); pending=Array.isArray(data.items)?data.items:[];
-      $('pendingSelect').innerHTML='<option value="">— Build manually —</option>'+pending.map((item,i)=>`<option value="${i}">${item.title} ${item.releaseDate?'('+item.releaseDate+')':''}</option>`).join('');
-      if(!pending.length) $('pendingSelect').innerHTML='<option value="">No pending releases — build manually</option>';
+      $('pendingSelect').replaceChildren(new Option(pending.length?'— Build manually —':'No pending releases — build manually',''));
+      pending.forEach((item,i)=>$('pendingSelect').add(new Option(item.title+(item.releaseDate?' ('+item.releaseDate+')':''),String(i))));
     } catch(e){ $('pendingSelect').innerHTML='<option value="">Could not load pending releases</option>'; }
   }
 
   $('pendingSelect').addEventListener('change',()=>{
-    const item=pending[Number($('pendingSelect').value)]; if(!item) return;
+    if($('pendingSelect').value==='')return;const item=pending[Number($('pendingSelect').value)]; if(!item) return;
     $('title').value=stripSingle(item.title); $('artist').value=item.artist||'Echo Craft'; $('type').value=item.type||'single'; $('releaseDate').value=item.releaseDate||''; $('collectionId').value=item.collectionId||'';
     $('cover').value=item.cover||''; $('apple').value=item.apple||''; updatePreview(); activity('Detected release loaded. Add the HyperFollow link and preview MP3.','good'); toast('Detected release loaded.');
   });
 
   $('refreshPending').addEventListener('click',loadPending);
   $('importAlbumPreviews').addEventListener('click',async()=>{
-    const url=val('hyperfollow');
-    if(!url)return toast('Paste the album HyperFollow URL first.',true);
-    const btn=$('importAlbumPreviews');
-    btn.disabled=true;$('publishLocal').disabled=true;$('fetchHyperfollow').disabled=true;
-    activity('Downloading the album previews and matching each file to its track title. This can take a minute…');
-    try {
-      const data=await api('/api/album-previews',{method:'POST',body:JSON.stringify({url})});
-      ['title','artist','cover','spotify','apple'].forEach(id=>$(id).value=data[id]||'');
-      $('type').value='album';originalTitle='';tracks=data.tracks;selectedPreview=null;
-      $('previewFile').value='';$('mp3Name').textContent=`${data.totalTracks} album previews imported. The first track is used on the album card.`;
-      $('audioPreview').src=adminPreviewSource(tracks[0].preview);$('audioPreview').style.display='block';
-      renderTracks();updatePreview();
-      activity(`${data.totalTracks} previews imported in album order. Track titles and MP3 files are matched. Review the tracks below, then Publish to Local Site.`, 'good');
-      toast(`${data.totalTracks} album previews ready.`);
-    }catch(e){activity(`Album preview import failed: ${e.message}`, 'bad');toast(e.message,true);}
-    finally{btn.disabled=false;$('fetchHyperfollow').disabled=false;await checkServer();}
+    if(!val('hyperfollow'))return toast('Paste the album HyperFollow URL first.',true);
+    setBusy(true);$('publishLocal').disabled=true;activity('Reading the album track list…');
+    try{
+      const file=$('hyperfollowHtml').files[0];if(file&&file.size>6*1024*1024)throw new Error('Use an HTML file smaller than 6 MB.');
+      const data=await api('/api/import',{method:'POST',body:JSON.stringify({url:val('hyperfollow'),...(file?{html:await file.text()}:{})})});
+      const imported=[];
+      // Each request downloads one track, avoiding a large album request or Worker request limits.
+      for(let i=0;i<data.tracks.length;i++){activity(`Downloading sample ${i+1} of ${data.tracks.length}: ${data.tracks[i].title}`);imported.push(await api('/api/import-track',{method:'POST',body:JSON.stringify({importId:data.importId,index:i})}));}
+      ['title','artist','cover','spotify','apple'].forEach(id=>$(id).value=data[id]||'');$('type').value=data.tracks.length>1?'album':'single';
+      originalTitle='';tracks=imported;singlePreview=imported[0].preview;previewAssetId=imported[0].assetId;coverAssetId='';selectedPreview=null;selectedCover=null;
+      $('previewFile').value='';$('coverFile').value='';$('mp3Name').textContent=`${imported.length} samples stored online.`;
+      renderTracks();updatePreview();await cardSample();await saveOnlineDraft(false);
+      activity(`${imported.length} samples imported in album order and saved as a private draft. Play the samples, review the details, then Publish to Website.`,'good');
+    }catch(e){activity('Import failed: '+e.message+' Your previous editor contents are kept. If DistroKid blocked the request, select a saved HTML page and try again.','bad');toast(e.message,true);}
+    finally{setBusy(false);await checkServer();}
   });
   $('fetchHyperfollow').addEventListener('click',async()=>{
     const url=val('hyperfollow'); if(!url){ activity('HyperFollow URL is missing. Paste it first.','bad'); return toast('Paste the HyperFollow URL first.',true); }
@@ -383,8 +406,15 @@
   fields.forEach(id=>$(id).addEventListener('input',updatePreview));
   $('cardCover').addEventListener('error',()=>{ $('cardCover').style.display='none'; $('coverPlaceholder').style.display='block'; });
 
-  function currentEntry(){ return {...Object.fromEntries(fields.map(id=>[id,$(id).value.trim()])), originalTitle, preview:(val('type')==='album'?tracks[0]?.preview:'')||catalog.find(item=>item.title===originalTitle)?.preview||'', tracks:tracks.map(({file,...track})=>track)}; }
-  $('saveDraft').addEventListener('click',()=>{ localStorage.setItem('echoCraftMusicDraft',JSON.stringify(currentEntry())); activity('Draft saved in this browser. No website files were changed.','good'); toast('Draft saved in this browser.'); });
+  function currentEntry(){return {...Object.fromEntries(fields.map(id=>[id,val(id)])),originalTitle,preview:singlePreview,previewAssetId,coverAssetId,tracks:tracks.map(({file,...track})=>track)};}
+  async function uploadFile(file,kind){const data=await fileToBase64(file);return api('/api/upload',{method:'POST',body:JSON.stringify({...data,kind})});}
+  async function storeFiles(){
+    if(selectedPreview){const a=await uploadFile(selectedPreview,'preview');previewAssetId=a.assetId;singlePreview=a.path;selectedPreview=null;$('previewFile').value='';}
+    if(selectedCover){const a=await uploadFile(selectedCover,'cover');coverAssetId=a.assetId;$('cover').value=a.path;selectedCover=null;$('coverFile').value='';}
+    for(const t of tracks)if(t.file){const a=await uploadFile(t.file,'preview');t.assetId=a.assetId;t.preview=a.path;t.file=null;}
+  }
+  async function saveOnlineDraft(show=true){await storeFiles();if(coverAssetId){const r=await authenticatedFetch('/api/asset?id='+coverAssetId);if(r.ok)$('cardCover').src=objectUrl(await r.blob());}await api('/api/draft',{method:'PUT',body:JSON.stringify({entry:currentEntry()})});if(show){activity('Draft saved privately online. You can return to it later.','good');toast('Online draft saved.');}renderTracks();updatePreview();}
+  $('saveDraft').onclick=async()=>{setBusy(true);try{await saveOnlineDraft();}catch(e){activity('Draft could not be saved: '+e.message,'bad');}finally{setBusy(false);}};
 
   async function fileToBase64(file){
     if(!file) return null;
@@ -395,25 +425,33 @@
   }
 
   $('publishLocal').addEventListener('click',async()=>{
-    if(!val('title')){ activity('Cannot publish: song title is required.','bad'); return toast('Song title is required.',true); }
-    if(val('publicationStatus')==='scheduled'&&!val('scheduledLocal'))return toast('Select an Eastern release date and time.',true); if(val('type')==='album'&&(!tracks.length||tracks.some(t=>!t.title?.trim())))return toast('Add your album tracks and give each a title.',true);
-    
-    const btn=$('publishLocal'); btn.disabled=true; btn.innerHTML='<i class="fa-solid fa-spinner fa-spin"></i> Publishing'; activity('Publishing to the local VS Code project…');
-    try {
-      const preview=await fileToBase64(selectedPreview); const cover=await fileToBase64(selectedCover); const trackUploads=[]; for(const track of tracks)trackUploads.push(await fileToBase64(track.file));
-      const data=await api('/api/publish',{method:'POST',body:JSON.stringify({entry:currentEntry(),preview,cover,trackUploads})});
-      const extras=[]; if(!val('spotify')) extras.push('Spotify omitted'); if(!val('apple')) extras.push('Apple Music omitted');
-      activity(`${data.message}${extras.length?' '+extras.join(' · ')+'.':''} Review the local Music page before pushing to GitHub.`, 'good');
-      originalTitle=val('title'); toast(data.message); localStorage.removeItem('echoCraftMusicDraft'); await loadPending(); await loadCatalog(); const saved=catalog.find(item=>item.title===originalTitle); if(saved){$('cover').value=saved.cover||'';tracks=(saved.tracks||[]).map(t=>({...t}));selectedCover=null;selectedPreview=null;$('coverFile').value='';$('previewFile').value='';renderTracks();updatePreview();}
-    } catch(e){ activity(`Publish failed: ${e.message}`,'bad'); toast(e.message,true); }
-    finally { btn.disabled=false; btn.innerHTML='<i class="fa-solid fa-check"></i> Publish to Local Site'; }
+    if(!val('title'))return toast('Enter the release title first.',true);
+    if(val('type')==='album'&&(!tracks.length||tracks.some(t=>!t.title?.trim()||(!t.file&&!t.preview))))return toast('Every album track needs a title and sample.',true);
+    setBusy(true);const btn=$('publishLocal');btn.disabled=true;btn.textContent='Publishing…';
+    try{
+      await saveOnlineDraft(false);
+      const entry=currentEntry(),ids=[...new Set([entry.coverAssetId,entry.type==='single'?entry.previewAssetId:'',...(entry.type==='album'?entry.tracks.map(t=>t.assetId):[])].filter(Boolean))];
+      for(let i=0;i<ids.length;i++){activity(`Preparing file ${i+1} of ${ids.length} for the website…`);await api('/api/prepare',{method:'POST',body:JSON.stringify({assetId:ids[i]})});}
+      activity('Publishing the release and its samples together…');
+      const data=await api('/api/publish',{method:'POST',body:JSON.stringify({entry})});
+      originalTitle=data.entry.title;tracks=data.entry.tracks||[];singlePreview=data.entry.preview;previewAssetId='';coverAssetId='';$('cover').value=data.entry.cover||'';
+      // Publishing already succeeded even if clearing the private draft fails.
+      try{await api('/api/draft',{method:'PUT',body:JSON.stringify({entry:null})});}catch{}
+      renderTracks();updatePreview();await loadCatalog();await loadPending();
+      activity(data.message+' Give deployment a couple of minutes, then open View Music.','good');toast('Release sent to your website.');
+    }catch(e){activity('Publish failed: '+e.message+' Your online draft is kept so you can retry.','bad');toast(e.message,true);}
+    finally{setBusy(false);btn.textContent='Publish to Website';await checkServer();}
   });
+  async function boot(){
+    if(booted)return;const {data}=await window.echoAdminAuth.auth.getSession();if(!data?.session)return;
+    booted=true;await checkServer();await Promise.all([loadCatalog(),loadPending()]);
+    try{const {entry:d}=await api('/api/draft');if(d){fields.forEach(id=>{if(d[id]!==undefined)$(id).value=d[id];});tracks=d.tracks||[];originalTitle=d.originalTitle||'';singlePreview=d.preview||'';previewAssetId=d.previewAssetId||'';coverAssetId=d.coverAssetId||'';renderTracks();updatePreview();if(coverAssetId){const r=await authenticatedFetch('/api/asset?id='+coverAssetId);if(r.ok)$('cardCover').src=objectUrl(await r.blob());}await cardSample();activity('Your private online draft was restored.','good');}}catch(e){activity('Online draft could not be restored: '+e.message,'warn');}
+  }
+  window.addEventListener('echo-admin-session',()=>boot().catch(e=>toast(e.message,true)));
+  $('signOut').addEventListener('click',()=>{booted=false;for(const u of objectUrls)URL.revokeObjectURL(u);objectUrls.clear();});
+  updatePreview();boot().catch(e=>toast(e.message,true));
 
-  const draft=localStorage.getItem('echoCraftMusicDraft');
-  if(draft){ try{ const d=JSON.parse(draft); fields.forEach(id=>{ if(d[id]) $(id).value=d[id]; }); tracks=d.tracks||[];originalTitle=d.originalTitle||'';renderTracks(); activity('A saved browser draft was restored. Re-select any uploaded files.','good'); }catch{} }
-  updatePreview(); checkServer(); loadPending(); loadCatalog();
 })();
 </script>
 </body>
 </html>
-
