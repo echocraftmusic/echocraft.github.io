@@ -5,6 +5,21 @@
   "instructions": "Pending releases are intentionally not shown on the website until their richer Echo Craft metadata is added to music/music.json.",
   "items": [
     {
+      "collectionId": "6821369517",
+      "type": "single",
+      "title": "He's A Light Through Darkness (CineTrap Mix) - Single",
+      "artist": "Echo Craft",
+      "releaseDate": "2026-10-09",
+      "cover": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/5e/8f/03/5e8f03bc-219c-ca74-e9da-7c7a89190129/artwork.jpg/1200x1200bb.jpg",
+      "apple": "https://music.apple.com/us/album/hes-a-light-through-darkness-cinetrap-mix-single/6821369517?uo=4",
+      "trackCount": 1,
+      "genre": "Christian",
+      "source": "apple-music-catalog",
+      "status": "pending",
+      "detectedAt": "2026-10-11T11:39:07.318Z",
+      "note": "Detected automatically. Add HyperFollow/Spotify/preview details before publishing to music/music.json."
+    },
+    {
       "collectionId": "6765493652",
       "type": "album",
       "title": "Requiem Of His Grace",
