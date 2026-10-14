@@ -14,7 +14,7 @@ checkout.addEventListener('click',async()=>{
     const data=await response.json();
     if(!response.ok)throw new Error(data.error||'Square checkout is not ready.');
     const url=new URL(data.checkoutUrl);
-    if(!['square.link','checkout.square.site'].includes(url.hostname)||url.protocol!=='https:')throw new Error('Unexpected Square checkout destination.');
+    if(!['sandbox.square.link','square.link','checkout.square.site'].includes(url.hostname)||url.protocol!=='https:'||url.username||url.password||url.port)throw new Error('Unexpected Square checkout destination.');
     window.location.assign(url.href);
   }catch(error){feedback.textContent=error.message||'Unable to start checkout.';}
   finally{checkout.disabled=items.length===0||!document.querySelector('.ec-cart-agree')?.checked;checkout.textContent='Square Sandbox Checkout · Test Only';}

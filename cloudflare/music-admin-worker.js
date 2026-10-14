@@ -121,7 +121,7 @@ async function squareSandboxCheckout(request,env){
   },64*1024);
   if(!square.ok){console.error(JSON.stringify({event:'square_sandbox_checkout_failed',status:square.status}));throw new Problem('Square Sandbox could not start checkout. Please try again.',502);}
   const data=await square.json(),checkoutUrl=data.payment_link?.url||'';
-  requireValue(/^https:\/\/(?:square\.link|checkout\.square\.site)\//.test(checkoutUrl),'Square did not return a valid checkout URL.',502);
+  requireValue(/^https:\/\/(?:sandbox\.square\.link|square\.link|checkout\.square\.site)\//.test(checkoutUrl),'Square did not return a valid checkout URL.',502);
   return {checkoutUrl,environment:'sandbox'};
 }
 export default {async fetch(request,env){
