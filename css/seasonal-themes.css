@@ -133,3 +133,38 @@ html[data-site-theme="christmas"] .frequency-statement{background:#123523}
 html:is([data-site-theme="fall"],[data-site-theme="christmas"]) .info-content .frequency-statement :is(span,strong){color:#fff4dd;text-shadow:none}
 html:is([data-site-theme="fall"],[data-site-theme="christmas"]) .info-contact a{background:#fff7e8;border-color:var(--gold);color:var(--ink);font-weight:600}
 html:is([data-site-theme="fall"],[data-site-theme="christmas"]) .info-contact a:hover{background:var(--season-action);border-color:var(--gold);color:#fff4dd}
+
+/* Music cards: warm dark surfaces with readable, balanced type. */
+html:is([data-site-theme="fall"],[data-site-theme="christmas"]) #music .music-card{
+ background:linear-gradient(145deg,#332316,#21170f);border-color:var(--gold);color:#fff4dd;box-shadow:0 10px 30px #21170f40;
+}
+html:is([data-site-theme="fall"],[data-site-theme="christmas"]) #music .music-card::before,
+html:is([data-site-theme="fall"],[data-site-theme="christmas"]) #music .music-card::after{background:none}
+html:is([data-site-theme="fall"],[data-site-theme="christmas"]) #music .music-card:hover{box-shadow:0 10px 30px #21170f40,0 0 0 1px var(--gold)}
+html:is([data-site-theme="fall"],[data-site-theme="christmas"]) #music .music-title{
+ color:#fff4dd;-webkit-text-fill-color:#fff4dd;background:none;text-shadow:none;font-size:15px;line-height:20px;font-weight:600;
+}
+html:is([data-site-theme="fall"],[data-site-theme="christmas"]) #music .single-purchase{
+ background:#4a3020;border-top-color:var(--gold);border-radius:10px;color:#fff4dd;
+}
+html:is([data-site-theme="fall"],[data-site-theme="christmas"]) #music .single-purchase-copy strong{color:#fff4dd;font-size:13px;line-height:18px}
+html:is([data-site-theme="fall"],[data-site-theme="christmas"]) #music .single-purchase-copy span{color:#eddbc0;font-size:11px;line-height:16px}
+html:is([data-site-theme="fall"],[data-site-theme="christmas"]) #music .single-price{
+ background:#28190f;border-color:var(--gold);color:#fff4dd;font-size:18px;line-height:22px;
+}
+html:is([data-site-theme="fall"],[data-site-theme="christmas"]) #music .listen-everywhere-btn{
+ background:var(--season-action);border-color:var(--gold);color:#fff4dd;font-size:13px;box-shadow:none;
+}
+html:is([data-site-theme="fall"],[data-site-theme="christmas"]) #music .listen-everywhere-btn span{font-size:13px}
+html:is([data-site-theme="fall"],[data-site-theme="christmas"]) #music .single-buy{
+ background:#24683d;border-color:var(--gold);color:#fff;font-size:13px;line-height:18px;box-shadow:none;
+}
+html:is([data-site-theme="fall"],[data-site-theme="christmas"]) #music :is(.single-buy,.listen-everywhere-btn) i{font-size:14px}
+html:is([data-site-theme="fall"],[data-site-theme="christmas"]) #music .platform-btn{border-color:#c18b3666}
+html:is([data-site-theme="fall"],[data-site-theme="christmas"]) #music .browse-music h3{
+ color:var(--ink);-webkit-text-fill-color:var(--ink);background:none;text-shadow:none;font-size:15px;line-height:1.4;
+}
+html:is([data-site-theme="fall"],[data-site-theme="christmas"]) #music .letter-nav button{font-size:15px;line-height:1;font-weight:600}
+html:is([data-site-theme="fall"],[data-site-theme="christmas"]) #music .letter-nav button.active{
+ background:#50301c;color:#fff4dd;border-color:var(--gold);box-shadow:0 0 0 2px var(--gold);
+}
