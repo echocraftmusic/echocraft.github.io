@@ -1,0 +1,32 @@
+import assert from 'node:assert/strict';
+import worker,{purchaseId} from './music-admin-worker.js';
+const item={type:'single',title:'A Light Through Darkness',artist:'Echo Craft',cover:'',hyperfollow:'https://distrokid.com/hyperfollow/echocraft11/a-light-through-darkness?ref=release'};
+const release=await purchaseId(item),records=new Map(),sessions=new Map();let email='troy.saha@gmail.com',state='COMPLETED',refund=0,wrongOrder=false,wrongAmount=false,orderState='OPEN',fileReads=0;
+records.set('records/'+release+'/single.json',JSON.stringify({title:item.title,album:item.title,artist:item.artist,coverSource:'',key:'singles/private.mp3',filename:item.title+'.mp3'}));records.set('singles/private.mp3','FULL-TAGGED-MP3');
+const bucket=map=>({get:async key=>{const data=map.get(key);if(data===undefined)return null;if(key==='singles/private.mp3')fileReads++;return {json:async()=>JSON.parse(data),body:data};},head:async key=>map.has(key)?{key}:null,put:async(key,value)=>map.set(key,value)});
+const env={SQUARE_ENVIRONMENT:'sandbox',SQUARE_ACCESS_TOKEN:'test',SQUARE_LOCATION_ID:'location',GITHUB_TOKEN:'test',ADMIN_STAGING:bucket(sessions),PURCHASE_FILES:bucket(records)};
+globalThis.fetch=async(url,options={})=>{
+ if(url.includes('/auth/v1/user'))return new Response(JSON.stringify({id:'owner',email,email_confirmed_at:'2026-01-01'}));
+ if(url.startsWith('https://api.github.com/'))return new Response(JSON.stringify({encoding:'base64',content:Buffer.from(JSON.stringify({items:[item]})).toString('base64')}));
+ if(url.endsWith('/online-checkout/payment-links')){const body=JSON.parse(options.body);assert.match(body.checkout_options.redirect_url,/\/admin\/test-delivery.html\?test=[a-f0-9-]+$/);assert.equal(body.order.line_items[0].base_price_money.amount,99);return new Response(JSON.stringify({payment_link:{url:'https://sandbox.square.link/u/test',order_id:'order1'}}));}
+ if(url.endsWith('/orders/order1'))return new Response(JSON.stringify({order:{id:'order1',location_id:'location',state:orderState,total_money:{amount:99,currency:'USD'},tenders:state==='NONE'?[]:[{payment_id:'payment1'}]}}));
+ if(url.endsWith('/payments/payment1'))return new Response(JSON.stringify({payment:{id:'payment1',order_id:wrongOrder?'other':'order1',location_id:'location',status:state,amount_money:{amount:wrongAmount?98:99,currency:'USD'},refunded_money:{amount:refund,currency:'USD'}}}));
+ throw Error('Unexpected fetch '+url);
+};
+const request=(path,options={},config=env)=>worker.fetch(new Request('https://worker.test'+path,{...options,headers:{Authorization:'Bearer admin',Origin:'https://echocraftmusic.com',...options.headers}}),config);
+assert.equal((await worker.fetch(new Request('https://worker.test/api/test-delivery/status?test=x'),env)).status,401);
+email='visitor@example.com';assert.equal((await request('/api/test-delivery/status?test=x')).status,403);email='troy.saha@gmail.com';
+assert.equal((await request('/api/test-delivery/status?test=x',{}, {...env,SQUARE_ENVIRONMENT:'production'})).status,503);
+const begin=()=>request('/api/test-delivery/checkout',{method:'POST',body:JSON.stringify({release,digitalPurchaseAgreementAccepted:true})});
+const response=await begin();assert.equal(response.status,200);const {test}=await response.json(),status='/api/test-delivery/status?test='+test,download='/api/test-delivery/download?test='+test;
+state='NONE';assert.equal((await (await request(status)).json()).verified,false);assert.equal((await request(download)).status,409);assert.equal(fileReads,0);
+for(const value of ['PENDING','APPROVED','FAILED','CANCELED']){state=value;assert.equal((await request(download)).status,409);}state='COMPLETED';
+wrongOrder=true;assert.equal((await request(download)).status,409);wrongOrder=false;
+wrongAmount=true;assert.equal((await request(download)).status,409);wrongAmount=false;
+refund=1;assert.equal((await request(download)).status,409);refund=0;
+orderState='CANCELED';assert.equal((await request(download)).status,409);orderState='OPEN';
+assert.equal((await (await request(status)).json()).verified,true);const file=await request(download);assert.equal(file.status,200);assert.equal(file.headers.get('Cache-Control'),'no-store');assert.equal(file.headers.get('Content-Type'),'audio/mpeg');assert.equal(await file.text(),'FULL-TAGGED-MP3');
+const key='sandbox-delivery/'+test+'.json',session=JSON.parse(sessions.get(key));sessions.set(key,JSON.stringify({...session,expires:0}));assert.equal((await request(download)).status,410);
+assert.equal((await request('/api/test-delivery/status?test=../private')).status,400);
+records.delete('singles/private.mp3');assert.equal((await begin()).status,409);
+console.log('Passed: owner-only Sandbox delivery; absent/pending/failed/unrelated/underpaid/refunded/canceled payments blocked; verified full MP3 download; private no-store responses; expired sessions and missing files blocked.');
