@@ -171,3 +171,53 @@ html:is([data-site-theme="fall"],[data-site-theme="christmas"]) #music .letter-n
 
 /* Center the purchase label in the column beside the price. */
 html:is([data-site-theme="fall"],[data-site-theme="christmas"]) #music .single-purchase-copy{text-align:center}
+
+/* Polished seasonal buttons: retain each action's existing orange or green. */
+html:is([data-site-theme="fall"],[data-site-theme="christmas"]) :is(.btn,.catalog-action-primary,.ac-listen,.single-listen,.top-listen,.main-play,.single-add,.single-buy,.btn-buy,.ac-add,.listen-everywhere-btn,.subscribe-box button){
+ background-image:linear-gradient(180deg,#ffffff4d 0%,#ffffff19 42%,#ffffff08 48%,#00000024 51%,#0000000a 100%)!important;
+ border-color:#e5bc70!important;
+ box-shadow:inset 0 1px 0 #fff8,inset 0 2px 6px #ffffff29,inset 0 -3px 5px #0004,0 5px 12px #21140f38!important;
+ text-shadow:0 1px 2px #0005;
+ transition:transform .2s ease,box-shadow .2s ease,filter .2s ease;
+}
+html:is([data-site-theme="fall"],[data-site-theme="christmas"]) :is(.btn,.catalog-action-primary,.ac-listen,.single-listen,.top-listen,.main-play,.single-add,.single-buy,.btn-buy,.ac-add,.listen-everywhere-btn,.subscribe-box button):focus-visible{
+ outline:3px solid #fff1c9;outline-offset:3px;
+ box-shadow:inset 0 1px 0 #fffa,inset 0 -3px 5px #0004,0 0 0 6px #805115,0 8px 18px #21140f40!important;
+}
+html:is([data-site-theme="fall"],[data-site-theme="christmas"]) .sidebar-nav a.active{
+ background-image:linear-gradient(180deg,#ffffff26,#ffffff06 46%,#0000001f 51%,#0000000a);
+ box-shadow:inset 3px 0 var(--gold),inset 0 1px 0 #ffffff5c,inset 0 -2px 4px #0003;
+}
+@media(hover:hover) and (pointer:fine){
+ html:is([data-site-theme="fall"],[data-site-theme="christmas"]) :is(.btn,.catalog-action-primary,.ac-listen,.single-listen,.top-listen,.main-play,.single-add,.single-buy,.btn-buy,.ac-add,.listen-everywhere-btn,.subscribe-box button):hover{
+  transform:translateY(-2px);filter:brightness(1.08);
+  box-shadow:inset 0 1px 0 #fffb,inset 0 2px 7px #ffffff38,inset 0 -3px 5px #0004,0 8px 18px #21140f45,0 0 14px #e8b45c45!important;
+ }
+}
+html:is([data-site-theme="fall"],[data-site-theme="christmas"]) :is(.btn,.catalog-action-primary,.ac-listen,.single-listen,.top-listen,.main-play,.single-add,.single-buy,.btn-buy,.ac-add,.listen-everywhere-btn,.subscribe-box button):active{transform:translateY(1px)}
+
+/* Album choices keep a persistent selected glow; reflection never catches clicks. */
+#albums .ac-gallery{padding-top:14px;padding-bottom:24px}
+#albums .ac-thumbnail{
+ position:relative;isolation:isolate;
+ transition:transform .24s ease,box-shadow .24s ease,border-color .24s ease;
+ box-shadow:inset 0 1px 0 #ffffff4d,0 4px 10px #0003;
+}
+#albums .ac-thumbnail::before,#albums .ac-thumbnail::after{content:'';position:absolute;inset:0;z-index:1;pointer-events:none;border-radius:inherit}
+#albums .ac-thumbnail::before{background:linear-gradient(145deg,#ffffff30,transparent 43%,transparent 70%,#ffffff0a);opacity:.65;transition:opacity .24s ease}
+#albums .ac-thumbnail::after{background:linear-gradient(110deg,transparent 30%,#ffffff35 47%,#ffffff0a 54%,transparent 69%);transform:translateX(-120%);transition:transform .6s ease}
+html #albums .ac-gallery .ac-thumbnail[aria-pressed=true]{
+ transform:translateY(-3px);border-color:var(--gold,#e3b96a);
+ box-shadow:0 0 0 2px var(--gold,#e3b96a),0 9px 19px #0005,0 8px 22px #e4b45b73,inset 0 1px 0 #ffffff80;
+}
+#albums .ac-thumbnail[aria-pressed=true]::before{opacity:1}
+#albums .ac-thumbnail:focus-visible{outline:3px solid var(--gold,#e3b96a);outline-offset:5px}
+@media(hover:hover) and (pointer:fine){
+ html #albums .ac-gallery .ac-thumbnail:hover{transform:translateY(-6px);border-color:var(--gold,#e3b96a);box-shadow:0 0 0 1px var(--gold,#e3b96a),0 12px 22px #0005,0 10px 24px #e4b45b66,inset 0 1px 0 #ffffff80}
+ #albums .ac-thumbnail:hover::before{opacity:1}
+ #albums .ac-thumbnail:hover::after{transform:translateX(120%)}
+}
+@media(prefers-reduced-motion:reduce){
+ html :is(#albums .ac-thumbnail,#albums .ac-thumbnail::before,#albums .ac-thumbnail::after){transition:none;transform:none!important}
+ html:is([data-site-theme="fall"],[data-site-theme="christmas"]) :is(.btn,.catalog-action-primary,.ac-listen,.single-listen,.top-listen,.main-play,.single-add,.single-buy,.btn-buy,.ac-add,.listen-everywhere-btn,.subscribe-box button){transition:none;transform:none!important}
+}
