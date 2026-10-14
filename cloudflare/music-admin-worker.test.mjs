@@ -66,4 +66,23 @@ assert.equal(scheduled.status,200);assert.equal(scheduled.data.entry.publishAt,'
 const frontend=fs.readFileSync(new URL('../admin/index.html',import.meta.url),'utf8');
 for(const [,script] of frontend.matchAll(/<script>([\s\S]*?)<\/script>/g))new vm.Script(script);
 assert(!frontend.includes('node scripts/admin-server.js'));assert(!frontend.includes('Publish to Local Site'));
-console.log('Passed: 28-track import, private drafts, both allowed emails, unconfirmed/rejected sessions, CORS, invalid uploads, required preparation, atomic publishing, concurrent GitHub retry, preserved catalog, missing-file rejection, schedule conversion, frontend syntax.');
+// Seasonal appearance: visitors can read, only confirmed owners can write.
+const beforeThemeGit=gitCalls.length,catalogBeforeTheme=JSON.stringify(catalog);
+assert.deepEqual((await call('/api/site-theme',null,'GET',{headers:{Authorization:''}})).data,{theme:'original'});
+assert.equal((await call('/api/theme',{theme:'fall'},'PUT',{headers:{Authorization:''}})).status,401);
+email='visitor@example.com';assert.equal((await call('/api/theme',{theme:'fall'},'PUT')).status,403);
+email='troy.saha@gmail.com';confirmed=false;assert.equal((await call('/api/theme',{theme:'fall'},'PUT')).status,403);confirmed=true;
+assert.equal((await call('/api/theme',{theme:'spring'},'PUT')).status,400);
+assert.equal((await call('/api/theme',{theme:'christmas'},'PUT',{headers:{Origin:'https://evil.test'}})).status,403);
+for(const theme of ['fall','christmas','original']){
+ assert.equal((await call('/api/theme',{theme,privateField:'must not persist'},'PUT')).status,200);
+ assert.deepEqual((await call('/api/theme')).data,{theme});
+ assert.deepEqual((await call('/api/site-theme',null,'GET',{headers:{Authorization:''}})).data,{theme});
+ assert.deepEqual(JSON.parse(new TextDecoder().decode(map.get('settings/site-theme.json'))),{theme});
+}
+assert.equal((await call('/api/site-theme',null,'GET',{env:{}})).status,503);
+assert.equal((await call('/api/theme',{theme:'fall'},'PUT',{env:{}})).status,503);
+assert.equal(JSON.stringify(catalog),catalogBeforeTheme);
+assert.equal(gitCalls.length,beforeThemeGit,'Appearance changes must not touch the music catalog or GitHub publishing.');
+assert.deepEqual((await call('/api/draft')).data.entry,entry,'Music drafts must survive appearance changes.');
+console.log('Passed: existing music manager regression checks; owner-only theme writes; public theme reads; Original/Fall/Christmas persistence; invalid theme and origin rejection; storage failure; untouched catalog and music drafts; frontend syntax.');

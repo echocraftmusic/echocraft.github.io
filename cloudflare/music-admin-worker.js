@@ -38,6 +38,12 @@ const mp3=bytes=>bytes.length>3&&((bytes[0]===73&&bytes[1]===68&&bytes[2]===51)|
 function imageKind(b){if(b[0]===255&&b[1]===216&&b[2]===255)return 'jpg';if(b[0]===137&&b[1]===80&&b[2]===78&&b[3]===71)return 'png';if(new TextDecoder().decode(b.slice(0,4))==='RIFF'&&new TextDecoder().decode(b.slice(8,12))==='WEBP')return 'webp';return '';}
 async function jsonBody(request,max=12*1024*1024){const reader=request.body?.getReader();let size=0;const chunks=[];if(reader)while(true){const r=await reader.read();if(r.done)break;size+=r.value.length;requireValue(size<=max,'Request is too large.',413);chunks.push(r.value);}const b=new Uint8Array(size);let o=0;for(const c of chunks){b.set(c,o);o+=c.length;}try{return JSON.parse(new TextDecoder().decode(b));}catch{throw new Problem('Invalid request data.');}}
 async function r2json(env,key){const o=await env.ADMIN_STAGING.get(key);return o?o.json():null;}
+const THEMES=new Set(['original','fall','christmas']);
+async function siteTheme(env){
+  requireValue(env.ADMIN_STAGING,'Theme storage is unavailable.',503);
+  const settings=await r2json(env,'settings/site-theme.json');
+  return {theme:THEMES.has(settings?.theme)?settings.theme:'original'};
+}
 async function asset(env,id){requireValue(validId(id),'Invalid preview identifier.');const a=await r2json(env,'assets/'+id+'.json');requireValue(a,'This preview is no longer available. Import it again.',404);return a;}
 async function saveAsset(env,bytes,name,kind){
   requireValue(bytes.length<=8*1024*1024,'Use a file smaller than 8 MB.');
@@ -125,6 +131,11 @@ export default {async fetch(request,env){
   if(request.method==='OPTIONS')return new Response(null,{status:204,headers:{...headers,'Access-Control-Allow-Methods':'GET, POST, PUT, OPTIONS','Access-Control-Allow-Headers':'Authorization, Content-Type'}});
   const url=new URL(request.url),path=url.pathname;
   if(request.method==='GET'&&(path==='/'||path==='/health'))return reply({service:'EchoCraft Music Admin',version:'online-v1',githubSecretConfigured:Boolean(env.GITHUB_TOKEN),storageConfigured:Boolean(env.ADMIN_STAGING)});
+  // Public endpoint exposes only the owner's selected appearance, never private settings.
+  if(request.method==='GET'&&path==='/api/site-theme'){
+    try{return reply(await siteTheme(env));}
+    catch{return reply({error:'Website appearance is temporarily unavailable.'},503);}
+  }
   if(path==='/api/checkout/sandbox'&&request.method==='POST'){
     try{requireValue(origin&&ORIGINS.has(origin),'Checkout must begin on the Echo Craft website.',403);return reply(await squareSandboxCheckout(request,env));}
     catch(e){if(e instanceof Problem)return reply({error:e.message},e.status);console.error(JSON.stringify({event:'checkout_failed',kind:e?.name||'Error'}));return reply({error:'Unable to start Square Sandbox checkout.'},502);}
@@ -134,6 +145,14 @@ export default {async fetch(request,env){
     const authorization=request.headers.get('Authorization')||'';requireValue(/^Bearer [^\s]+$/.test(authorization),'Please sign in.',401);
     const auth=await boundedFetch(SUPABASE_URL+'/auth/v1/user',{headers:{apikey:SUPABASE_KEY,Authorization:authorization}},1024*1024);requireValue(auth.ok,'Please sign in again.',401);
     const user=auth.json();requireValue(user.id&&user.email_confirmed_at&&EMAILS.has(String(user.email||'').toLowerCase()),'This account does not have admin access.',403);
+    if(request.method==='GET'&&path==='/api/theme')return reply(await siteTheme(env));
+    if(request.method==='PUT'&&path==='/api/theme'){
+      const body=await jsonBody(request,1024);
+      requireValue(THEMES.has(body.theme),'Choose Original, Fall, or Christmas.');
+      requireValue(env.ADMIN_STAGING,'Theme storage is unavailable.',503);
+      await env.ADMIN_STAGING.put('settings/site-theme.json',JSON.stringify({theme:body.theme}));
+      return reply({ok:true,theme:body.theme});
+    }
     if(request.method==='GET'&&path==='/api/status'){step='Catalog connection';const c=await catalogFile(env);return reply({ok:true,catalogReadable:true,itemCount:c.items.length,publishingReady:Boolean(env.ADMIN_STAGING),storageConfigured:Boolean(env.ADMIN_STAGING),version:'online-v1'});}
     if(request.method==='GET'&&path==='/api/catalog')return reply(await catalogFile(env));
     if(request.method==='GET'&&path==='/api/pending')return reply(await catalogFile(env,'music/pending-releases.json','main',true));

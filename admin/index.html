@@ -51,6 +51,18 @@
   <div id="serverStatus" class="status">Checking the online Music Manager…</div>
   <div id="activityStatus" class="activity"><strong>Status:</strong> Ready. Nothing has been saved or published yet.</div>
 
+  <section class="panel" aria-labelledby="themeChangerTitle" style="margin-bottom:22px">
+    <h2 id="themeChangerTitle"><i class="fa-solid fa-palette"></i> Theme Changer</h2>
+    <p class="subtle">Choose the appearance everyone sees on Echo Craft. Only you can change the seasonal theme.</p>
+    <div class="top-actions" id="themeChoices" style="margin:16px 0" aria-label="Website theme">
+      <button class="btn" type="button" data-site-theme-choice="original" aria-pressed="false" disabled>Original</button>
+      <button class="btn" type="button" data-site-theme-choice="fall" aria-pressed="false" disabled>Fall</button>
+      <button class="btn" type="button" data-site-theme-choice="christmas" aria-pressed="false" disabled>Christmas</button>
+    </div>
+    <p id="themeStatus" class="help" role="status" aria-live="polite">Sign in to load the current website theme.</p>
+    <p class="help">Spring and Easter can be added here later.</p>
+  </section>
+
   <div class="grid">
     <section class="panel">
       <h2>1. Choose a detected release</h2>
@@ -340,6 +352,37 @@
     const res=await authenticatedFetch(path,options),data=await res.json().catch(()=>({}));
     if(!res.ok)throw new Error(data.error||`Request failed (${res.status})`);return data;
   }
+  let themeBusy=false;
+  const themeButtons=Array.from(document.querySelectorAll('[data-site-theme-choice]'));
+  function showTheme(theme){
+    themeButtons.forEach(button=>{
+      const selected=button.dataset.siteThemeChoice===theme;
+      button.setAttribute('aria-pressed',String(selected));
+      button.classList.toggle('good',selected);
+    });
+  }
+  async function loadTheme(){
+    try{
+      const data=await api('/api/theme');showTheme(data.theme);
+      themeButtons.forEach(button=>button.disabled=false);
+      $('themeStatus').textContent=`Current theme: ${data.theme==='original'?'Original':data.theme==='fall'?'Fall':'Christmas'}. Select a button to change it for all visitors.`;
+    }catch(e){
+      themeButtons.forEach(button=>button.disabled=true);
+      $('themeStatus').textContent='Theme Changer is not connected yet. '+e.message;
+    }
+  }
+  themeButtons.forEach(button=>button.addEventListener('click',async()=>{
+    if(themeBusy||button.getAttribute('aria-pressed')==='true')return;
+    themeBusy=true;themeButtons.forEach(item=>item.disabled=true);
+    $('themeStatus').textContent='Saving the website theme…';
+    try{
+      const data=await api('/api/theme',{method:'PUT',body:JSON.stringify({theme:button.dataset.siteThemeChoice})});
+      showTheme(data.theme);
+      $('themeStatus').textContent=`${button.textContent} is now selected for all visitors. Reload the website to see it; open pages update within a minute.`;
+      toast('Website theme saved.');
+    }catch(e){$('themeStatus').textContent='The theme was not changed. '+e.message;toast(e.message,true);}
+    finally{themeBusy=false;themeButtons.forEach(item=>item.disabled=false);}
+  }));
   async function checkServer(){
     try{const data=await api('/api/status');if(!data.publishingReady)throw new Error('Deploy the updated online Worker code to finish connecting storage.');$('serverStatus').className='status good';$('serverStatus').textContent=`Online manager connected. ${data.itemCount} releases in your catalog. Import, save drafts, and publish here.`;$('publishLocal').disabled=busy;}
     catch(e){$('serverStatus').className='status bad';$('serverStatus').textContent=e.message;$('publishLocal').disabled=true;}
@@ -459,11 +502,11 @@
   });
   async function boot(){
     if(booted)return;const {data}=await window.echoAdminAuth.auth.getSession();if(!data?.session)return;
-    booted=true;await checkServer();await Promise.all([loadCatalog(),loadPending()]);
+    booted=true;await checkServer();await Promise.all([loadCatalog(),loadPending(),loadTheme()]);
     try{const {entry:d}=await api('/api/draft');if(d){fields.forEach(id=>{if(d[id]!==undefined)$(id).value=d[id];});tracks=d.tracks||[];originalTitle=d.originalTitle||'';singlePreview=d.preview||'';previewAssetId=d.previewAssetId||'';coverAssetId=d.coverAssetId||'';renderTracks();updatePreview();if(coverAssetId){const r=await authenticatedFetch('/api/asset?id='+coverAssetId);if(r.ok)$('cardCover').src=objectUrl(await r.blob());}await cardSample();activity('Your private online draft was restored.','good');}}catch(e){activity('Online draft could not be restored: '+e.message,'warn');}
   }
   window.addEventListener('echo-admin-session',()=>boot().catch(e=>toast(e.message,true)));
-  $('signOut').addEventListener('click',()=>{booted=false;for(const u of objectUrls)URL.revokeObjectURL(u);objectUrls.clear();});
+  $('signOut').addEventListener('click',()=>{booted=false;themeButtons.forEach(button=>button.disabled=true);for(const u of objectUrls)URL.revokeObjectURL(u);objectUrls.clear();});
   updatePreview();boot().catch(e=>toast(e.message,true));
 
 })();
