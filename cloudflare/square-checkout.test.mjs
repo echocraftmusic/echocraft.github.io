@@ -20,6 +20,7 @@ assert.equal(response.status,200);
 assert.equal((await response.json()).checkoutUrl,destination);
 assert.equal(submitted.order.line_items[0].base_price_money.amount,99,'Price must come from the server catalog.');
 assert.equal((await checkout({digitalPurchaseAgreementAccepted:false})).status,400);
+assert.equal((await checkout({items:[{title:'Test single',type:'single',qty:2}]})).status,400);
 assert.equal((await worker.fetch(new Request('https://worker.test/api/checkout/sandbox',{method:'POST',headers:{Origin:'https://echocraftmusic.com'},body:'{}'}),{...env,SQUARE_ENVIRONMENT:'production'})).status,503);
 const cartSource=fs.readFileSync(new URL('../js/cart.js',import.meta.url),'utf8');
 const frontendCheck=cartSource.split('\n').find(line=>line.includes('Unexpected Square checkout destination.'));

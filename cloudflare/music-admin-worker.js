@@ -102,6 +102,7 @@ async function squareSandboxCheckout(request,env){
   const now=Date.now(),selected=new Map();
   for(const entry of payload.items){
     requireValue(entry&&typeof entry.title==='string'&&['single','album'].includes(entry.type)&&Number.isInteger(entry.qty)&&entry.qty>=1&&entry.qty<=25,'Invalid cart item.',400);
+    requireValue(entry.qty===1,'Digital songs and albums can only be purchased once per order.',400);
     const key=entry.type+':'+normalize(entry.title);
     requireValue(!selected.has(key),'Duplicate cart item.',400);
     const matches=catalog.items.filter(x=>(x.type==='album'?'album':'single')===entry.type&&normalize(x.title)===normalize(entry.title)&&x.publicationStatus!=='draft'&&(x.publicationStatus!=='scheduled'||Date.parse(x.publishAt||'')<=now));
