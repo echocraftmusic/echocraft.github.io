@@ -20,6 +20,7 @@
     .auth-gate{min-height:100vh;display:grid;place-items:center;padding:24px}.auth-card{width:min(480px,100%);background:linear-gradient(180deg,rgba(16,31,52,.98),rgba(8,20,34,.98));border:1px solid var(--line);border-radius:22px;padding:28px;box-shadow:0 22px 70px rgba(0,0,0,.38)}.auth-card h1{font-family:Orbitron,sans-serif;margin:0 0 8px;font-size:25px}.auth-card p{color:var(--muted);line-height:1.55;margin:0 0 18px}.auth-card .lock{width:48px;height:48px;border-radius:14px;display:grid;place-items:center;background:#0a2135;border:1px solid #185779;color:var(--cyan);font-size:20px;margin-bottom:18px}.auth-message{margin-top:13px;padding:11px 12px;border-radius:10px;background:#0a1829;border:1px solid #214660;color:var(--muted);display:none;line-height:1.4}.auth-message.show{display:block}.auth-message.good{border-color:#286a59;color:#baf7dc}.auth-message.bad{border-color:#7a3131;color:#ffd2d2}.admin-shell{display:none}.admin-shell.authorized{display:block}.signed-in{display:none;align-items:center;gap:8px;color:var(--muted);font-size:12px}.signed-in.show{display:flex}.signed-in strong{color:#dff8ff}
     @media(max-width:900px){.grid{grid-template-columns:1fr}.fieldrow,.fieldrow.three{grid-template-columns:1fr}.shell{padding:18px}.topbar{align-items:flex-start;flex-direction:column}}
   </style>
+  <link rel="stylesheet" href="purchase-files.css?v=20261014">
 </head>
 <body>
 <div id="authGate" class="auth-gate">
@@ -51,6 +52,10 @@
   <div id="serverStatus" class="status">Checking the online Music Manager…</div>
   <div id="activityStatus" class="activity"><strong>Status:</strong> Ready. Nothing has been saved or published yet.</div>
 
+
+  <nav class="admin-tabs" role="tablist" aria-label="Music manager sections"><button id="releaseTab" class="btn" type="button" role="tab" data-admin-tab="releases" aria-selected="true" aria-controls="releaseWorkspace">Releases &amp; Themes</button><button id="purchaseTab" class="btn" type="button" role="tab" data-admin-tab="purchase" aria-selected="false" aria-controls="purchaseWorkspace">Purchase Files</button></nav>
+  <section id="purchaseWorkspace" class="panel" role="tabpanel" aria-labelledby="purchaseTab" hidden><h2>Purchase Files</h2><p class="subtle">Upload full MP3s for the releases in your catalog. The manager names and tags each saved copy, including its artwork. Your original computer file stays unchanged.</p><div id="purchaseFileStatus" class="status" role="status" aria-live="polite">Open this tab to check private storage.</div><div class="purchase-tools"><input id="purchaseFileSearch" type="search" aria-label="Search purchase files" placeholder="Search releases or album tracks"><select id="purchaseFileFilter" aria-label="Filter purchase files" style="width:auto"><option value="all">All releases</option><option value="single">Singles</option><option value="album">Albums</option></select><button id="refreshPurchaseFiles" class="btn" type="button">Refresh files</button></div><p id="purchaseFileCount" class="purchase-count"></p><div id="purchaseFileList" class="purchase-list"></div><p class="help">MP3 only · up to 25 MB per track. Convert WAV files before uploading. Expand an album to upload its individual tracks in order.</p></section>
+  <div id="releaseWorkspace" role="tabpanel" aria-labelledby="releaseTab">
   <section class="panel" aria-labelledby="themeChangerTitle" style="margin-bottom:22px">
     <h2 id="themeChangerTitle"><i class="fa-solid fa-palette"></i> Theme Changer</h2>
     <p class="subtle">Choose the appearance everyone sees on Echo Craft. Only you can change the seasonal theme.</p>
@@ -162,6 +167,7 @@
       <div class="subtle"><strong>How this works</strong><br><br>1. Select a detected release or paste HyperFollow.<br>2. Confirm what was auto-filled.<br>3. Choose your preview MP3.<br>4. Preview the card.<br>5. Publish to Website, then check the live music page.</div>
     </aside>
   </div>
+</div>
 </div>
 <div id="toast" class="toast"></div>
 
@@ -511,5 +517,6 @@
 
 })();
 </script>
+<script src="purchase-files.js?v=20261014"></script>
 </body>
 </html>

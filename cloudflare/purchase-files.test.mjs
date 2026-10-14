@@ -1,0 +1,33 @@
+import assert from 'node:assert/strict';
+import worker,{purchaseTag,purchaseId} from './music-admin-worker.js';
+const audio=Buffer.alloc(417*3);for(let at=0;at<audio.length;at+=417)audio.set([255,251,144,192],at);
+const cover=Buffer.from('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+aZioAAAAASUVORK5CYII=','base64');
+const item={type:'album',title:'Test Album',artist:'Echo Craft',cover:'music/covers/test.png',releaseDate:'2026-10-14',tracks:[{title:'Faith & Grâce'},{title:'Second Track'}]};
+const id=await purchaseId(item),map=new Map();
+const bucket={async put(key,data){map.set(key,typeof data==='string'?new TextEncoder().encode(data):new Uint8Array(data));},async get(key){const bytes=map.get(key);return bytes?{json:async()=>JSON.parse(new TextDecoder().decode(bytes)),arrayBuffer:async()=>bytes.buffer.slice(bytes.byteOffset,bytes.byteOffset+bytes.byteLength),body:bytes}:null;}};
+let email='troy.saha@gmail.com';
+globalThis.fetch=async(url)=>{
+ if(url.includes('/auth/v1/user'))return new Response(JSON.stringify({id:'owner',email,email_confirmed_at:'2026-01-01'}));
+ if(url.includes('/contents/music/music.json'))return new Response(JSON.stringify({encoding:'base64',content:Buffer.from(JSON.stringify({items:[item]})).toString('base64')}));
+ throw Error('Unexpected network request '+url);
+};
+const env={GITHUB_TOKEN:'test',PURCHASE_FILES:bucket};
+async function call(path,method='GET',body,headers={},customEnv=env){return worker.fetch(new Request('https://worker.test'+path,{method,headers:{Origin:'https://echocraftmusic.com',Authorization:'Bearer test',...headers},...(body?{body}:{})}),customEnv);}
+assert.equal((await call('/api/purchase-files','GET',null,{Authorization:''})).status,401);
+email='visitor@example.com';assert.equal((await call('/api/purchase-files')).status,403);email='troy.saha@gmail.com';
+assert.equal((await call('/api/purchase-files','GET',null,{Origin:'https://evil.test'})).status,403);
+let data=await (await call('/api/purchase-files')).json();assert.equal(data.items[0].slots.length,2);assert.equal(data.items[0].slots[0].status,'missing');
+assert.equal((await call('/api/purchase-file?release='+id+'&slot=1','PUT',audio,{},{})).status,503);
+const c=await (await call('/api/purchase-cover?release='+id,'POST',cover)).json();assert(c.coverId);
+const endpoint='/api/purchase-file?release='+id+'&slot=1';
+assert.equal((await call(endpoint,'PUT',new TextEncoder().encode('RIFF NOT MP3'),{'X-Cover-Id':c.coverId})).status,400);
+assert.equal((await call(endpoint,'PUT',audio,{'X-Cover-Id':c.coverId})).status,200);
+data=await (await call('/api/purchase-files')).json();assert.equal(data.items[0].slots[0].status,'ready');assert.equal(data.items[0].slots[1].status,'missing');
+const response=await call(endpoint);assert.equal(response.status,200);assert.equal(response.headers.get('Content-Type'),'audio/mpeg');assert(response.headers.get('Cache-Control').includes('no-store'));
+const tagged=new Uint8Array(await response.arrayBuffer());
+const payload=b=>{if(new TextDecoder().decode(b.subarray(0,3))!=='ID3')return b;const n=b.subarray(6,10).reduce((n,x)=>n*128+x,0);return b.subarray(10+n);};
+assert.deepEqual(Buffer.from(payload(tagged)),Buffer.from(payload(audio)),'Audio bytes must remain identical after tagging.');
+assert.throws(()=>purchaseTag(new Uint8Array([73,68,51,3,0,0,127,127,127,127]),item,cover));
+item.tracks[0].title='Revised title';data=await (await call('/api/purchase-files')).json();assert.equal(data.items[0].slots[0].status,'review');
+assert.equal((await call('/api/purchase-file?release='+id+'&slot=../private')).status,400);
+console.log('Passed: private authenticated uploads and downloads, rejected visitors/origins/non-MP3, catalog track slots, artwork, no-store delivery, changed-tag review, and unchanged audio payload.');
