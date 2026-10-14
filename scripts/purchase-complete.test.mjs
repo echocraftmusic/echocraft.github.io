@@ -1,0 +1,18 @@
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+import vm from 'node:vm';
+const source=fs.readFileSync(new URL('../js/purchase-complete.js',import.meta.url),'utf8'),html=fs.readFileSync(new URL('../purchase-complete.html',import.meta.url),'utf8');
+async function render({query='',signedIn=true,paid=false,downloadAllowed=true}={}){
+ const calls=[],icon={className:''},elements=Object.fromEntries([...html.matchAll(/id="([^"]+)"/g)].map(m=>[m[1],{hidden:['purchaseCard','checkPayment'].includes(m[1]),disabled:m[1]==='downloadMusic',textContent:'',dataset:{},setAttribute(){},querySelector:()=>icon}]));let clicks=0;
+ const session=signedIn?{access_token:'owner-test'}:null,client={auth:{getSession:async()=>({data:{session}})}},root={classList:{toggle:()=>false},append(){}};
+ const context={window:{supabase:{createClient:()=>client},addEventListener(){}},document:{body:root,getElementById:id=>elements[id],createElement:()=>({click(){clicks++;},remove(){}})},location:{search:query,origin:'https://echocraftmusic.com',href:'https://echocraftmusic.com/purchase-complete.html'+query},URL,URLSearchParams,Intl,matchMedia:()=>({matches:false}),fetch:async(url,options)=>{calls.push({url,options});if(url==='music/music.json')return new Response(JSON.stringify({items:[{title:'A Light Through Darkness',artist:'Echo Craft',cover:'https://echocraftmusic.com/cover.webp'}]}));if(url.includes('/download'))return downloadAllowed?new Response('PRIVATE-MP3'):new Response(JSON.stringify({error:'Payment is no longer verified.'}),{status:409});return new Response(JSON.stringify({verified:paid,title:'A Light Through Darkness',artist:'Echo Craft',cover:'https://echocraftmusic.com/cover.webp',amountCents:99,filename:'song.mp3',orderReference:'EC-TEST-1234'}));}};
+ vm.runInNewContext(source,context);await new Promise(resolve=>setImmediate(resolve));return {elements,calls,clicks:()=>clicks};
+}
+let r=await render();assert(r.elements.downloadMusic.disabled);assert(r.elements.purchaseCard.hidden);assert.equal(r.calls.length,0);assert.match(r.elements.statusMessage.textContent,/not enabled/);
+r=await render({query:'?preview=1'});assert.equal(r.elements.purchaseCard.hidden,false);assert(r.elements.downloadMusic.disabled);assert.equal(r.elements.downloadsRemaining.textContent,'3 downloads remaining');assert.equal(r.calls.length,1);assert.match(r.elements.modeLabel.textContent,/NO PAYMENT/);await r.elements.downloadMusic.onclick();assert.equal(r.clicks(),0);
+const query='?test=12345678-1234-1234-1234-123456789abc';
+r=await render({query,signedIn:false});assert(r.elements.downloadMusic.disabled);assert.equal(r.calls.length,0);assert.match(r.elements.statusMessage.textContent,/Sign in/);
+r=await render({query});assert(r.elements.downloadMusic.disabled);assert.equal(r.elements.downloadsRemaining.textContent,'Sandbox delivery test');await r.elements.downloadMusic.onclick();assert.equal(r.clicks(),0);assert.equal(r.calls.length,1);
+r=await render({query,paid:true,downloadAllowed:false});assert.equal(r.elements.downloadMusic.disabled,false);assert.equal(r.elements.purchaseAmount.textContent,'$0.99');assert.equal(r.clicks(),0);assert.match(r.calls[0].options.headers.Authorization,/Bearer owner-test/);await r.elements.downloadMusic.onclick();assert(r.elements.downloadMusic.disabled);assert.match(r.elements.statusMessage.textContent,/no longer verified/);assert.equal(r.clicks(),0);
+r=await render({query:'?test=invalid&preview=1'});assert.equal(r.calls.length,0);assert(r.elements.downloadMusic.disabled);
+console.log('Passed: production fail-closed state, disabled sample download, owner sign-in, pending-payment gate, verified test display, no fake download counts, revoked-payment rejection, and no automatic downloads.');
