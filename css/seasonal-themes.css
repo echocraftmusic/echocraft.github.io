@@ -107,3 +107,29 @@ html:is([data-site-theme="fall"],[data-site-theme="christmas"]) :is(a,button,inp
  .nativity-copy{padding:24px 20px}.nativity-copy h2{font-size:32px}
  html[data-site-theme="christmas"] body::before{background-position:80% center}
 }
+
+/* Strong contrast for the lower seasonal cards and contact links. */
+html:is([data-site-theme="fall"],[data-site-theme="christmas"]) .info-content{
+ background:rgba(249,238,219,.98);border:1px solid var(--gold);color:var(--ink);box-shadow:0 18px 55px #35201430;
+}
+html:is([data-site-theme="fall"],[data-site-theme="christmas"]) .about-editorial{
+ background:#f0dfc4;border-color:var(--gold);box-shadow:0 10px 28px #35201416;
+}
+html:is([data-site-theme="fall"],[data-site-theme="christmas"]) :is(.about-manifesto,.premium-info-panel,.support-panel){
+ background:#fff7e8;border-color:var(--gold);color:var(--ink);box-shadow:0 6px 20px #35201416;
+}
+html:is([data-site-theme="fall"],[data-site-theme="christmas"]) .info-content :is(p,li,h3,blockquote,strong,small){
+ color:var(--ink);text-shadow:none;
+}
+html:is([data-site-theme="fall"],[data-site-theme="christmas"]) .info-content .about-kicker{color:#6c4319}
+html:is([data-site-theme="fall"],[data-site-theme="christmas"]) .info-content .manifesto-mark{color:#906622}
+html:is([data-site-theme="fall"],[data-site-theme="christmas"]) .info-content .about-list li::before{color:#815214}
+html:is([data-site-theme="fall"],[data-site-theme="christmas"]) .info-content .about-inline-link{
+ color:#79360f;text-decoration:underline;text-underline-offset:3px;
+}
+html:is([data-site-theme="fall"],[data-site-theme="christmas"]) .info-section::before{background:linear-gradient(90deg,transparent,var(--gold),transparent)}
+html:is([data-site-theme="fall"],[data-site-theme="christmas"]) .frequency-statement{background:#50301c;border-color:var(--gold);box-shadow:none}
+html[data-site-theme="christmas"] .frequency-statement{background:#123523}
+html:is([data-site-theme="fall"],[data-site-theme="christmas"]) .info-content .frequency-statement :is(span,strong){color:#fff4dd;text-shadow:none}
+html:is([data-site-theme="fall"],[data-site-theme="christmas"]) .info-contact a{background:#fff7e8;border-color:var(--gold);color:var(--ink);font-weight:600}
+html:is([data-site-theme="fall"],[data-site-theme="christmas"]) .info-contact a:hover{background:var(--season-action);border-color:var(--gold);color:#fff4dd}
