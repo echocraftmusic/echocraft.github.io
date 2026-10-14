@@ -130,6 +130,10 @@ async function playStoreAlbumTrack(albumIndex, trackIndex) {
 }
 
 function addStorePreviewItem(type, item) {
+    if (window.EchoCraftCart?.add) {
+        window.EchoCraftCart.add({ ...item, type, cover: storeAlbumURL(item.cover) || 'assets/images/no-cover.webp' });
+        return;
+    }
     const title = String(item.title || 'Untitled Release');
     const price = type === 'album' ? storeAlbumPrice(item) : storeSinglePrice(item);
     storePreviewCart.set(type + ':' + title, { title, type, price });
