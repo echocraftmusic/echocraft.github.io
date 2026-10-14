@@ -168,3 +168,6 @@ html:is([data-site-theme="fall"],[data-site-theme="christmas"]) #music .letter-n
 html:is([data-site-theme="fall"],[data-site-theme="christmas"]) #music .letter-nav button.active{
  background:#50301c;color:#fff4dd;border-color:var(--gold);box-shadow:0 0 0 2px var(--gold);
 }
+
+/* Center the purchase label in the column beside the price. */
+html:is([data-site-theme="fall"],[data-site-theme="christmas"]) #music .single-purchase-copy{text-align:center}
