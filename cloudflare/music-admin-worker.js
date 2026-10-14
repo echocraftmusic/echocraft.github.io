@@ -398,10 +398,10 @@ async function sandboxDelivery(request,env,url,headers){
     const record=await env.PURCHASE_FILES.get(purchaseRecordKey(input.release,'single'));requireValue(record,'Upload the full MP3 first.',409);
     const file=await record.json();requireValue(file.title===item.title&&file.album===item.title&&file.artist===(item.artist||'Echo Craft')&&file.coverSource===(item.cover||''),'Refresh this MP3 to match the catalog before testing.',409);
     requireValue(await env.PURCHASE_FILES.head(file.key),'The saved MP3 is missing.',409);
-    const test=uuid(),redirect='https://echocraftmusic.com/admin/test-delivery.html?test='+test;
+    const test=uuid(),redirect='https://echocraftmusic.com/purchase-complete.html?test='+test;
     const checkout=await squareSandboxCheckout(new Request(request.url,{method:'POST',body:JSON.stringify({digitalPurchaseAgreementAccepted:true,items:[{title:item.title,type:'single',qty:1}]})}),env,redirect);
     requireValue(typeof checkout.orderId==='string'&&checkout.orderId.length>0,'Square did not return a test order ID.',502);
-    await env.ADMIN_STAGING.put('sandbox-delivery/'+test+'.json',JSON.stringify({orderId:checkout.orderId,amount:checkout.totalCents,title:item.title,fileKey:file.key,filename:file.filename,expires:Date.now()+86400000}));
+    await env.ADMIN_STAGING.put('sandbox-delivery/'+test+'.json',JSON.stringify({orderId:checkout.orderId,amount:checkout.totalCents,title:item.title,artist:item.artist||'Echo Craft',cover:item.cover||'',fileKey:file.key,filename:file.filename,expires:Date.now()+86400000}));
     return reply({checkoutUrl:checkout.checkoutUrl,test,environment:'sandbox'});
   }
   requireValue(request.method==='GET'&&['/api/test-delivery/status','/api/test-delivery/download'].includes(url.pathname),'Test endpoint not found.',404);
@@ -414,7 +414,7 @@ async function sandboxDelivery(request,env,url,headers){
   requireValue(ids.length<=10,'Unexpected test payment count.',409);
   for(const id of ids){const {payment}=await sandboxSquare(env,'payments/'+encodeURIComponent(id));if(payment?.id===id&&payment.order_id===session.orderId&&payment.location_id===env.SQUARE_LOCATION_ID&&payment.status==='COMPLETED'&&payment.amount_money?.currency==='USD'&&!(payment.refunded_money?.amount>0)&&Number.isSafeInteger(payment.amount_money.amount))paid+=payment.amount_money.amount;}
   const verified=paid>=session.amount&&session.amount>0;
-  if(url.pathname==='/api/test-delivery/status')return reply({title:session.title,filename:session.filename,verified,environment:'sandbox',message:verified?'Square confirmed the test payment. Your full MP3 is ready.':'Square has not confirmed a completed payment yet. Complete Test Payment in the Sandbox panel, then check again.'});
+  if(url.pathname==='/api/test-delivery/status')return reply({title:session.title,artist:session.artist||'Echo Craft',cover:session.cover||'',amountCents:session.amount,orderReference:'EC-TEST-'+session.orderId.slice(-8).toUpperCase(),filename:session.filename,verified,environment:'sandbox',message:verified?'Square confirmed the test payment. Your full MP3 is ready.':'Square has not confirmed a completed payment yet. Complete Test Payment in the Sandbox panel, then check again.'});
   requireValue(verified,'Complete the Square Sandbox payment before downloading.',409);
   const file=await env.PURCHASE_FILES.get(session.fileKey);requireValue(file,'The test MP3 is no longer available.',404);
   return new Response(file.body,{headers:{...headers,'Content-Type':'audio/mpeg','Content-Disposition':'attachment; filename="'+session.filename.replace(/[^\x20-\x7e]|["\\]/g,'_')+'"'}});

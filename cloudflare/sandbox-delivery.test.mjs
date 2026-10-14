@@ -8,7 +8,7 @@ const env={SQUARE_ENVIRONMENT:'sandbox',SQUARE_ACCESS_TOKEN:'test',SQUARE_LOCATI
 globalThis.fetch=async(url,options={})=>{
  if(url.includes('/auth/v1/user'))return new Response(JSON.stringify({id:'owner',email,email_confirmed_at:'2026-01-01'}));
  if(url.startsWith('https://api.github.com/'))return new Response(JSON.stringify({encoding:'base64',content:Buffer.from(JSON.stringify({items:[item]})).toString('base64')}));
- if(url.endsWith('/online-checkout/payment-links')){const body=JSON.parse(options.body);assert.match(body.checkout_options.redirect_url,/\/admin\/test-delivery.html\?test=[a-f0-9-]+$/);assert.equal(body.order.line_items[0].base_price_money.amount,99);return new Response(JSON.stringify({payment_link:{url:'https://sandbox.square.link/u/test',order_id:'order1'}}));}
+ if(url.endsWith('/online-checkout/payment-links')){const body=JSON.parse(options.body);assert.match(body.checkout_options.redirect_url,/\/purchase-complete.html\?test=[a-f0-9-]+$/);assert.equal(body.order.line_items[0].base_price_money.amount,99);return new Response(JSON.stringify({payment_link:{url:'https://sandbox.square.link/u/test',order_id:'order1'}}));}
  if(url.endsWith('/orders/order1'))return new Response(JSON.stringify({order:{id:'order1',location_id:'location',state:orderState,total_money:{amount:99,currency:'USD'},tenders:state==='NONE'?[]:[{payment_id:'payment1'}]}}));
  if(url.endsWith('/payments/payment1'))return new Response(JSON.stringify({payment:{id:'payment1',order_id:wrongOrder?'other':'order1',location_id:'location',status:state,amount_money:{amount:wrongAmount?98:99,currency:'USD'},refunded_money:{amount:refund,currency:'USD'}}}));
  throw Error('Unexpected fetch '+url);
