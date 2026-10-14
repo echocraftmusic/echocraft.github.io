@@ -19,6 +19,7 @@ let response=await checkout();
 assert.equal(response.status,200);
 assert.equal((await response.json()).checkoutUrl,destination);
 assert.equal(submitted.order.line_items[0].base_price_money.amount,99,'Price must come from the server catalog.');
+assert.deepEqual(submitted.checkout_options.accepted_payment_methods,{apple_pay:true,google_pay:true,cash_app_pay:true,afterpay_clearpay:false},'Checkout must request the approved business payment methods.');
 assert.equal((await checkout({digitalPurchaseAgreementAccepted:false})).status,400);
 assert.equal((await checkout({items:[{title:'Test single',type:'single',qty:2}]})).status,400);
 assert.equal((await worker.fetch(new Request('https://worker.test/api/checkout/sandbox',{method:'POST',headers:{Origin:'https://echocraftmusic.com'},body:'{}'}),{...env,SQUARE_ENVIRONMENT:'production'})).status,503);
