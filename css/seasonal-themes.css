@@ -1,0 +1,99 @@
+/* Seasonal overrides are scoped: Original retains all existing styles. */
+html[data-site-theme="fall"],html[data-site-theme="christmas"]{
+ --gold:#c18b36;--cream:#f7ead5;--ink:#352014;--muted-ink:#594332;
+ --season-action:#a83e00;--season-sidebar:rgba(55,28,10,.88);
+ --season-background:url('../assets/themes/fall-background.png');
+ --text-primary:var(--ink);--text-secondary:var(--muted-ink);--border:#bd934e;
+ --accent-cyan:#8d4518;--accent-purple:#a85f1d;--accent-pink:#934015;
+ --cyan:#8d4518;--purple:#a85f1d;--text:var(--ink);--muted:var(--muted-ink);
+ --dark-bg:#f7ead5;--dark-secondary:#f0dfc4;--bg:#f7ead5;--panel:#f7ead5;
+}
+html[data-site-theme="christmas"]{
+ --ink:#123523;--muted-ink:#344938;--season-action:#920815;
+ --season-sidebar:rgba(6,36,24,.9);
+ --season-background:url('../assets/themes/christmas-background.png');
+ --accent-cyan:#755020;--accent-purple:#9a731d;--accent-pink:#920815;
+ --cyan:#755020;--purple:#9a731d;
+}
+html:is([data-site-theme="fall"],[data-site-theme="christmas"]) body{background:#eee1cd;color:var(--ink)}
+html:is([data-site-theme="fall"],[data-site-theme="christmas"]) body::before{
+ background-image:var(--season-background);background-size:cover;background-position:center;
+ filter:none;opacity:1;animation:none;transform:none;
+}
+html:is([data-site-theme="fall"],[data-site-theme="christmas"]) body::after{background:rgba(36,23,10,.04)}
+html:is([data-site-theme="fall"],[data-site-theme="christmas"]) .container::before,
+html:is([data-site-theme="fall"],[data-site-theme="christmas"]) .container::after{display:none}
+html:is([data-site-theme="fall"],[data-site-theme="christmas"]) .sidebar{
+ background:var(--season-sidebar);border-right:1px solid var(--gold);
+ backdrop-filter:blur(14px);box-shadow:8px 0 35px #0005;
+}
+html:is([data-site-theme="fall"],[data-site-theme="christmas"]) .sidebar :is(h1,a,label){color:#fff4dd;text-shadow:none}
+html:is([data-site-theme="fall"],[data-site-theme="christmas"]) .sidebar :is(.sidebar-logo-image,.subscribe-box,.sidebar-toggle,.sidebar-subscribe-toggle){border-color:var(--gold);background:#ffffff08;box-shadow:none}
+html:is([data-site-theme="fall"],[data-site-theme="christmas"]) .sidebar-logo-image img{filter:sepia(1) saturate(1.5) hue-rotate(345deg) brightness(1.3)}
+html:is([data-site-theme="fall"],[data-site-theme="christmas"]) .sidebar-nav a:is(.active,:hover){background:var(--season-action);border-color:var(--gold);box-shadow:inset 3px 0 var(--gold);color:#fff4dd}
+html:is([data-site-theme="fall"],[data-site-theme="christmas"]) .sidebar-social a{color:#f2d394;background:#0002;border-color:#c18b3655;box-shadow:none}
+html:is([data-site-theme="fall"],[data-site-theme="christmas"]) .subscribe-box :is(p,input){color:#fff4dd}
+html:is([data-site-theme="fall"],[data-site-theme="christmas"]) .subscribe-box input{background:#ffffff18;border-color:#c18b3677}
+html:is([data-site-theme="fall"],[data-site-theme="christmas"]) .subscribe-box input::placeholder{color:#e7d6bc}
+html:is([data-site-theme="fall"],[data-site-theme="christmas"]) .subscribe-box button{background:var(--season-action);border:1px solid var(--gold);color:#fff4dd}
+html:is([data-site-theme="fall"],[data-site-theme="christmas"]) section.home{min-height:0;padding:42px 28px 24px;background:none;gap:12px}
+html:is([data-site-theme="fall"],[data-site-theme="christmas"]) .home-content{
+ width:100%;max-width:940px;padding:36px 40px 30px;background:rgba(249,238,219,.95);
+ border:2px solid var(--gold);border-radius:24px;animation:none;
+ box-shadow:inset 0 0 0 3px #fff7e8aa,0 20px 55px #27160030;backdrop-filter:blur(16px);
+}
+html:is([data-site-theme="fall"],[data-site-theme="christmas"]) .home-content:hover{transform:none}
+html:is([data-site-theme="fall"],[data-site-theme="christmas"]) .home-logo{width:min(700px,94%);margin:18px auto 16px}
+html:is([data-site-theme="fall"],[data-site-theme="christmas"]) .home-logo img{transform:none;filter:drop-shadow(0 3px 4px #9f6e3422)}
+html:is([data-site-theme="fall"],[data-site-theme="christmas"]) .home-content :is(p,.tagline){color:var(--ink);text-shadow:none}
+html:is([data-site-theme="fall"],[data-site-theme="christmas"]) .home-content p:not(.tagline){font-size:15px;line-height:1.6}
+html:is([data-site-theme="fall"],[data-site-theme="christmas"]) .home-content .tagline{font:italic clamp(20px,2.15vw,30px)/1.35 Georgia,serif}
+html:is([data-site-theme="fall"],[data-site-theme="christmas"]) .universe-kicker{color:var(--ink);border-color:var(--gold);background:#f3dab488;box-shadow:none;text-shadow:none}
+html:is([data-site-theme="fall"],[data-site-theme="christmas"]) .hero-features{margin:20px auto;gap:0}
+html:is([data-site-theme="fall"],[data-site-theme="christmas"]) .hero-feature{padding:6px 22px;background:none;box-shadow:none;border:0;border-right:1px solid var(--gold);animation:none}
+html:is([data-site-theme="fall"],[data-site-theme="christmas"]) .hero-feature:last-child{border-right:0}
+html:is([data-site-theme="fall"],[data-site-theme="christmas"]) .hero-feature::before{display:none}
+html:is([data-site-theme="fall"],[data-site-theme="christmas"]) .hero-feature :is(.hero-feature-title,.hero-feature-text){color:var(--ink);background:none;-webkit-text-fill-color:var(--ink);text-shadow:none}
+html:is([data-site-theme="fall"],[data-site-theme="christmas"]) .btn-primary,
+html:is([data-site-theme="fall"],[data-site-theme="christmas"]) :is(.catalog-action-primary,.ac-listen,.single-listen,.top-listen,.main-play){background:var(--season-action)!important;border:1px solid var(--gold)!important;color:#fff4dd!important;box-shadow:none!important}
+html:is([data-site-theme="fall"],[data-site-theme="christmas"]) .btn-secondary{background:#fff5df;border:1px solid var(--gold);color:var(--ink);box-shadow:none}
+html:is([data-site-theme="fall"],[data-site-theme="christmas"]) :is(.video-card,.music-card,.browse-music,.premium-info-panel,.about-manifesto,.support-card,.card,.form-panel,.album-hero,.player-panel,.track-row){background:rgba(249,238,219,.96);border-color:var(--gold);color:var(--ink);box-shadow:0 8px 28px #432c1220}
+html:is([data-site-theme="fall"],[data-site-theme="christmas"]) :is(.section-title,.video-title,.music-title,.about-kicker,.albums-kicker,.panel-number){color:var(--ink);background:none;-webkit-text-fill-color:var(--ink);text-shadow:none}
+html:is([data-site-theme="fall"],[data-site-theme="christmas"]) :is(.info,.music){background:none}
+html:is([data-site-theme="fall"],[data-site-theme="christmas"]) :is(.about-copy,.premium-info-panel,.about-manifesto,.support-card,.hero,.card,.form-panel,.album-hero-content,.player-panel) :is(p,small,h1,h2,h3,strong,blockquote,label){color:var(--ink)}
+html:is([data-site-theme="fall"],[data-site-theme="christmas"]) #albums :is(.ac-card,.ac-price,.ac-thumbnail,.ac-tracks,.ac-platform,.ac-arrow,.ac-cart){background:rgba(249,238,219,.98);border-color:var(--gold);color:var(--ink)}
+html:is([data-site-theme="fall"],[data-site-theme="christmas"]) #albums :is(.ac-title,.ac-artist,.ac-description,.ac-clip,.ac-price small,.ac-navigation,.ac-gallery-heading h3,.ac-gallery-heading span,.ac-store-note,.albums-heading p,.ac-purchase-copy span,.ac-cart p){color:var(--muted-ink)}
+html:is([data-site-theme="fall"],[data-site-theme="christmas"]) #albums :is(.ac-badge,.ac-playing){color:var(--ink);border-color:var(--gold);background:#d5a65522}
+html:is([data-site-theme="fall"],[data-site-theme="christmas"]) #albums :is(.ac-play,.ac-pills span,.ac-remove){background:#ead7b8;color:var(--ink);border-color:var(--gold)}
+html:is([data-site-theme="fall"],[data-site-theme="christmas"]) #albums .ac-add{background:#24683d;border-color:var(--gold);color:white;box-shadow:none}
+html:is([data-site-theme="fall"],[data-site-theme="christmas"]) #albums .ac-purchase{border-color:var(--gold)}
+html:is([data-site-theme="fall"],[data-site-theme="christmas"]) #albums .ac-thumbnail[aria-pressed=true]{box-shadow:0 0 0 3px var(--gold);border-color:var(--gold)}
+html:is([data-site-theme="fall"],[data-site-theme="christmas"]) :is(.single-price,.single-purchase,.single-store-note,.letter-nav button,.single-platform){color:var(--ink);border-color:var(--gold);background:#f1e0c7}
+html:is([data-site-theme="fall"],[data-site-theme="christmas"]) :is(.single-add,.single-buy,.btn-buy){background:#24683d;color:white;border-color:var(--gold);box-shadow:none}
+html:is([data-site-theme="fall"],[data-site-theme="christmas"]) :is(.single-purchase-copy span,.single-price small){color:var(--muted-ink)}
+html:is([data-site-theme="fall"],[data-site-theme="christmas"]) .ec-cart-panel{background:#f7ead5;border-color:var(--gold);color:var(--ink)}
+html:is([data-site-theme="fall"],[data-site-theme="christmas"]) .ec-cart-panel :is(h2,small,p,.ec-cart-price,.ec-cart-total span:last-child,.ec-cart-close,.ec-cart-remove,.ec-cart-empty,.ec-cart-policy){color:var(--ink)}
+html:is([data-site-theme="fall"],[data-site-theme="christmas"]) .ec-cart-panel :is(.ec-cart-summary,.ec-cart-panel-head,.ec-cart-item){border-color:var(--gold)}
+html:is([data-site-theme="fall"],[data-site-theme="christmas"]) .ec-cart-qty button{background:#ead7b8;border-color:var(--gold);color:var(--ink)}
+html:is([data-site-theme="fall"],[data-site-theme="christmas"]) .ec-cart-checkout{background:var(--season-action);color:#fff4dd}
+html:is([data-site-theme="fall"],[data-site-theme="christmas"]) .ec-cart-policy input{accent-color:var(--season-action)}
+html:is([data-site-theme="fall"],[data-site-theme="christmas"]) :is(a,button,input,select,textarea):focus-visible{outline:3px solid var(--season-action);outline-offset:3px}
+.seasonal-nativity[hidden]{display:none!important}
+.seasonal-nativity{display:grid;grid-template-columns:62% 38%;width:100%;max-width:940px;overflow:hidden;border:2px solid #c18b36;border-radius:24px;background:#f7ead5;box-shadow:0 14px 40px #0003}
+/* A viewport onto the approved artwork preserves its original pixels and faces. */
+.nativity-scene{position:relative;aspect-ratio:580/335;overflow:hidden;align-self:stretch}
+.nativity-scene img{position:absolute;width:261.034483%;max-width:none;height:auto;left:-60.344828%;top:-198.507463%}
+.nativity-copy{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:22px;color:#123523;background:linear-gradient(110deg,#f7ead5,#fff5e4)}
+.nativity-copy h2{font:normal clamp(24px,3vw,42px)/1.1 Georgia,serif;margin:12px 0}
+.nativity-copy p{font:normal clamp(17px,1.6vw,24px)/1.35 Georgia,serif;margin:12px 0}
+.nativity-star{display:flex;align-items:center;gap:14px;width:75%;color:#a5772c;font-size:26px}
+.nativity-star::before,.nativity-star::after{content:'';height:1px;flex:1;background:#c18b36}
+@media(min-width:1200px){html[data-site-theme="christmas"] section.home{padding-right:clamp(80px,12vw,185px);padding-left:40px}}
+@media(max-width:768px){
+ html:is([data-site-theme="fall"],[data-site-theme="christmas"]) section.home{padding:80px 14px 28px}
+ html:is([data-site-theme="fall"],[data-site-theme="christmas"]) .home-content{padding:25px 18px;border-radius:20px}
+ html:is([data-site-theme="fall"],[data-site-theme="christmas"]) .hero-feature{padding:8px 6px}
+ .seasonal-nativity{grid-template-columns:1fr;border-radius:20px}
+ .nativity-copy{padding:24px 20px}.nativity-copy h2{font-size:32px}
+ html[data-site-theme="christmas"] body::before{background-position:80% center}
+}
