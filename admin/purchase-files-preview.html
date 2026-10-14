@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Echo Craft Music Manager</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root{--bg:#07111e;--panel:#0d1a2c;--panel2:#101f34;--line:#124769;--cyan:#00d9ff;--blue:#3f7cff;--text:#f6fbff;--muted:#9db0c3;--good:#46d39a;--warn:#ffc857;--bad:#ff6b6b}
+    *{box-sizing:border-box} body{margin:0;min-height:100vh;background:radial-gradient(circle at 20% 0,#10233b 0,#07111e 38%,#040a12 100%);color:var(--text);font-family:Inter,system-ui,sans-serif}
+    a{color:inherit}.shell{max-width:1440px;margin:0 auto;padding:28px}.topbar{display:flex;gap:18px;align-items:center;justify-content:space-between;margin-bottom:22px}.brand h1{font-family:Orbitron,sans-serif;margin:0;font-size:clamp(22px,3vw,34px);letter-spacing:1.5px}.brand p{margin:7px 0 0;color:var(--muted)}
+    .top-actions{display:flex;gap:10px;flex-wrap:wrap}.btn{border:1px solid #275272;background:#15253a;color:#fff;padding:11px 14px;border-radius:11px;font-weight:700;cursor:pointer;text-decoration:none;display:inline-flex;gap:8px;align-items:center}.btn:hover{border-color:var(--cyan)}.btn.primary{background:linear-gradient(135deg,#00c8ef,#4d67ff);border:0}.btn.good{background:#123c34;border-color:#1d765e}.btn:disabled{opacity:.5;cursor:not-allowed}
+    .status{padding:12px 15px;border-radius:12px;background:#0a1829;border:1px solid #214660;color:var(--muted);margin-bottom:12px}.status.good{border-color:#286a59;color:#baf7dc}.status.bad{border-color:#7a3131;color:#ffd2d2}.activity{padding:13px 15px;border-radius:12px;background:#0a1829;border:1px solid #214660;color:#d8e8f5;margin-bottom:20px;line-height:1.45}.activity.good{border-color:#286a59;background:#0c241f;color:#baf7dc}.activity.warn{border-color:#735f2c;background:#2b2410;color:#ffe39a}.activity.bad{border-color:#7a3131;background:#30171c;color:#ffd2d2}.activity .stamp{color:var(--muted);font-size:11px;margin-left:8px}.grid{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(330px,.8fr);gap:20px}.panel{background:linear-gradient(180deg,rgba(16,31,52,.97),rgba(8,20,34,.97));border:1px solid var(--line);border-radius:18px;padding:20px;box-shadow:0 18px 50px rgba(0,0,0,.25)}.panel h2{font-family:Orbitron,sans-serif;font-size:18px;margin:0 0 16px}.subtle{color:var(--muted);font-size:13px}
+    label{display:block;font-size:13px;font-weight:700;margin:14px 0 7px;color:#dcecff}.fieldrow{display:grid;grid-template-columns:1fr 1fr;gap:12px}.fieldrow.three{grid-template-columns:1fr 1fr 1fr}input,select,textarea{width:100%;background:#071421;border:1px solid #29506b;color:#fff;border-radius:10px;padding:11px 12px;font:inherit;outline:none}input:focus,select:focus,textarea:focus{border-color:var(--cyan);box-shadow:0 0 0 3px rgba(0,217,255,.09)}textarea{min-height:80px;resize:vertical}.inline{display:flex;gap:9px}.inline input{flex:1}.help{font-size:12px;color:var(--muted);margin-top:6px}.sectionline{height:1px;background:#17384f;margin:20px 0}.pendingBox{display:flex;gap:10px;align-items:end}.pendingBox>div{flex:1}
+    .preview-card{border:1px solid #0f597e;border-radius:18px;padding:12px;background:#071726;max-width:360px;margin:0 auto}.cover-wrap{aspect-ratio:1/1;border-radius:13px;overflow:hidden;background:#06111d;display:grid;place-items:center}.cover-wrap img{width:100%;height:100%;object-fit:cover}.cover-placeholder{color:#617a8d;font-size:44px}.song-title{text-align:center;font-weight:800;margin:14px 8px 10px}.audiofake{background:#303943;border-radius:18px;height:34px;display:flex;align-items:center;padding:0 12px;color:#d9e1e8;font-size:12px;gap:9px}.audiofake i{font-size:11px}.cardbuttons{display:grid;grid-template-columns:1fr 42px 42px;gap:7px;margin-top:10px}.listen{background:linear-gradient(135deg,#00cfe8,#4568ff);border-radius:9px;padding:11px 10px;text-align:center;font-weight:800;font-size:12px}.platform{border-radius:9px;border:1px solid #315064;display:grid;place-items:center;font-size:18px}.spotify{color:#1ed760}.apple{color:#fff;background:#201a2a}
+    .mp3box{border:1px dashed #2e5d7b;background:#091a2a;border-radius:12px;padding:13px;margin-top:8px}.mp3name{font-size:13px;color:#d9ecf7;margin-top:8px;word-break:break-all}.checks{display:grid;gap:8px;margin-top:14px}.check{display:flex;gap:9px;align-items:center;color:var(--muted);font-size:13px}.check.ok{color:#b7f5dc}.check i{width:18px;text-align:center}.footerActions{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}.note{font-size:12px;color:var(--muted);line-height:1.5;margin-top:12px}.toast{position:fixed;right:22px;bottom:22px;max-width:420px;padding:14px 16px;border-radius:12px;background:#102a3b;border:1px solid #2d728d;box-shadow:0 16px 50px #0008;display:none;z-index:20}.toast.show{display:block}.toast.bad{border-color:#8e3c3c;background:#351a22}
+    .auth-gate{min-height:100vh;display:grid;place-items:center;padding:24px}.auth-card{width:min(480px,100%);background:linear-gradient(180deg,rgba(16,31,52,.98),rgba(8,20,34,.98));border:1px solid var(--line);border-radius:22px;padding:28px;box-shadow:0 22px 70px rgba(0,0,0,.38)}.auth-card h1{font-family:Orbitron,sans-serif;margin:0 0 8px;font-size:25px}.auth-card p{color:var(--muted);line-height:1.55;margin:0 0 18px}.auth-card .lock{width:48px;height:48px;border-radius:14px;display:grid;place-items:center;background:#0a2135;border:1px solid #185779;color:var(--cyan);font-size:20px;margin-bottom:18px}.auth-message{margin-top:13px;padding:11px 12px;border-radius:10px;background:#0a1829;border:1px solid #214660;color:var(--muted);display:none;line-height:1.4}.auth-message.show{display:block}.auth-message.good{border-color:#286a59;color:#baf7dc}.auth-message.bad{border-color:#7a3131;color:#ffd2d2}.admin-shell{display:none}.admin-shell.authorized{display:block}.signed-in{display:none;align-items:center;gap:8px;color:var(--muted);font-size:12px}.signed-in.show{display:flex}.signed-in strong{color:#dff8ff}
+    @media(max-width:900px){.grid{grid-template-columns:1fr}.fieldrow,.fieldrow.three{grid-template-columns:1fr}.shell{padding:18px}.topbar{align-items:flex-start;flex-direction:column}}
+  </style>
+  <link rel="stylesheet" href="purchase-files.css?v=20261014">
+</head>
+<body>
+<div id="authGate" class="auth-gate" style="display:none">
+  <div class="auth-card">
+    <div class="lock"><i class="fa-solid fa-lock"></i></div>
+    <h1>ECHO CRAFT ADMIN</h1>
+    <p>Enter an approved Echo Craft administrator email. We’ll send a secure magic link — no password to remember.</p>
+    <label for="authEmail">Admin email</label>
+    <input id="authEmail" type="email" autocomplete="email" placeholder="name@example.com">
+    <button id="sendMagicLink" class="btn primary" type="button" style="width:100%;justify-content:center;margin-top:12px"><i class="fa-solid fa-envelope"></i> Send Magic Link</button>
+    <div id="authMessage" class="auth-message"></div>
+    <div class="note" style="margin-top:16px">Only approved Echo Craft administrator accounts can enter the Music Manager.</div>
+  </div>
+</div>
+<div id="adminApp" class="shell admin-shell authorized">
+  <div class="topbar">
+    <div class="brand">
+      <h1><i class="fa-solid fa-sliders"></i> ECHO CRAFT MUSIC MANAGER</h1>
+      <p>Turn a new DistroKid release into an Echo Craft website music card.</p>
+    </div>
+    <div class="top-actions">
+      <div id="signedInAs" class="signed-in"><i class="fa-solid fa-user-shield"></i> <span></span></div>
+      <a class="btn" href="../#music"><i class="fa-solid fa-music"></i> View Music</a>
+      <a class="btn" href="../"><i class="fa-solid fa-arrow-left"></i> Back to Site</a>
+      <button id="signOut" class="btn" type="button"><i class="fa-solid fa-right-from-bracket"></i> Sign Out</button>
+    </div>
+  </div>
+
+  <div id="serverStatus" class="status">Checking the online Music Manager…</div>
+  <div id="activityStatus" class="activity"><strong>Status:</strong> Ready. Nothing has been saved or published yet.</div>
+
+
+  <nav class="admin-tabs" role="tablist" aria-label="Music manager sections"><button id="releaseTab" class="btn" type="button" role="tab" data-admin-tab="releases" aria-selected="true" aria-controls="releaseWorkspace">Releases &amp; Themes</button><button id="purchaseTab" class="btn" type="button" role="tab" data-admin-tab="purchase" aria-selected="false" aria-controls="purchaseWorkspace">Purchase Files</button></nav>
+  <section id="purchaseWorkspace" class="panel" role="tabpanel" aria-labelledby="purchaseTab" hidden><h2>Purchase Files</h2><p class="subtle">Upload full MP3s for the releases in your catalog. The manager names and tags each saved copy, including its artwork. Your original computer file stays unchanged.</p><div id="purchaseFileStatus" class="status" role="status" aria-live="polite">Preview of the Purchase Files tab. Uploads are disabled in this preview.</div><div class="purchase-tools"><input id="purchaseFileSearch" type="search" aria-label="Search purchase files" placeholder="Search releases or album tracks"><select id="purchaseFileFilter" aria-label="Filter purchase files" style="width:auto"><option value="all">All releases</option><option value="single">Singles</option><option value="album">Albums</option></select><button id="refreshPurchaseFiles" class="btn" type="button">Refresh files</button></div><p id="purchaseFileCount" class="purchase-count"></p><div id="purchaseFileList" class="purchase-list" data-preview="true"></div><p class="help">MP3 only · up to 25 MB per track. Convert WAV files before uploading. Expand an album to upload its individual tracks in order.</p></section>
+  <div id="releaseWorkspace" role="tabpanel" aria-labelledby="releaseTab">
+  <section class="panel" aria-labelledby="themeChangerTitle" style="margin-bottom:22px">
+    <h2 id="themeChangerTitle"><i class="fa-solid fa-palette"></i> Theme Changer</h2>
+    <p class="subtle">Choose the appearance everyone sees on Echo Craft. Only you can change the seasonal theme.</p>
+    <div class="top-actions" id="themeChoices" style="margin:16px 0" aria-label="Website theme">
+      <button class="btn" type="button" data-site-theme-choice="original" aria-pressed="false" disabled>Original</button>
+      <button class="btn" type="button" data-site-theme-choice="fall" aria-pressed="false" disabled>Fall</button>
+      <button class="btn" type="button" data-site-theme-choice="christmas" aria-pressed="false" disabled>Christmas</button>
+    </div>
+    <p id="themeStatus" class="help" role="status" aria-live="polite">Sign in to load the current website theme.</p>
+    <p class="help">Spring and Easter can be added here later.</p>
+  </section>
+
+  <div class="grid">
+    <section class="panel">
+      <h2>1. Choose a detected release</h2>
+      <div class="pendingBox">
+        <div>
+          <label for="pendingSelect">Pending releases</label>
+          <select id="pendingSelect"><option value="">Loading…</option></select>
+        </div>
+        <button id="refreshPending" class="btn" type="button"><i class="fa-solid fa-rotate"></i></button>
+      </div>
+      <div class="help">A pending release can prefill title, cover, release date and Apple Music information. You can also build a song manually.</div>
+
+      <div class="sectionline"></div>
+      <h2>2. HyperFollow</h2>
+      <label for="hyperfollow">DistroKid HyperFollow URL</label>
+      <div class="inline">
+        <input id="hyperfollow" type="url" placeholder="https://distrokid.com/hyperfollow/...">
+        <button id="fetchHyperfollow" class="btn primary" type="button"><i class="fa-solid fa-wand-magic-sparkles"></i> Fetch</button>
+      </div>
+      <div class="help">The online manager will try to pull the official cover and service links. Anything it cannot find stays editable.</div>
+      <button id="importAlbumPreviews" class="btn good" type="button" style="margin-top:12px"><i class="fa-solid fa-download"></i> Import album previews</button>
+      <div class="help">Download all available preview MP3s, name them by track number and title, and fill the album track list in one step. This replaces the track list in the editor. Listen and review it before publishing to your website.</div>
+      <details class="mp3box"><summary>Fetch blocked? Import a saved HyperFollow page</summary>
+        <p class="help">Open your HyperFollow link in your browser. Press Ctrl+S and save as “Webpage, HTML Only.” Keep its link in the field above, then select that saved HTML file here. The manager reads the title, artwork, and streaming links without requesting DistroKid again.</p>
+        <label for="hyperfollowHtml">Saved HyperFollow page (.html)</label><input id="hyperfollowHtml" type="file" accept=".html,.htm,text/html">
+        <button id="importHyperfollowHtml" class="btn" type="button">Import saved page</button>
+      </details>
+
+      <div class="sectionline"></div>
+      <h2>3. Release information</h2>
+      <label for="existingRelease">Edit a saved release</label><select id="existingRelease"><option value="">New release</option></select>
+      <div class="fieldrow">
+        <div><label for="title">Release title</label><input id="title" type="text" placeholder="This Right Here"></div>
+        <div><label for="artist">Artist</label><input id="artist" type="text" value="Echo Craft"></div>
+      </div>
+      <div class="fieldrow three">
+        <div><label for="type">Type</label><select id="type"><option value="single">Single</option><option value="album">Album</option></select></div>
+        <div><label for="releaseDate">Release date</label><input id="releaseDate" type="date"></div>
+        <div><label for="collectionId">Catalog ID</label><input id="collectionId" type="text" placeholder="optional" readonly></div>
+      </div>
+      <div class="fieldrow three">
+        <div><label for="price">Regular price ($)</label><input id="price" type="number" min="0.50" max="1000" step="0.01" placeholder="9.99"></div>
+        <div><label for="salePrice">Holiday / sale price ($)</label><input id="salePrice" type="number" min="0.50" max="1000" step="0.01" placeholder="Optional"></div>
+        <div><label for="saleEnabled">Promotion</label><select id="saleEnabled"><option value="false">Off</option><option value="true">Sale price active</option></select></div>
+      </div>
+      <p class="help">Pricing belongs to each release. Christmas can remain $9.99, while a longer album can be $14.99. Enable a lower sale price whenever you want.</p>
+      <label for="description">Album description</label><textarea id="description"></textarea>
+      <div class="fieldrow"><div><label for="publicationStatus">Showcase availability</label><select id="publicationStatus"><option value="published">Available now</option><option value="scheduled">Scheduled release</option><option value="draft">Draft — hidden</option></select></div><div><label for="scheduledLocal">Release time (Eastern)</label><input id="scheduledLocal" type="datetime-local"><div class="help">America/New_York, including daylight saving time.</div></div></div>
+      <button id="christmasSchedule" class="btn" type="button">Set October 31, 2026 · midnight Eastern</button>
+      <p id="scheduleSummary" class="help"></p>
+      <label for="coverFile">Upload cover art</label><input id="coverFile" type="file" accept="image/jpeg,image/png,image/webp">
+      <label for="cover">Cover image URL</label><input id="cover" type="url" placeholder="Official cover art URL">
+      <div class="fieldrow">
+        <div><label for="spotify">Spotify <span class="subtle">(optional)</span></label><input id="spotify" type="url" placeholder="https://open.spotify.com/... — leave blank if unavailable"></div>
+        <div><label for="apple">Apple Music <span class="subtle">(optional)</span></label><input id="apple" type="url" placeholder="https://music.apple.com/..."></div>
+      </div>
+      <label for="itunes">iTunes lookup (optional)</label><input id="itunes" type="url" placeholder="https://itunes.apple.com/lookup?...">
+
+      <div class="sectionline"></div>
+      <h2>4. Preview MP3</h2>
+      <div class="mp3box">
+        <input id="previewFile" type="file" accept="audio/mpeg,.mp3">
+        <div id="mp3Name" class="mp3name">No preview selected.</div>
+        <audio id="audioPreview" controls style="width:100%;margin-top:10px;display:none"></audio>
+      </div>
+      <div class="help">Your preview will be stored privately while you review, then published with the release.</div>
+
+      <section id="albumEditor" hidden><h2>Album tracks</h2><p class="help">Add tracks in album order. Use preview clips here; full purchase files will be connected with checkout.</p><div id="trackRows"></div><button id="addTrack" class="btn" type="button">Add track</button></section>
+      <div class="footerActions">
+        <button id="saveDraft" class="btn" type="button"><i class="fa-solid fa-floppy-disk"></i> Save Draft</button>
+        <button id="publishLocal" class="btn good" type="button"><i class="fa-solid fa-check"></i> Publish to Website</button>
+      </div>
+      <div class="note">Save Draft keeps your work privately online. Publish to Website sends the release and its previews to GitHub together. The live site updates after deployment.</div>
+    </section>
+
+    <aside class="panel">
+      <h2>Music card preview</h2>
+      <div class="preview-card">
+        <div class="cover-wrap"><div id="coverPlaceholder" class="cover-placeholder"><i class="fa-solid fa-compact-disc"></i></div><img id="cardCover" alt="Cover preview" style="display:none"></div>
+        <div id="cardTitle" class="song-title">New Echo Craft Song</div>
+        <div class="audiofake"><i class="fa-solid fa-play"></i><span>0:00 / 0:00</span><span style="flex:1;height:3px;background:#67727c;border-radius:3px"></span><i class="fa-solid fa-volume-high"></i></div>
+        <div class="cardbuttons">
+          <div class="listen"><i class="fa-solid fa-headphones"></i> Listen Everywhere</div>
+          <div id="cardSpotify" class="platform spotify" title="Spotify"><i class="fa-brands fa-spotify"></i></div>
+          <div id="cardApple" class="platform apple" title="Apple Music"><i class="fa-brands fa-apple"></i></div>
+        </div>
+      </div>
+      <div class="checks">
+        <div id="checkTitle" class="check"><i class="fa-regular fa-circle"></i> Song title</div>
+        <div id="checkHyper" class="check"><i class="fa-regular fa-circle"></i> HyperFollow</div>
+        <div id="checkCover" class="check"><i class="fa-regular fa-circle"></i> Cover art</div>
+        <div id="checkSpotify" class="check"><i class="fa-regular fa-circle"></i> Spotify link <span class="subtle">(optional)</span></div>
+        <div id="checkApple" class="check"><i class="fa-regular fa-circle"></i> Apple Music link <span class="subtle">(optional)</span></div>
+        <div id="checkMp3" class="check"><i class="fa-regular fa-circle"></i> Preview MP3</div>
+      </div>
+      <div class="sectionline"></div>
+      <div class="subtle"><strong>How this works</strong><br><br>1. Select a detected release or paste HyperFollow.<br>2. Confirm what was auto-filled.<br>3. Choose your preview MP3.<br>4. Preview the card.<br>5. Publish to Website, then check the live music page.</div>
+    </aside>
+  </div>
+</div>
+</div>
+<div id="toast" class="toast"></div>
+
+
+
+
+
+<script src="purchase-files.js?v=20261014"></script></body>
+</html>
