@@ -68,7 +68,7 @@ for(const [,script] of frontend.matchAll(/<script>([\s\S]*?)<\/script>/g))new vm
 assert(!frontend.includes('node scripts/admin-server.js'));assert(!frontend.includes('Publish to Local Site'));
 // Seasonal appearance: visitors can read, only confirmed owners can write.
 const beforeThemeGit=gitCalls.length,catalogBeforeTheme=JSON.stringify(catalog);
-assert.deepEqual((await call('/api/site-theme',null,'GET',{headers:{Authorization:''}})).data,{theme:'original'});
+assert.deepEqual((await call('/api/site-theme',null,'GET',{headers:{Authorization:''}})).data,{theme:'fall'});
 assert.equal((await call('/api/theme',{theme:'fall'},'PUT',{headers:{Authorization:''}})).status,401);
 email='visitor@example.com';assert.equal((await call('/api/theme',{theme:'fall'},'PUT')).status,403);
 email='troy.saha@gmail.com';confirmed=false;assert.equal((await call('/api/theme',{theme:'fall'},'PUT')).status,403);confirmed=true;

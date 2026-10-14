@@ -42,7 +42,7 @@ const THEMES=new Set(['original','fall','christmas']);
 async function siteTheme(env){
   requireValue(env.ADMIN_STAGING,'Theme storage is unavailable.',503);
   const settings=await r2json(env,'settings/site-theme.json');
-  return {theme:THEMES.has(settings?.theme)?settings.theme:'original'};
+  return {theme:THEMES.has(settings?.theme)?settings.theme:'fall'};
 }
 async function asset(env,id){requireValue(validId(id),'Invalid preview identifier.');const a=await r2json(env,'assets/'+id+'.json');requireValue(a,'This preview is no longer available. Import it again.',404);return a;}
 async function saveAsset(env,bytes,name,kind){
