@@ -4829,13 +4829,17 @@ section.albums{padding:64px 0 56px;overflow-x:auto;position:relative}
                     <i class="fas fa-envelope-open-text" aria-hidden="true"></i>
                 </button>
                 <div class="subscribe-box">
-                    <p>Subscribe for updates</p>
+                    <p>Subscribe to our quarterly newsletter</p>
                     <form id="subscribeForm" method="POST" action="https://formspree.io/f/mgoqppve">
-                        <input type="email" name="email" placeholder="your@email.com" id="emailInput" required autocomplete="email">
+                        <input type="text" name="name" placeholder="Your name (optional)" aria-label="Your name (optional)" autocomplete="name" maxlength="100">
+                        <input type="email" name="email" placeholder="your@email.com" id="emailInput" aria-label="Email address" required autocomplete="email">
+                        <input type="hidden" name="inquiry_type" value="Newsletter subscription">
+                        <input type="hidden" name="_subject" value="Echo Craft - Newsletter subscription">
+                        <input type="hidden" name="newsletter_consent" value="Requested quarterly Echo Craft newsletter through website Subscribe form">
                         <input type="text" name="_gotcha" style="display:none;">
                         <button type="submit" id="subscribeBtn">Subscribe</button>
                     </form>
-                    <div class="subscribe-message" id="subscribeMessage"></div>
+                    <div class="subscribe-message" id="subscribeMessage" role="status" aria-live="polite"></div>
                 </div>
             </div>
         </aside>
@@ -5425,7 +5429,8 @@ videoHtml += `
                 if (response.ok) {
                     // Success - show centered overlay popup and clear input
                     showSuccessPopup();
-                    emailInput.value = '';
+                    showMessage('Thank you for subscribing! Your request has been received. Stay tuned—our first newsletter is coming soon.', 'success');
+                    subscribeForm.reset();
                     
                     // Auto-hide popup after 3 seconds
                     setTimeout(() => {
@@ -5480,12 +5485,7 @@ videoHtml += `
             }
         }
         
-        // Allow Enter key submission (form element handles this natively now)
-        emailInput.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') {
-                subscribeForm.dispatchEvent(new Event('submit'));
-            }
-        });
+        // The form handles Enter natively, avoiding duplicate subscription requests.
     </script>
     </script>
 
