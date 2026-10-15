@@ -1,0 +1,10 @@
+/* Customer sessions use a different storage key from the admin session. */
+(()=>{'use strict';if(window.EchoCraftCustomer)return;let clientPromise;
+const WORKER='https://echocraft-music-admin.echocraft-aimusic.workers.dev';
+function ready(){if(!clientPromise)clientPromise=(async()=>{if(!window.supabase?.createClient)await new Promise((resolve,reject)=>{const script=document.createElement('script');script.src='https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2';script.onload=resolve;script.onerror=()=>reject(Error('Sign-in could not load. Refresh and try again.'));document.head.append(script);});return window.supabase.createClient('https://jryqukxridujdqfuqinz.supabase.co','sb_publishable_1Uyu1Lfzwolx26MvLEHbQg_NXNHzTLW',{auth:{storageKey:'echo-craft-customer-auth-v1',persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}});})();return clientPromise;}
+async function session(){const client=await ready(),{data,error}=await client.auth.getSession();if(error)throw error;return data?.session||null;}
+async function request(path,options={}){if(!path.startsWith('/api/customer/'))throw Error('Invalid customer request.');const current=await session();if(!current?.access_token)throw Error('Sign in to My Music to continue.');const r=await fetch(WORKER+path,{...options,cache:'no-store',headers:{Authorization:'Bearer '+current.access_token,...options.headers}});if(!r.ok){const data=await r.json().catch(()=>({}));throw Error(data.error||'My Music is not connected yet. Please try again shortly.');}return r;}
+async function sendLink({email,name='',register=true,marketingOptIn=false}){const client=await ready();const {error}=await client.auth.signInWithOtp({email:email.trim(),options:{shouldCreateUser:register,emailRedirectTo:'https://echocraftmusic.com/my-music.html',...(register?{data:{full_name:name.trim(),echoCraftAccountConsent:true,echoCraftMarketingOptIn:marketingOptIn===true}}:{})}});if(error)throw error;}
+async function signOut(){const client=await ready();const {error}=await client.auth.signOut({scope:'local'});if(error)throw error;}
+window.EchoCraftCustomer={ready,session,request,sendLink,signOut};
+})();
