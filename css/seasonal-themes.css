@@ -221,3 +221,8 @@ html #albums .ac-gallery .ac-thumbnail[aria-pressed=true]{
  html :is(#albums .ac-thumbnail,#albums .ac-thumbnail::before,#albums .ac-thumbnail::after){transition:none;transform:none!important}
  html:is([data-site-theme="fall"],[data-site-theme="christmas"]) :is(.btn,.catalog-action-primary,.ac-listen,.single-listen,.top-listen,.main-play,.single-add,.single-buy,.btn-buy,.ac-add,.listen-everywhere-btn,.subscribe-box button){transition:none;transform:none!important}
 }
+
+/* Licensing pages use their compact mobile header instead of a desktop sidebar. */
+@media(max-width:900px){
+ html:is([data-site-theme="fall"],[data-site-theme="christmas"]) .page-shell > .sidebar{display:none}
+}
