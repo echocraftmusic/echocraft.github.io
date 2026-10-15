@@ -226,3 +226,19 @@ html #albums .ac-gallery .ac-thumbnail[aria-pressed=true]{
 @media(max-width:900px){
  html:is([data-site-theme="fall"],[data-site-theme="christmas"]) .page-shell > .sidebar{display:none}
 }
+
+/* Licensing notices and return links must remain readable over seasonal art. */
+html:is([data-site-theme="fall"],[data-site-theme="christmas"]) .page-shell .notice{
+ background:#fff7e8;color:var(--ink);border:1px solid var(--gold);
+ border-left:4px solid var(--gold);border-radius:12px;
+ font-size:1rem;line-height:1.8;box-shadow:0 6px 20px #35201426;
+}
+html:is([data-site-theme="fall"],[data-site-theme="christmas"]) .page-shell .notice strong{color:var(--ink)}
+html:is([data-site-theme="fall"],[data-site-theme="christmas"]) .page-shell .back-home{
+ background:#241b16;color:#fff4dd;border:1px solid var(--gold);
+ border-radius:9px;padding:12px 18px;min-height:44px;line-height:1.5;
+ text-decoration:underline;text-underline-offset:3px;
+}
+html:is([data-site-theme="fall"],[data-site-theme="christmas"]) .page-shell .back-home:hover{background:var(--season-action)}
+html:is([data-site-theme="fall"],[data-site-theme="christmas"]) .page-shell .mobile-top{background:#241b16;border-bottom-color:var(--gold)}
+html:is([data-site-theme="fall"],[data-site-theme="christmas"]) .page-shell .mobile-top a{color:#fff4dd}
