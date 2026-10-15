@@ -6,7 +6,7 @@
  <link rel="icon" href="assets/images/ec-icon.webp">
  <link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
- <link rel="stylesheet" href="css/purchase-complete.css?v=20261014-2">
+ <link rel="stylesheet" href="css/purchase-complete.css?v=20261014-2"><link rel="stylesheet" href="css/customer-receipt.css?v=20261014-1">
  <script defer src="js/seasonal-theme.js"></script>
 </head>
 <body>
@@ -19,6 +19,7 @@
    <a href="index.html#videos" aria-label="Videos"><i class="fa-solid fa-video" aria-hidden="true"></i><span>VIDEOS</span></a>
    <a href="index.html#albums" aria-label="Albums"><i class="fa-solid fa-compact-disc" aria-hidden="true"></i><span>ALBUMS</span></a>
    <a class="active" href="index.html#music" aria-label="Music"><i class="fa-solid fa-music" aria-hidden="true"></i><span>MUSIC</span></a>
+   <a href="my-music.html" aria-label="My Music"><i class="fa-solid fa-folder-open" aria-hidden="true"></i><span>MY MUSIC</span></a>
    <a href="get-a-track.html" aria-label="Get a track"><i class="fa-solid fa-headphones" aria-hidden="true"></i><span>GET A TRACK!</span></a>
    <a href="sync-licensing.html" aria-label="Sync licensing"><i class="fa-solid fa-film" aria-hidden="true"></i><span>SYNC LICENSING</span></a>
    <a href="https://studio.echocraftmusic.com/" aria-label="Creative studio"><i class="fa-solid fa-palette" aria-hidden="true"></i><span>CREATIVE STUDIO</span></a>
@@ -50,11 +51,12 @@
      </div>
     </div>
    </div>
+   <div id="customerOrderItems" hidden></div>
    <footer class="purchase-summary"><span id="orderNumber"></span><span class="payment-state" id="paymentState"><i class="fa-solid fa-check-circle" aria-hidden="true"></i><span id="paymentStateText">Awaiting verification</span></span></footer>
   </article>
   <div class="confirmation-actions"><button class="check-payment" id="checkPayment" type="button" hidden>Check payment again</button><a class="glass-button explore-button" href="index.html#music"><i class="fa-solid fa-music" aria-hidden="true"></i>Explore More Music</a></div>
   <p class="help-link">Need help? <a href="mailto:listening@echocraftmusic.com?subject=Echo%20Craft%20purchase%20help">Contact Echo Craft</a></p>
   <p class="delivery-note" id="deliveryNote"></p><footer class="site-footer"><a href="index.html">echocraftmusic.com</a></footer>
  </main>
- <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="js/purchase-complete.js?v=20261014-1"></script>
+ <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="js/customer-auth.js?v=20261014-1"></script><script src="js/purchase-complete.js?v=20261014-customer"></script><script src="js/customer-receipt.js?v=20261014-1"></script>
 </body></html>

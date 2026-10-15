@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import vm from 'node:vm';
-const source=fs.readFileSync(new URL('../js/cart.js',import.meta.url),'utf8');
+const source=fs.readFileSync(new URL(process.argv[2]||'../js/cart.js',import.meta.url),'utf8');
 let stored=JSON.stringify([{id:'old',title:'Test single',type:'single',price:0.99,qty:4},{id:'duplicate',title:'Test single',type:'single',price:0.99,qty:3},{id:'merch:shirt',title:'Shirt',type:'merch',price:20,qty:2}]);
 const nodes=Object.fromEntries(['.ec-cart-count','.ec-cart-quantity','.ec-cart-list','.ec-cart-total span:last-child','.ec-cart-checkout','.ec-cart-agree','.ec-cart-close'].map(key=>[key,{focus(){}}]));
 const context={window:{},document:{readyState:'loading',addEventListener(){},querySelector:selector=>nodes[selector]||null,body:{classList:{add(){},remove(){}}}},localStorage:{getItem:()=>stored,setItem:(key,value)=>{stored=value;}}};

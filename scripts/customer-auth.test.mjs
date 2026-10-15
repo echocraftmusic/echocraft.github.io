@@ -1,0 +1,12 @@
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+import vm from 'node:vm';
+const source=fs.readFileSync(new URL('../js/customer-auth.js',import.meta.url),'utf8');let options,signup,signOut,current=null,fetches=0;
+const client={auth:{getSession:async()=>({data:{session:current}}),signInWithOtp:async value=>{signup=value;return {error:null};},signOut:async value=>{signOut=value;return {error:null};}}};
+const context={window:{supabase:{createClient:(url,key,config)=>{options=config;return client;}}},fetch:async(url,opts)=>{fetches++;assert.match(url,/\/api\/customer\//);assert.equal(opts.headers.Authorization,'Bearer customer-token');return new Response('{}');}};
+vm.runInNewContext(source,context);const auth=context.window.EchoCraftCustomer;await auth.ready();assert.equal(options.auth.storageKey,'echo-craft-customer-auth-v1');assert.equal(options.auth.persistSession,true);
+await auth.sendLink({email:' buyer@example.test ',name:' Buyer ',register:true,marketingOptIn:false});assert.equal(signup.email,'buyer@example.test');assert.equal(signup.options.shouldCreateUser,true);assert.equal(signup.options.emailRedirectTo,'https://echocraftmusic.com/my-music.html');assert.equal(signup.options.data.echoCraftMarketingOptIn,false);assert.equal(signup.options.data.full_name,'Buyer');
+await auth.sendLink({email:'buyer@example.test',register:false});assert.equal(signup.options.shouldCreateUser,false);assert.equal('data' in signup.options,false);
+await assert.rejects(auth.request('/api/customer/library'),/Sign in/);assert.equal(fetches,0);current={access_token:'customer-token'};await auth.request('/api/customer/library');assert.equal(fetches,1);await assert.rejects(auth.request('/api/catalog'),/Invalid customer/);await auth.signOut();assert.equal(signOut.scope,'local');
+const html=fs.readFileSync(new URL('../my-music.html',import.meta.url),'utf8'),cart=fs.readFileSync(new URL('../js/cart-customer.js',import.meta.url),'utf8');assert.match(html,/<input[^>]*id="customerRegister"[^>]*checked/);assert(!/<input[^>]*id="customerNews"[^>]*checked/.test(html));assert.match(cart,/<input[^>]*class="ec-cart-register"[^>]*checked/);assert(!/<input[^>]*class="ec-cart-customer-news"[^>]*checked/.test(cart));assert.match(html,/Keep my account/);assert.match(html,/Continue closing account/);
+console.log('Passed: separate customer session storage, verified-email redirect, explicit optional marketing, sign-in without registration, local sign-out, no admin requests, and default checkbox states.');
