@@ -61,7 +61,7 @@ function createAlbumCard(album, index) {
     const title = escapeMusicText(album.title || 'Untitled Album');
     const price = storeAlbumPrice(album).toFixed(2);
     const configuredPrice = Number(album.price);
-    const priceLabel = album.price != null && Number.isFinite(configuredPrice) && configuredPrice >= 0.5 ? 'Album price' : 'Illustrative price';
+    const priceLabel = 'Album price';
     const tracks = Array.isArray(album.tracks) ? album.tracks : [];
     const description = escapeMusicText(album.description || 'A complete Echo Craft listening experience. Hear the available track previews below, then continue listening on your preferred platform.');
     const platform = (url, label, icon, className) => storeAlbumURL(url) ? `<a href="${escapeMusicAttribute(storeAlbumURL(url))}" class="ac-${className}" target="_blank" rel="noopener noreferrer"><i class="${icon}" aria-hidden="true"></i><span>${label}</span></a>` : '';
@@ -78,7 +78,7 @@ function createAlbumCard(album, index) {
             </div>
         </div>
         <div class="ac-streaming">${platform(album.hyperfollow, 'Listen Everywhere', 'fas fa-headphones', 'listen')}${platform(album.spotify, 'Spotify', 'fab fa-spotify', 'platform ac-spotify')}${platform(album.apple, 'Apple Music', 'fab fa-apple', 'platform')}</div>
-        <div class="ac-purchase"><div class="ac-cart-icon"><i class="fas fa-shopping-cart" aria-hidden="true"></i></div><div class="ac-purchase-copy"><strong>Get This Album</strong><span>Digital album · Store preview</span></div><div class="ac-price"><strong>$${price}</strong><small>${priceLabel}</small></div><button class="ac-add" type="button"><i class="fas fa-shopping-cart" aria-hidden="true"></i>Add to Cart</button></div>
+        <div class="ac-purchase"><div class="ac-cart-icon"><i class="fas fa-shopping-cart" aria-hidden="true"></i></div><div class="ac-purchase-copy"><strong>Get This Album</strong><span>Digital album · Secure download</span></div><div class="ac-price"><strong>$${price}</strong><small>${priceLabel}</small></div><button class="ac-add" type="button"><i class="fas fa-shopping-cart" aria-hidden="true"></i>Add to Cart</button></div>
     </article>`;
 }
 
@@ -144,7 +144,7 @@ function addStorePreviewItem(type, item) {
 function renderStoreAlbumCart() {
     const container = document.getElementById('storeAlbumCartItems');
     container.replaceChildren();
-    if (!storePreviewCart.size) { const p = document.createElement('p'); p.textContent = 'Your preview cart is empty.'; container.append(p); }
+    if (!storePreviewCart.size) { const p = document.createElement('p'); p.textContent = 'Your cart is empty.'; container.append(p); }
     storePreviewCart.forEach((item, key) => {
         const row = document.createElement('div'); row.className = 'ac-cart-row';
         const label = document.createElement('span'); label.textContent = item.title + ' · $' + item.price.toFixed(2);
@@ -347,9 +347,9 @@ function createMusicCard(track, index) {
                     </div>
                 </div>
                 <div class="single-purchase">
-                    <div class="single-purchase-copy"><strong>Get This Track</strong><span>Digital single · Store preview</span></div>
+                    <div class="single-purchase-copy"><strong>Get This Track</strong><span>Digital single · Secure download</span></div>
                     <div class="single-price">$${price}</div>
-                    <button type="button" class="single-buy" aria-label="Add ${title} to the preview cart"><i class="fas fa-shopping-cart" aria-hidden="true"></i>Buy Here</button>
+                    <button type="button" class="single-buy" aria-label="Add ${title} to the shopping cart"><i class="fas fa-shopping-cart" aria-hidden="true"></i>Buy Here</button>
                 </div>
             </div>
         </article>
