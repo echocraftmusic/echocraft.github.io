@@ -71,15 +71,15 @@ async function upload(file,release,slot,status,zone){
  const key=release.id+':'+slot.slot;if(busySlots.has(key))return;
  if(!file)return;if(!/\.mp3$/i.test(file.name)){status.textContent='Convert this file to MP3 first. WAV and ZIP files are not uploaded here.';return;}if(file.size>25*1024*1024){status.textContent='Choose an MP3 no larger than 25 MB.';return;}
  if(slot.file&&!confirm('Replace the AUDIO for "'+slot.title+'"?\n\nNew file: '+file.name+'\nPreviously saved: '+slot.file.filename+'\n\nThis will upload the selected MP3 and apply the current track title, album, and artwork. The saved audio will change only if the new upload succeeds.'))return;
- busySlots.add(key);zone.inert=true;try{status.textContent='Preparing the catalog artwork…';const cover=await coverFor(release);let coverId='';if(cover){const r=await request('/api/purchase-cover?release='+release.id,{method:'POST',body:cover});coverId=(await r.json()).coverId;}
- status.textContent='Uploading and adding music tags…';const r=await request('/api/purchase-file?release='+release.id+'&slot='+slot.slot,{method:'PUT',body:file,headers:{'Content-Type':'audio/mpeg',...(coverId?{'X-Cover-Id':coverId}:{})}});const result=await r.json();
+ busySlots.add(key);zone.inert=true;let stage='preparing artwork';try{status.textContent='Preparing the catalog artwork…';const cover=await coverFor(release);let coverId='';if(cover){stage='saving prepared artwork';const r=await request('/api/purchase-cover?release='+release.id,{method:'POST',body:cover});coverId=(await r.json()).coverId;}
+ stage='uploading MP3';status.textContent='Uploading and adding music tags…';const r=await request('/api/purchase-file?release='+release.id+'&slot='+slot.slot,{method:'PUT',body:file,headers:{'Content-Type':'audio/mpeg',...(coverId?{'X-Cover-Id':coverId}:{})}});const result=await r.json();
  ++listRevision;const savedSlot=releases.find(item=>item.id===release.id)?.slots.find(item=>item.slot===slot.slot)||slot;
  savedSlot.file=result.file;savedSlot.status='ready';slotMessages.set(key,'NEW MP3 SAVED: '+result.file.filename+' · '+new Date().toLocaleTimeString());render();
  const savedMessage=slot.title+' saved with catalog tags'+(result.file.coverEmbedded?' and cover artwork.':'.');
  try{await refreshFiles();message(savedMessage+' File status updated.');}catch{message(savedMessage+' The file is saved; storage status could not be rechecked. Use Refresh files to retry.',true);}
  return true;
 
- }catch(e){slotMessages.set(key,'Not saved: '+e.message);status.textContent='Not saved: '+e.message;message(slot.title+' was not saved: '+e.message,true);}finally{busySlots.delete(key);zone.inert=false;render();}
+ }catch(e){const detail='Not saved during '+stage+': '+e.message+(e instanceof TypeError?' (Network connection failed during this step; old saved MP3 is unchanged.)':'');slotMessages.set(key,detail);status.textContent=detail;message(slot.title+': '+detail,true);}finally{busySlots.delete(key);zone.inert=false;render();}
 }
 function render(preview=false){
  stopPurchasePlayback();
