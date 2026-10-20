@@ -5,21 +5,6 @@
   "instructions": "Pending releases are intentionally not shown on the website until their richer Echo Craft metadata is added to music/music.json.",
   "items": [
     {
-      "collectionId": "6824154640",
-      "type": "single",
-      "title": "What a Time to be Alive (UAB Mix) - Single",
-      "artist": "Echo Craft",
-      "releaseDate": "2026-10-17",
-      "cover": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/8f/16/fe/8f16fe24-3aed-d98c-fa08-14d2740c6fd5/artwork.jpg/1200x1200bb.jpg",
-      "apple": "https://music.apple.com/us/album/what-a-time-to-be-alive-uab-mix-single/6824154640?uo=4",
-      "trackCount": 1,
-      "genre": "Afro-Beat",
-      "source": "apple-music-catalog",
-      "status": "pending",
-      "detectedAt": "2026-10-18T09:58:23.276Z",
-      "note": "Detected automatically. Add HyperFollow/Spotify/preview details before publishing to music/music.json."
-    },
-    {
       "collectionId": "6821369517",
       "type": "single",
       "title": "He's A Light Through Darkness (CineTrap Mix) - Single",
