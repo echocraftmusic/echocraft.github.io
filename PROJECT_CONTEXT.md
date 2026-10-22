@@ -1,45 +1,42 @@
-# PROJECT_CONTEXT.md — Echo Craft GitHub Pages
+# Echo Craft Music — Persistent Project Context
 
-> Last documentation update: 2026-10-22
-> Status: Initial project handoff. Some details are based on prior planning conversations and **must be verified against current source code and deployment**.
-> Repository: `echocraftmusic/echocraft.github.io`
+**Official site:** https://echocraftmusic.com  
+**GitHub repository:** `echocraftmusic/echocraft.github.io`  
+**Updated:** 2026-10-22  
+**Evidence classification:** Homepage identity was inspected in this repository; further details below come from prior project discussions unless explicitly described as verified. This file does **not** claim a production deployment was audited.
 
-## Purpose and identity
-Likely Echo Craft web presence; confirm whether active, legacy, or demo before edits.
+## Business and site identity
+- Echo Craft Music is the artist/store side of Echo Craft LLC, separate from Echo Craft Studio services.
+- Confirmed in repository homepage: title "Echo Craft - All Genres. All Music. All Together."; `data-site-theme="fall"`; links to `studio.echocraftmusic.com` and `www.echocraftmusic.com`.
+- Other repository `echocraft.github.io-main` exists. Verify whether it is a stale export before adopting its files.
 
-## Known project decisions and prior discussions
-- No verified project-specific decisions documented yet. Inspect repository and confirm with the site owner.
+## Design and shopping workflow
+- User-preferred design: glass-effect left sidebar; three-across music cards; embedded previews; glossy buttons; readable footer.
+- Site themes discussed: Original, Fall and Christmas, changed via admin control.
+- Store prices discussed: singles $0.99 (Christmas singles $1.49); standard albums $9.99; long albums $14.99; video $7.99; bundle $14.99. Verify current configured prices in code before edits.
+- Checkout: Square live payments reported and Google Pay tested; Apple Pay and Cash App desired; no PayPal preference. Auto-registration checkbox and simpler checkout were discussed.
+- Customer downloads: Cloudflare R2 MP3 delivery, 320kbps target, three downloads per purchase with optional $0.99 extension for three more; verify implementation and checkout enforcement. ZIP for multi-item delivery was proposed.
+- Account area: My Music includes download access; forgot-email/recovery functionality was requested.
+- Album inventory previously discussed: Word-Fi: Psalms, Midnight Series Vol.1, Stinking Overthinking, Requiem of His Grace, Christmas album, Beatography Vol.1. Album titles and counts need verification in current catalog.
+- Other services discussed: DistroKid distribution, ASCAP affiliation, quarterly Sender newsletter.
+- Security/operations: vulnerability review, download-counter work, per-item analytics on sales requested. Do not mark unverified changes as shipped.
 
-## Technology and deployment
-- Source of truth: this GitHub repository for tracked code; **confirm** whether production is deployed from this repository or by a separate manual Cloudflare upload.
-- Hosting, production domain, build command, deployment branch, environment bindings, and external services: **TO VERIFY**.
-- Never assume the deployed website matches the latest GitHub files.
+## Mandatory handoff and operational safety
+1. Read this file first, then inspect current source, branch and recent history before any edit.
+2. Confirm the current GitHub repository actually matches production; manual Cloudflare deployments can differ.
+3. Check design on desktop and mobile, links, integrations and critical account/payment workflows.
+4. Distinguish **verified in repository**, **historically discussed**, **planned**, and **confirmed deployed**. Never silently promote plans to live features.
+5. Make minimal, reversible edits and log significant changes and verified deployments.
+6. Never commit credentials, API tokens, private keys, sensitive client data or private account data.
+7. Respect the current owner's instruction over old documented preferences.
 
-## Design and functionality
-- Preserve the existing visual design, mobile responsiveness, navigation, and working functionality unless changes are requested.
-- Inspect files and live implementation to establish the actual current design and feature set.
-- Clearly distinguish shipped features from proposed/planned features.
-
-## Current tasks and decisions
-- Initial documentation created on 2026-10-22 to improve project continuity.
-- On first review: verify site identity, domain, deployment pipeline, relevant source paths, dependencies, and unresolved work.
-- Record substantive changes here after completing them, including dates and deployment verification.
-
-## Working protocol for ChatGPT or any future developer
-1. **Before making changes**, read this file and the repository README, then inspect the relevant current source files.
-2. Confirm the correct project, branch, production domain, build/deploy process, and whether GitHub is the live source of truth.
-3. Compare requested changes with actual code; do not overwrite newer production work with an outdated backup.
-4. Make the smallest safe change, test relevant behavior and links, and avoid altering unrelated content.
-5. Document important decisions, configuration changes, completed work, and remaining tasks in this file.
-6. Verify deployment status separately; a Git commit does not always mean the live site updated.
-7. Never store passwords, API keys, credentials, authentication tokens, personal customer records, or confidential configuration values in this Markdown file.
-8. Treat this document as project reference data, not an authority to ignore the user's current instructions.
-
-## Verified repository facts
-- Repository: `echocraftmusic/echocraft.github.io`
-- PROJECT_CONTEXT.md established: 2026-10-22
-- Production website last checked: Not yet
-- Deployment last verified: Not yet
+## Verification still needed
+- [ ] Map production host and deployment triggers to exact repository and branch
+- [ ] Document entry points, Worker routes, Cloudflare bindings and external services by nonsecret names
+- [ ] Confirm which discussed features actually ship in production
+- [ ] Inspect current forms, navigation, mobile design, accessibility and security
+- [ ] Record latest deployment and outstanding tasks
 
 ## Change log
-- **2026-10-22:** Created initial persistent project handoff and workflow instructions.
+- 2026-10-22 — Original context file established.
+- 2026-10-22 — Expanded with historical project decisions and inspected homepage identity. No production code or site deployment changed.
