@@ -75,6 +75,8 @@ These are **code-review observations only** and must not be represented as a fre
 
 - **October 25 — Christmas SEO:** Added public release-information page `albums/echo-craft-christmas-volume-1.html` for Echo Craft Christmas: Volume 1 with seven catalog-confirmed track titles, October 31 release date, music album structured data, canonical and social metadata. Prior to release, the page displays a coming-soon state; after launch the album/previews link appears. Linked the album card to its permanent URL and included only this public landing page in the sitemap. **No catalog publication status, price, track, preview, payment or download was changed.**
 
+- **October 25 — Featured Christmas singles SEO:** Published `/songs/lil-drumma-boi.html` and `/songs/silent-night.html`, each with canonical, Open Graph, music-recording structured data and time-gated links that do not expose music previews or checkout before October 31. Linked both from the Christmas album landing page; sitemap now includes 7 public URLs. Album/single release status and commerce unchanged. Live deployment and search indexing require separate validation.
+
 ## Open items — do not mark these complete without evidence
 
 1. **Live Worker/source parity:** Record current deployed production Worker version and confirm what code it runs; distinguish deployed `/api/checkout` and `/api/order/...` from older sandbox/customer routes in GitHub.
