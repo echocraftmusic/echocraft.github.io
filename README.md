@@ -51,6 +51,8 @@ These are **code-review observations only** and must not be represented as a fre
 - **Security headers:** Their live HTTP response values have **not** been independently retrieved; do not claim CSP, HSTS, anti-framing, or referrer headers are enabled or disabled. Confirm delivery host and inspect production response headers before changing them.
 - **Admin/R2 checks:** Repository includes owner allowlist and private-bucket use, but current production binding and access settings remain to be independently verified.
 
+- **2026-10-25 — Homepage outbound-link privacy:** Commit `50e84d846d65b181ce5645cea4413b10874f52ed` adds `rel="noopener noreferrer"` to 12 previously unprotected new-tab links and a `strict-origin-when-cross-origin` HTML referrer policy on the homepage. **Confirmed in GitHub source; live production response headers and browser behavior still require separate verification.** No checkout, Worker, downloads, catalog, or R2 code was changed.
+
 ## Open items — do not mark these complete without evidence
 
 1. **Live Worker/source parity:** Record current deployed production Worker version and confirm what code it runs; distinguish deployed `/api/checkout` and `/api/order/...` from older sandbox/customer routes in GitHub.
