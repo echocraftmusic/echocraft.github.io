@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://echocraftmusic.com/sitemap.xml

@@ -66,6 +66,13 @@ These are **code-review observations only** and must not be represented as a fre
 - **Not yet confirmed from historical records:** whether the R2 bucket's *public development URL (r2.dev)* is disabled and whether the bucket has *no public custom domain*. These are two specific settings, distinct from the confirmed private Worker binding and authenticated delivery. Do not relabel the entire storage/payment system as unverified merely because these settings are undocumented.
 - **Scope of evidence:** Historical configuration screenshots, source/code inspection and actual purchase tests; no independent October 25 Cloudflare console read. Check only those two bucket-public-exposure settings to close this issue.
 
+## Search optimization — October 25, 2026
+
+- Updated public homepage, Soul of Solomon, Get a Track and Sync Licensing pages with descriptive HTML titles, meta descriptions, self-referencing canonical URLs and Open Graph metadata. Homepage includes MusicGroup structured data using existing artist links.
+- Added `robots.txt` pointing to the already published public sitemap. The public sitemap initially lists four published public pages; admin, private customer, checkout, preview and scheduled unreleased product URLs remain excluded.
+- Confirmed `Echo Craft Christmas: Volume 1` and multiple Christmas singles are scheduled in the catalog for **October 31, 2026 (Eastern)**. Did **not** publish, alter or prematurely index their catalog records or preview files.
+- Changes are limited to crawl/metadata configuration, without changes to Square, download limits, R2, customer data or storefront layout. Verify production publication and Google Search Console separately.
+
 ## Open items — do not mark these complete without evidence
 
 1. **Live Worker/source parity:** Record current deployed production Worker version and confirm what code it runs; distinguish deployed `/api/checkout` and `/api/order/...` from older sandbox/customer routes in GitHub.
