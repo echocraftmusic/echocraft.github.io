@@ -1,0 +1,73 @@
+name: Archive music cover artwork in repository
+on:
+  push:
+    branches: [main]
+    paths: ['.github/workflows/backup-music-artwork.yml']
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  archive:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install imaging validator
+        run: python -m pip install --disable-pip-version-check pillow
+      - name: Download and validate current music cover originals
+        run: |
+          python - <<'PY'
+          import hashlib, json, re, urllib.request
+          from io import BytesIO
+          from pathlib import Path
+          from PIL import Image, ImageOps
+
+          catalog = json.loads(Path('music/music.json').read_text(encoding='utf-8'))
+          target = Path('music/covers/archived')
+          target.mkdir(parents=True, exist_ok=True)
+          records = []
+          failures = []
+          for i, item in enumerate(catalog['items']):
+              link = item.get('cover') or ''
+              label = item.get('title') or ('item-' + str(i))
+              if not link.startswith(('https://', 'http://')):
+                  p = Path(link)
+                  if not p.is_file():
+                      failures.append(label + ': local cover is missing: ' + link)
+                  else:
+                      records.append(dict(title=label, archive=link, source='local', bytes=p.stat().st_size))
+                  continue
+              slug = re.sub('[^a-z0-9]+', '-', label.lower()).strip('-')[:65]
+              filename = str(i).zfill(3) + '-' + slug + '-' + hashlib.sha256(link.encode()).hexdigest()[:10] + '.webp'
+              output = target / filename
+              try:
+                  if not output.is_file():
+                      req = urllib.request.Request(link, headers={'User-Agent':'Mozilla/5.0 (compatible; EchoCraftMusicArtworkArchive/1.0)'})
+                      with urllib.request.urlopen(req, timeout=35) as response:
+                          data = response.read(16 * 1024 * 1024 + 1)
+                      if len(data) < 2048 or len(data) > 16 * 1024 * 1024:
+                          raise ValueError('invalid downloaded data size')
+                      with Image.open(BytesIO(data)) as image:
+                          image.load()
+                          if image.width < 120 or image.height < 120:
+                              raise ValueError('unexpectedly small image')
+                          image = ImageOps.exif_transpose(image)
+                          image.convert('RGB').save(output, 'WEBP', quality=90, method=5)
+                  with Image.open(output) as img:
+                      img.verify()
+                  records.append(dict(title=label, archive=str(output), source='DistroKid original URL', bytes=output.stat().st_size, sha256=hashlib.sha256(output.read_bytes()).hexdigest()))
+              except Exception as exc:
+                  failures.append(label + ': ' + str(exc))
+          report = dict(note='Archival copies only; live catalog URLs are intentionally untouched.', total=len(catalog['items']), archived=len(records), failed=len(failures), covers=records, errors=failures)
+          (target/'archive-manifest.json').write_text(json.dumps(report, indent=2, ensure_ascii=False)+'\n', encoding='utf-8')
+          print('COVERS ARCHIVED',len(records),'OF',len(catalog['items']),'FAILURES',len(failures))
+          for failure in failures: print('FAILED',failure)
+          PY
+      - name: Commit archival copies and audit manifest
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add music/covers/archived
+          if ! git diff --cached --quiet; then
+            git commit -m "Archive original catalog artwork independently of DistroKid"
+            git push
+          fi
