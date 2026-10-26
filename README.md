@@ -1,5 +1,8 @@
 # Echo Craft Music — Verification Register
 
+> **Connected services verified 2026-10-26:** ChatGPT successfully accessed both **Cloudflare** and **Supabase** via connected tools (read-only checks). For future work, inspect the integrations directly when available rather than requesting repeat setup. Read [CONNECTED_SERVICES.md](CONNECTED_SERVICES.md) for safe-use guidance and the requirement to recheck access each session.
+
+
 **Public domain:** https://echocraftmusic.com  
 **Source repository:** `echocraftmusic/echocraft.github.io`  
 **Last documentation review:** 2026-10-25  
