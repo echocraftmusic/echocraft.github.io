@@ -2,7 +2,7 @@
 html[data-site-theme="fall"],html[data-site-theme="christmas"]{
  --gold:#c18b36;--cream:#f7ead5;--ink:#352014;--muted-ink:#594332;
  --season-action:#a83e00;--season-sidebar:rgba(55,28,10,.88);
- --season-background:url('../assets/themes/fall-background.png');
+ --season-background:url('../assets/themes/fall-background.webp');
  --text-primary:var(--ink);--text-secondary:var(--muted-ink);--border:#bd934e;
  --accent-cyan:#8d4518;--accent-purple:#a85f1d;--accent-pink:#934015;
  --cyan:#8d4518;--purple:#a85f1d;--text:var(--ink);--muted:var(--muted-ink);
