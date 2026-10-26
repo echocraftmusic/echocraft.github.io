@@ -44,10 +44,17 @@ During the October 25 source review, the checked-in sandbox/older Worker include
 
 These are **code-review observations only** and must not be represented as a fresh audit of today's deployed production Worker.
 
+## Security hardening update — October 25, 2026
+
+- **YouTube video cards (source fixed):** Commit `b5eed83405bfb44a54adfe66808c66eca244b2d8` updated `index.html` to escape external video titles, validate 11-character YouTube IDs, allow only HTTPS YouTube thumbnail hosts, and add `rel="noopener noreferrer"` to external video links. **Verified in GitHub source. Live deployment and browser regression test have not been independently confirmed.**
+- **Commerce untouched:** No edits to Square, customer authorization, three-download enforcement, R2 files, catalog, pricing, or production Cloudflare Worker.
+- **Security headers:** Their live HTTP response values have **not** been independently retrieved; do not claim CSP, HSTS, anti-framing, or referrer headers are enabled or disabled. Confirm delivery host and inspect production response headers before changing them.
+- **Admin/R2 checks:** Repository includes owner allowlist and private-bucket use, but current production binding and access settings remain to be independently verified.
+
 ## Open items — do not mark these complete without evidence
 
 1. **Live Worker/source parity:** Record current deployed production Worker version and confirm what code it runs; distinguish deployed `/api/checkout` and `/api/order/...` from older sandbox/customer routes in GitHub.
-2. **Website content rendering:** The homepage's YouTube video cards inject video title/thumbnail metadata into HTML strings without full context-aware escaping; review and harden to prevent script injection without changing appearance.
+2. **Website content rendering:** Source fix committed October 25 (see above); verify live deployment and browser playback/card appearance before marking production verified.
 3. **Live HTTP security headers:** Verify deployed CSP, HSTS, framing, content-type and referrer protections, accounting for scripts and checkout integrations.
 4. **Admin / R2 access controls:** Finish production authorization and bucket-public-access checks without altering or exposing secrets.
 5. **Per-item sales analytics:** The desired private dashboard reporting products sold was **not yet verified as complete** in October 19 discussions. This is separate from confirmed Square payment processing and existing page/play/click analytics.
