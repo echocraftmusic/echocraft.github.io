@@ -52,6 +52,64 @@ function storeAlbumURL(value) {
     } catch { return ''; }
 }
 
+// Verified 2026-10-26 recovery copies. Used only after an image load failure.
+const echoCraftArchivedCovers = {
+  "A Light Through Darkness": "music/covers/archived/000-a-light-through-darkness-2643309f2b.webp",
+  "Beatography Track 1": "music/covers/archived/001-beatography-track-1-173a85c626.webp",
+  "Crossroad of Noise": "music/covers/archived/002-crossroad-of-noise-1982aa5b87.webp",
+  "Crown Pon Mi Head": "music/covers/archived/003-crown-pon-mi-head-b65f452791.webp",
+  "Darker the Berry (Sweeter The Juice)": "music/covers/archived/004-darker-the-berry-sweeter-the-juice-ef3d829ecd.webp",
+  "Deck The Halls": "music/covers/christmas-2026/deck-the-halls.webp",
+  "Dimples": "music/covers/archived/006-dimples-44baa6db04.webp",
+  "Don't Judge Me": "music/covers/archived/007-don-t-judge-me-16f89fba3d.webp",
+  "Don't Make Me Angry": "music/covers/archived/008-don-t-make-me-angry-635e5db907.webp",
+  "Echo Craft Christmas: Volume 1": "music/covers/archived/009-echo-craft-christmas-volume-1-0a89143360.webp",
+  "Echo Echo": "music/covers/archived/010-echo-echo-28f7038bfe.webp",
+  "FASTER (ULTIMATE VERSION)": "music/covers/archived/011-faster-ultimate-version-209ac9e86c.webp",
+  "He's A Light Through Darkness (CineTrap Mix)": "music/covers/archived/012-he-s-a-light-through-darkness-cinetrap-mix-28102c0d57.webp",
+  "HEAVY & CHUNKY": "music/covers/archived/013-heavy-chunky-e8b2c4bb6c.webp",
+  "I am the Paladin": "music/covers/archived/014-i-am-the-paladin-9d8225324b.webp",
+  "I bleed silver and blue": "music/covers/archived/015-i-bleed-silver-and-blue-3d86435014.webp",
+  "Jingle Bell Swing": "music/covers/christmas-2026/jingle-bell-swing.webp",
+  "Lil Drumma Boi": "music/covers/christmas-2026/lil-drumma-boi.webp",
+  "Metal & Glass": "music/covers/archived/018-metal-glass-6ef82efe53.webp",
+  "Midnight Series, Vol. 1": "music/covers/archived/019-midnight-series-vol-1-eef0223278.webp",
+  "Midnight Syndicate": "music/covers/archived/020-midnight-syndicate-7d7aa02740.webp",
+  "My Daddy's Birthday": "music/covers/christmas-2026/my-daddys-birthday.webp",
+  "O Come All Ye Faithful": "music/covers/christmas-2026/o-come-all-ye-faithful.webp",
+  "O Come, Let's Adore Him": "music/covers/christmas-2026/o-come-lets-adore-him.webp",
+  "O Peter": "music/covers/archived/024-o-peter-7e0dc7219e.webp",
+  "Petty": "music/covers/archived/025-petty-397009081a.webp",
+  "Requiem Of His Grace": "music/covers/archived/026-requiem-of-his-grace-d11b5e6ae3.webp",
+  "Rogue": "music/covers/archived/027-rogue-fafe34d67b.webp",
+  "Sanctuary": "music/covers/archived/028-sanctuary-91e15fd675.webp",
+  "Silent Night": "music/covers/christmas-2026/silent-night.webp",
+  "Soul of Solomon": "music/covers/archived/030-soul-of-solomon-5677460a49.webp",
+  "Stickay!": "music/covers/archived/031-stickay-7460081c54.webp",
+  "Stinking Overthinking": "music/covers/archived/032-stinking-overthinking-5c59e83afb.webp",
+  "Tasty (Tasty)": "music/covers/archived/033-tasty-tasty-fdd1e818b4.webp",
+  "The Darkest Knight": "music/covers/archived/034-the-darkest-knight-406c57bfee.webp",
+  "The Fire That Never Dies": "music/covers/archived/035-the-fire-that-never-dies-c054af6a01.webp",
+  "The Girl (Black Curly Hair)": "music/covers/archived/036-the-girl-black-curly-hair-cabd4a3b00.webp",
+  "The Man Without Fear": "music/covers/archived/037-the-man-without-fear-6577587ad8.webp",
+  "The Mask I Wear": "music/covers/archived/038-the-mask-i-wear-863d54ea1e.webp",
+  "The Storm Of The Barbarian": "music/covers/archived/039-the-storm-of-the-barbarian-bf35f7fa49.webp",
+  "The Trickster's Grin": "music/covers/archived/040-the-trickster-s-grin-548d9d3291.webp",
+  "This Right Here by Echo Craft": "music/covers/archived/041-this-right-here-by-echo-craft-5b5ad7db7e.webp",
+  "Unstoppable (Say My Name)": "music/covers/archived/042-unstoppable-say-my-name-1954f258db.webp",
+  "Wait Till It's Real": "music/covers/archived/043-wait-till-it-s-real-066c968db0.webp",
+  "Watcher (Strings Mix)": "music/covers/archived/044-watcher-strings-mix-88e91d9243.webp",
+  "What A Time To Be Alive": "music/covers/archived/045-what-a-time-to-be-alive-2c6091994e.webp",
+  "What a Time to be Alive (UAB Mix)": "music/covers/archived/046-what-a-time-to-be-alive-uab-mix-c667626336.webp",
+  "Why You So Mean?": "music/covers/archived/047-why-you-so-mean-388b475ddd.webp",
+  "Wind it like a clock": "music/covers/archived/048-wind-it-like-a-clock-5553cdc803.webp",
+  "Word-Fi: Psalms": "music/covers/archived/049-word-fi-psalms-f204382d22.webp",
+  "Your Perspective": "music/covers/your-perspective.webp"
+};
+function storeCoverBackup(title, fallback) {
+    return echoCraftArchivedCovers[String(title || '')] || fallback;
+}
+
 function storeAlbumPrice(album) {
     const price = Number(album?.price);
     return Number.isFinite(price) && price >= 0.5 ? price : 9.99;
@@ -67,7 +125,7 @@ function createAlbumCard(album, index) {
     const platform = (url, label, icon, className) => storeAlbumURL(url) ? `<a href="${escapeMusicAttribute(storeAlbumURL(url))}" class="ac-${className}" target="_blank" rel="noopener noreferrer"><i class="${icon}" aria-hidden="true"></i><span>${label}</span></a>` : '';
     return `<article class="ac-card" data-album-index="${index}" aria-labelledby="ac-title-${index}" ${index ? 'hidden' : ''}>
         <div class="ac-upper">
-            <img class="ac-cover" src="${escapeMusicAttribute(storeAlbumURL(album.cover) || 'assets/images/no-cover.webp')}" alt="${title} album cover" loading="lazy" onerror="this.onerror=null;this.src='assets/images/no-cover.webp'">
+            <img class="ac-cover" src="${escapeMusicAttribute(storeAlbumURL(album.cover) || 'assets/images/no-cover.webp')}" alt="${title} album cover" loading="lazy" data-backup-src="${escapeMusicAttribute(storeCoverBackup(album.title, 'assets/images/no-cover.webp'))}" onerror="this.onerror=null;this.src=this.dataset.backupSrc||'assets/images/no-cover.webp'">
             <div class="ac-details">
                 <div class="ac-badge">ALBUM • ${tracks.length} TRACKS</div>
                 <h3 class="ac-title" id="ac-title-${index}" title="${title}"><a href="${album.title === 'Echo Craft Christmas: Volume 1' ? 'albums/echo-craft-christmas-volume-1.html' : 'albums/album.html?title=' + encodeURIComponent(album.title || '')}">${title}</a></h3>
@@ -177,7 +235,7 @@ function setupAlbumCarousel() {
     echoCraftAlbums.forEach((album, index) => {
         const button = document.createElement('button'); button.className = 'ac-thumbnail'; button.type = 'button';
         button.setAttribute('aria-label', 'Show ' + album.title); button.setAttribute('aria-pressed', String(index === 0));
-        const image = document.createElement('img'); image.src = storeAlbumURL(album.cover) || 'assets/images/no-cover.webp'; image.alt = ''; image.loading = 'lazy'; image.onerror = () => { image.onerror = null; image.src = 'assets/images/no-cover.webp'; };
+        const image = document.createElement('img'); image.src = storeAlbumURL(album.cover) || 'assets/images/no-cover.webp'; image.alt = ''; image.loading = 'lazy'; image.onerror = () => { image.onerror = null; image.src = storeCoverBackup(album.title, 'assets/images/no-cover.webp'); };
         const label = document.createElement('span'); label.textContent = album.title; label.title = album.title;
         button.append(image, label); button.onclick = () => selectStoreAlbum(index); gallery.append(button);
     });
@@ -327,7 +385,8 @@ function createMusicCard(track, index) {
                     src="${cover}"
                     alt="${title} cover artwork"
                     loading="lazy"
-                    onerror="this.src='assets/images/ec-icon.webp';"
+                    data-backup-src="${escapeMusicAttribute(storeCoverBackup(track.title, 'assets/images/ec-icon.webp'))}"
+                    onerror="this.onerror=null;this.src=this.dataset.backupSrc||'assets/images/ec-icon.webp';"
                 >
 
                 <div class="music-artwork-shine"></div>
