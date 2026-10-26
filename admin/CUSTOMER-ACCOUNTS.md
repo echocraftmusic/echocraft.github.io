@@ -1,3 +1,6 @@
+> **Current production verification reference (October 18–19):** [Verification Register in root README](../README.md#previously-verified-in-production--october-18-2026) and [download-limit results](../README.md#download-limit-enforcement--october-19-2026). This document describes an earlier, sandbox-era implementation. Its statements that production payments or three-download enforcement are unfinished **were superseded by later owner-tested production results**. Do not deploy its older Worker over the verified live production version.
+
+
 # Customer registration and My Music
 
 This feature adds a prechecked registration choice during checkout, passwordless customer sign-in, private purchase history, independent promotional email preferences, and reversible closure of music-account access. Payments remain Sandbox-only. Real payment activation, receipt emails, and three-download enforcement are unfinished.

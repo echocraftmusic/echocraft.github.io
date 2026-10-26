@@ -1,3 +1,6 @@
+> **Verification register:** [README.md](README.md) documents the real October 18 Square purchase and October 19 production three-download enforcement (plus a separate simulated concurrency test). Treat those as completed historical tests; inspect the actual deployed Worker before assuming older GitHub code is production.
+
+
 # MAINTENANCE_PLAYBOOK.md — echocraftmusic.com
 
 **Updated:** 2026-10-22  

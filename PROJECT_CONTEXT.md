@@ -1,3 +1,6 @@
+> **Read first: [README.md — Verified production payment and download history](README.md).** Production Square checkout and three-download limits were tested October 18–19, 2026, *after* earlier sandbox documentation. Do not request repeat verification or conclude a production feature is absent from the older checked-in Worker without checking current deployed code.
+
+
 # Echo Craft Music — Persistent Project Context
 
 **Official site:** https://echocraftmusic.com  

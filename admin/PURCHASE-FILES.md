@@ -1,3 +1,6 @@
+> **Current production verification reference (October 18–19):** [Verification Register in root README](../README.md#previously-verified-in-production--october-18-2026) and [download-limit results](../README.md#download-limit-enforcement--october-19-2026). This document describes an earlier, sandbox-era implementation. Its statements that production payments or three-download enforcement are unfinished **were superseded by later owner-tested production results**. Do not deploy its older Worker over the verified live production version.
+
+
 # Purchase Files
 
 The admin tab reads the existing catalog. Singles get one full MP3 slot; albums get a slot for each catalog track in its existing order. It supports Browse, drag-and-drop, release/track search, single/album filters, ready/missing status, and authenticated downloads of tagged copies.
