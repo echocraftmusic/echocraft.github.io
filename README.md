@@ -57,12 +57,21 @@ These are **code-review observations only** and must not be represented as a fre
 
 - **2026-10-25 — Live browser validation COMPLETE:** Chrome DevTools → Network → `https://echocraftmusic.com/` document response showed `Referrer-Policy: strict-origin-when-cross-origin`, `X-Content-Type-Options: nosniff`, `X-Frame-Options: SAMEORIGIN`, and existing `Strict-Transport-Security: max-age=2592000`. Owner provided screenshot after Cloudflare rule activation. **All three new headers confirmed live; no further repeat check needed absent a relevant configuration change.**
 
+## Historical Cloudflare R2 and Worker configuration — October 14–19, 2026
+
+- **October 14:** The customer-download R2 bucket `echocraft-music-downloads` was set up for private music delivery. The Worker binding `PURCHASE_FILES` → `echocraft-music-downloads` was confirmed in the setup conversation.
+- **October 16–17:** The `echocraft-music-admin` Cloudflare production Worker configuration was observed with `PURCHASE_FILES` bound to the bucket, `SQUARE_ENVIRONMENT=production`, and a configured production Square location and encrypted access token. Secret values intentionally omitted.
+- **October 18:** A real $0.99 purchase, successful MP3 delivery and isolation between purchaser and a different account were tested (see the verified production section above).
+- **October 19:** Production Worker review found Supabase bearer-token identity verification, confirmed-email/admin allowlist checks and Square order, location, amount, currency, completed-payment and cancellation/refund checks in inspected production code. The three-download limit was also verified in production.
+- **Not yet confirmed from historical records:** whether the R2 bucket's *public development URL (r2.dev)* is disabled and whether the bucket has *no public custom domain*. These are two specific settings, distinct from the confirmed private Worker binding and authenticated delivery. Do not relabel the entire storage/payment system as unverified merely because these settings are undocumented.
+- **Scope of evidence:** Historical configuration screenshots, source/code inspection and actual purchase tests; no independent October 25 Cloudflare console read. Check only those two bucket-public-exposure settings to close this issue.
+
 ## Open items — do not mark these complete without evidence
 
 1. **Live Worker/source parity:** Record current deployed production Worker version and confirm what code it runs; distinguish deployed `/api/checkout` and `/api/order/...` from older sandbox/customer routes in GitHub.
 2. **Website content rendering:** Source fix committed October 25 (see above); verify live deployment and browser playback/card appearance before marking production verified.
 3. **Live HTTP security headers:** HSTS, X-Frame-Options, X-Content-Type-Options and Referrer-Policy verified in Chrome on October 25, 2026. **CSP remains deferred** pending compatibility review of inline scripts and payment/auth/media integrations.
-4. **Admin / R2 access controls:** Finish production authorization and bucket-public-access checks without altering or exposing secrets.
+4. **Admin / R2 access controls:** Owner-approved binding, authenticated purchase delivery and October 19 admin/payment verification were already inspected/tested historically. Remaining narrowly scoped configuration check: disabled public r2.dev URL and no public custom domain for `echocraft-music-downloads`.
 5. **Per-item sales analytics:** The desired private dashboard reporting products sold was **not yet verified as complete** in October 19 discussions. This is separate from confirmed Square payment processing and existing page/play/click analytics.
 6. **Search Console:** October 25 sitemap submission for the Music domain initially returned “Couldn't fetch” / HTTP 404 while the XML subsequently loaded in the owner's browser. Follow up separately; this is **not evidence of a payment or download vulnerability**.
 
