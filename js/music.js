@@ -70,7 +70,7 @@ function createAlbumCard(album, index) {
             <img class="ac-cover" src="${escapeMusicAttribute(storeAlbumURL(album.cover) || 'assets/images/no-cover.webp')}" alt="${title} album cover" loading="lazy" onerror="this.onerror=null;this.src='assets/images/no-cover.webp'">
             <div class="ac-details">
                 <div class="ac-badge">ALBUM • ${tracks.length} TRACKS</div>
-                <h3 class="ac-title" id="ac-title-${index}" title="${title}"><a href="albums/album.html?title=${encodeURIComponent(album.title || '')}">${title}</a></h3>
+                <h3 class="ac-title" id="ac-title-${index}" title="${title}"><a href="${album.title === 'Echo Craft Christmas: Volume 1' ? 'albums/echo-craft-christmas-volume-1.html' : 'albums/album.html?title=' + encodeURIComponent(album.title || '')}">${title}</a></h3>
                 <p class="ac-artist">${escapeMusicText(album.artist || 'Echo Craft')}</p>
                 <div class="ac-pills"><span>Album</span><span>Track previews</span></div>
                 <p class="ac-description" title="${description}">${description}</p>

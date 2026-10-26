@@ -73,6 +73,8 @@ These are **code-review observations only** and must not be represented as a fre
 - Confirmed `Echo Craft Christmas: Volume 1` and multiple Christmas singles are scheduled in the catalog for **October 31, 2026 (Eastern)**. Did **not** publish, alter or prematurely index their catalog records or preview files.
 - Changes are limited to crawl/metadata configuration, without changes to Square, download limits, R2, customer data or storefront layout. Verify production publication and Google Search Console separately.
 
+- **October 25 — Christmas SEO:** Added public release-information page `albums/echo-craft-christmas-volume-1.html` for Echo Craft Christmas: Volume 1 with seven catalog-confirmed track titles, October 31 release date, music album structured data, canonical and social metadata. Prior to release, the page displays a coming-soon state; after launch the album/previews link appears. Linked the album card to its permanent URL and included only this public landing page in the sitemap. **No catalog publication status, price, track, preview, payment or download was changed.**
+
 ## Open items — do not mark these complete without evidence
 
 1. **Live Worker/source parity:** Record current deployed production Worker version and confirm what code it runs; distinguish deployed `/api/checkout` and `/api/order/...` from older sandbox/customer routes in GitHub.
