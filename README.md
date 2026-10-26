@@ -55,11 +55,13 @@ These are **code-review observations only** and must not be represented as a fre
 
 - **2026-10-25 — Cloudflare response headers:** Owner's Cloudflare Rules Overview screenshot confirms an **Active** Response Header Transform Rule named `Echo Craft Music - Security Headers`, scoped to hostname `echocraftmusic.com`. The rule was configured with `X-Content-Type-Options: nosniff`, `X-Frame-Options: SAMEORIGIN`, and `Referrer-Policy: strict-origin-when-cross-origin`. A prior Chrome screenshot separately showed HSTS `max-age=2592000`. **Cloudflare rule activation confirmed; final browser Network response-header check remains pending.** Do not create duplicate rules.
 
+- **2026-10-25 — Live browser validation COMPLETE:** Chrome DevTools → Network → `https://echocraftmusic.com/` document response showed `Referrer-Policy: strict-origin-when-cross-origin`, `X-Content-Type-Options: nosniff`, `X-Frame-Options: SAMEORIGIN`, and existing `Strict-Transport-Security: max-age=2592000`. Owner provided screenshot after Cloudflare rule activation. **All three new headers confirmed live; no further repeat check needed absent a relevant configuration change.**
+
 ## Open items — do not mark these complete without evidence
 
 1. **Live Worker/source parity:** Record current deployed production Worker version and confirm what code it runs; distinguish deployed `/api/checkout` and `/api/order/...` from older sandbox/customer routes in GitHub.
 2. **Website content rendering:** Source fix committed October 25 (see above); verify live deployment and browser playback/card appearance before marking production verified.
-3. **Live HTTP security headers:** Verify deployed CSP, HSTS, framing, content-type and referrer protections, accounting for scripts and checkout integrations.
+3. **Live HTTP security headers:** HSTS, X-Frame-Options, X-Content-Type-Options and Referrer-Policy verified in Chrome on October 25, 2026. **CSP remains deferred** pending compatibility review of inline scripts and payment/auth/media integrations.
 4. **Admin / R2 access controls:** Finish production authorization and bucket-public-access checks without altering or exposing secrets.
 5. **Per-item sales analytics:** The desired private dashboard reporting products sold was **not yet verified as complete** in October 19 discussions. This is separate from confirmed Square payment processing and existing page/play/click analytics.
 6. **Search Console:** October 25 sitemap submission for the Music domain initially returned “Couldn't fetch” / HTTP 404 while the XML subsequently loaded in the owner's browser. Follow up separately; this is **not evidence of a payment or download vulnerability**.
