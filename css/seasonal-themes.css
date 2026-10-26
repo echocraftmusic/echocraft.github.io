@@ -242,3 +242,21 @@ html:is([data-site-theme="fall"],[data-site-theme="christmas"]) .page-shell .bac
 html:is([data-site-theme="fall"],[data-site-theme="christmas"]) .page-shell .back-home:hover{background:var(--season-action)}
 html:is([data-site-theme="fall"],[data-site-theme="christmas"]) .page-shell .mobile-top{background:#241b16;border-bottom-color:var(--gold)}
 html:is([data-site-theme="fall"],[data-site-theme="christmas"]) .page-shell .mobile-top a{color:#fff4dd}
+
+/* Checkout assurance sits directly over changing light/dark seasonal backgrounds.
+   An opaque dark label provides reliable contrast in every theme and scroll position. */
+#albums .ac-store-note {
+  display: table;
+  width: fit-content;
+  max-width: calc(100% - 28px);
+  padding: 9px 13px;
+  border: 1px solid rgba(255,255,255,.24);
+  border-radius: 9px;
+  background: rgba(24,28,35,.96);
+  color: #ffffff !important;
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.5;
+  text-shadow: none;
+  box-shadow: 0 3px 14px rgba(0,0,0,.26);
+}
