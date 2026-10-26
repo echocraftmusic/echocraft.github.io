@@ -16,6 +16,7 @@
     <script type="application/ld+json">
     {"@context":"https://schema.org","@type":"MusicGroup","name":"Echo Craft","url":"https://echocraftmusic.com/","sameAs":["https://www.instagram.com/echocraft.music/","https://open.spotify.com/artist/4tIlaQ5ajpZLuUyImDFT92","https://music.apple.com/us/artist/echo-craft/1883626659","https://www.youtube.com/@EchoCraft-ai7"]}
     </script>
+    <link rel="preload" as="image" href="assets/themes/gold-logo.png" fetchpriority="high">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -4779,7 +4780,7 @@ section.albums{padding:64px 0 56px;overflow-x:auto;position:relative}
         </div>
     </div>
     <!-- HAMBURGER MENU BUTTON (Mobile Only) -->
-    <button class="hamburger-menu" id="hamburger">
+    <button class="hamburger-menu" id="hamburger" type="button" aria-label="Open navigation menu" aria-controls="mobileMenu" aria-expanded="false">
         <span></span>
         <span></span>
         <span></span>
@@ -4867,7 +4868,7 @@ section.albums{padding:64px 0 56px;overflow-x:auto;position:relative}
     </div>
 
     <div class="home-logo">
-        <img src="assets/themes/gold-logo.png" data-original-src="assets/images/echo-craft-logo.webp" alt="Echo Craft Logo">
+        <img src="assets/themes/gold-logo.png" data-original-src="assets/images/echo-craft-logo.webp" alt="Echo Craft Logo" fetchpriority="high" decoding="async">
     </div>
 
     <p class="tagline">
@@ -4913,7 +4914,7 @@ section.albums{padding:64px 0 56px;overflow-x:auto;position:relative}
 </div>
             <!-- The owner's Christmas theme includes the approved Nativity artwork. -->
             <div id="seasonalNativity" class="seasonal-nativity" hidden aria-labelledby="nativityHeading" style="margin:0 auto 28px">
-                <div class="nativity-scene"><img src="assets/themes/christmas-approved.png" alt="Mary and Joseph beside baby Jesus in the manger, in the approved Nativity illustration." loading="lazy"></div>
+                <div class="nativity-scene"><img src="assets/themes/christmas-approved.png" alt="Mary and Joseph beside baby Jesus in the manger, in the approved Nativity illustration." loading="lazy" decoding="async"></div>
                 <div class="nativity-copy">
                     <span class="nativity-star" aria-hidden="true">✧</span>
                     <h2 id="nativityHeading">The Reason Of The Season</h2>
