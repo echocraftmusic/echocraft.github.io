@@ -52,24 +52,6 @@ function storeAlbumURL(value) {
     } catch { return ''; }
 }
 
-// Request display-sized artwork only from DistroKid's Imgix host.
-// Other providers and original URLs remain untouched.
-function optimizedCoverUrl(value, width = 400) {
-    const original = storeAlbumURL(value);
-    if (!original) return '';
-    try {
-        const url = new URL(original);
-        if (url.hostname.toLowerCase() !== 'distrokid.imgix.net') return original;
-        url.searchParams.set('w', String(width));
-        url.searchParams.set('fit', 'max');
-        url.searchParams.set('auto', 'format,compress');
-        url.searchParams.set('q', '78');
-        return url.href;
-    } catch {
-        return original;
-    }
-}
-
 function storeAlbumPrice(album) {
     const price = Number(album?.price);
     return Number.isFinite(price) && price >= 0.5 ? price : 9.99;
@@ -85,7 +67,7 @@ function createAlbumCard(album, index) {
     const platform = (url, label, icon, className) => storeAlbumURL(url) ? `<a href="${escapeMusicAttribute(storeAlbumURL(url))}" class="ac-${className}" target="_blank" rel="noopener noreferrer"><i class="${icon}" aria-hidden="true"></i><span>${label}</span></a>` : '';
     return `<article class="ac-card" data-album-index="${index}" aria-labelledby="ac-title-${index}" ${index ? 'hidden' : ''}>
         <div class="ac-upper">
-            <img class="ac-cover" src="${escapeMusicAttribute(optimizedCoverUrl(album.cover, 500) || 'assets/images/no-cover.webp')}" alt="${title} album cover" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='assets/images/no-cover.webp'">
+            <img class="ac-cover" src="${escapeMusicAttribute(storeAlbumURL(album.cover) || 'assets/images/no-cover.webp')}" alt="${title} album cover" loading="lazy" onerror="this.onerror=null;this.src='assets/images/no-cover.webp'">
             <div class="ac-details">
                 <div class="ac-badge">ALBUM • ${tracks.length} TRACKS</div>
                 <h3 class="ac-title" id="ac-title-${index}" title="${title}"><a href="${album.title === 'Echo Craft Christmas: Volume 1' ? 'albums/echo-craft-christmas-volume-1.html' : 'albums/album.html?title=' + encodeURIComponent(album.title || '')}">${title}</a></h3>
@@ -195,7 +177,7 @@ function setupAlbumCarousel() {
     echoCraftAlbums.forEach((album, index) => {
         const button = document.createElement('button'); button.className = 'ac-thumbnail'; button.type = 'button';
         button.setAttribute('aria-label', 'Show ' + album.title); button.setAttribute('aria-pressed', String(index === 0));
-        const image = document.createElement('img'); image.src = optimizedCoverUrl(album.cover, 160) || 'assets/images/no-cover.webp'; image.alt = ''; image.loading = 'lazy'; image.onerror = () => { image.onerror = null; image.src = 'assets/images/no-cover.webp'; };
+        const image = document.createElement('img'); image.src = storeAlbumURL(album.cover) || 'assets/images/no-cover.webp'; image.alt = ''; image.loading = 'lazy'; image.onerror = () => { image.onerror = null; image.src = 'assets/images/no-cover.webp'; };
         const label = document.createElement('span'); label.textContent = album.title; label.title = album.title;
         button.append(image, label); button.onclick = () => selectStoreAlbum(index); gallery.append(button);
     });
@@ -236,7 +218,7 @@ function createMusicCard(track, index) {
 
     const cover =
         track.cover && track.cover.trim() !== ""
-            ? escapeMusicAttribute(optimizedCoverUrl(track.cover, 400))
+            ? escapeMusicAttribute(track.cover)
             : "assets/images/ec-icon.webp";
 
     const preview =
@@ -344,7 +326,7 @@ function createMusicCard(track, index) {
                     class="music-cover"
                     src="${cover}"
                     alt="${title} cover artwork"
-                    loading="lazy" decoding="async"
+                    loading="lazy"
                     onerror="this.src='assets/images/ec-icon.webp';"
                 >
 
