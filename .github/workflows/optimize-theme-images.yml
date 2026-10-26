@@ -1,0 +1,38 @@
+name: Optimize Echo Craft theme images
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/optimize-theme-images.yml'
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  optimize:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install Pillow
+        run: python -m pip install --disable-pip-version-check pillow
+      - name: Convert original theme PNGs to WebP
+        run: |
+          python - <<'PY'
+          from PIL import Image
+          from pathlib import Path
+          for name in ('fall-background', 'gold-logo'):
+              source=Path('assets/themes')/(name+'.png')
+              dest=source.with_suffix('.webp')
+              with Image.open(source) as img:
+                  if img.mode not in ('RGB','RGBA'): img=img.convert('RGBA' if 'A' in img.getbands() else 'RGB')
+                  img.save(dest,'WEBP',quality=88,method=6)
+                  print(name, 'PNG', source.stat().st_size, 'WebP', dest.stat().st_size)
+          PY
+      - name: Commit optimized originals
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add assets/themes/fall-background.webp assets/themes/gold-logo.webp
+          if ! git diff --cached --quiet; then
+            git commit -m "Generate optimized WebP fall background and gold logo"
+            git push
+          fi
