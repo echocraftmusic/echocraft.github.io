@@ -1,0 +1,358 @@
+{
+  "note": "Archival copies only; live catalog URLs are intentionally untouched.",
+  "total": 51,
+  "archived": 51,
+  "failed": 0,
+  "covers": [
+    {
+      "title": "A Light Through Darkness",
+      "archive": "music/covers/archived/000-a-light-through-darkness-2643309f2b.webp",
+      "source": "DistroKid original URL",
+      "bytes": 329376,
+      "sha256": "2c8f082b479e513cf6a53d0be5bf035a211e89ee414329f1bceca15c16f2b318"
+    },
+    {
+      "title": "Beatography Track 1",
+      "archive": "music/covers/archived/001-beatography-track-1-173a85c626.webp",
+      "source": "DistroKid original URL",
+      "bytes": 127518,
+      "sha256": "e1dff8c1043e49c5b708585146e2ec558ae5ed85c702bd152baabd62317dddcf"
+    },
+    {
+      "title": "Crossroad of Noise",
+      "archive": "music/covers/archived/002-crossroad-of-noise-1982aa5b87.webp",
+      "source": "DistroKid original URL",
+      "bytes": 195392,
+      "sha256": "1cc8263495e6225cdff9da67b8be841046f03a81f6f6dbfdad26cef0b897c958"
+    },
+    {
+      "title": "Crown Pon Mi Head",
+      "archive": "music/covers/archived/003-crown-pon-mi-head-b65f452791.webp",
+      "source": "DistroKid original URL",
+      "bytes": 183224,
+      "sha256": "990fe769ce7b2c1a96c290b2f1235ec19b9ee836592f9e9a0211c54bd5a0f6c4"
+    },
+    {
+      "title": "Darker the Berry (Sweeter The Juice)",
+      "archive": "music/covers/archived/004-darker-the-berry-sweeter-the-juice-ef3d829ecd.webp",
+      "source": "DistroKid original URL",
+      "bytes": 43442,
+      "sha256": "5d4120605f6b4d54c13f5435e039d31e10a18d15860e3302ae148a04ac096fb3"
+    },
+    {
+      "title": "Deck The Halls",
+      "archive": "music/covers/christmas-2026/deck-the-halls.webp",
+      "source": "local",
+      "bytes": 212370
+    },
+    {
+      "title": "Dimples",
+      "archive": "music/covers/archived/006-dimples-44baa6db04.webp",
+      "source": "DistroKid original URL",
+      "bytes": 112502,
+      "sha256": "4ba25573c582fb52ed93a2de3b6f8eeeaaed50d33ee882a7f0b765c703731ac4"
+    },
+    {
+      "title": "Don't Judge Me",
+      "archive": "music/covers/archived/007-don-t-judge-me-16f89fba3d.webp",
+      "source": "DistroKid original URL",
+      "bytes": 139262,
+      "sha256": "4218e6c1314a4ffa514fe6eecb41fdd4c2d7797ce8354a4a321cca609f4e65af"
+    },
+    {
+      "title": "Don't Make Me Angry",
+      "archive": "music/covers/archived/008-don-t-make-me-angry-635e5db907.webp",
+      "source": "DistroKid original URL",
+      "bytes": 170760,
+      "sha256": "8dc8df60adab014b2452805b7550342073e7823dcad693b44e413547cf46d970"
+    },
+    {
+      "title": "Echo Craft Christmas: Volume 1",
+      "archive": "music/covers/archived/009-echo-craft-christmas-volume-1-0a89143360.webp",
+      "source": "DistroKid original URL",
+      "bytes": 212224,
+      "sha256": "65026048a246f48b6e4ba27868b874a428fe2746e3796632e550924245c68795"
+    },
+    {
+      "title": "Echo Echo",
+      "archive": "music/covers/archived/010-echo-echo-28f7038bfe.webp",
+      "source": "DistroKid original URL",
+      "bytes": 140700,
+      "sha256": "ef65d2a47470f752af92743d1b25ec24bf0bb015b24cab76b4e7c80cec032141"
+    },
+    {
+      "title": "FASTER (ULTIMATE VERSION)",
+      "archive": "music/covers/archived/011-faster-ultimate-version-209ac9e86c.webp",
+      "source": "DistroKid original URL",
+      "bytes": 103066,
+      "sha256": "45e95ccd35f756f2c97237c67821e94fdea191361d261b2b09a488d7a443650f"
+    },
+    {
+      "title": "He's A Light Through Darkness (CineTrap Mix)",
+      "archive": "music/covers/archived/012-he-s-a-light-through-darkness-cinetrap-mix-28102c0d57.webp",
+      "source": "DistroKid original URL",
+      "bytes": 177642,
+      "sha256": "d27124dabd1a8eeb5d85400009486153cf06e9593d2ca522744364bdbcac21f8"
+    },
+    {
+      "title": "HEAVY & CHUNKY",
+      "archive": "music/covers/archived/013-heavy-chunky-e8b2c4bb6c.webp",
+      "source": "DistroKid original URL",
+      "bytes": 124964,
+      "sha256": "c25efdc111109c76f183ddb0476b206d90e2d14925e5b0deaa51cdac8d30b9a7"
+    },
+    {
+      "title": "I am the Paladin",
+      "archive": "music/covers/archived/014-i-am-the-paladin-9d8225324b.webp",
+      "source": "DistroKid original URL",
+      "bytes": 65574,
+      "sha256": "7c5017e2933747c15526a5abfab5b02e7f79504926fc1aeea0f73a3bed65a923"
+    },
+    {
+      "title": "I bleed silver and blue",
+      "archive": "music/covers/archived/015-i-bleed-silver-and-blue-3d86435014.webp",
+      "source": "DistroKid original URL",
+      "bytes": 151170,
+      "sha256": "5be74a0c37c575748c61b00fb20a6cf5bc0da64fc2bda07f2f2ee85cf002cfaf"
+    },
+    {
+      "title": "Jingle Bell Swing",
+      "archive": "music/covers/christmas-2026/jingle-bell-swing.webp",
+      "source": "local",
+      "bytes": 204384
+    },
+    {
+      "title": "Lil Drumma Boi",
+      "archive": "music/covers/christmas-2026/lil-drumma-boi.webp",
+      "source": "local",
+      "bytes": 278642
+    },
+    {
+      "title": "Metal & Glass",
+      "archive": "music/covers/archived/018-metal-glass-6ef82efe53.webp",
+      "source": "DistroKid original URL",
+      "bytes": 89960,
+      "sha256": "42f5ee82045193f76b55403350e6da36bd682ee99d17bff93e1b97612225bf3e"
+    },
+    {
+      "title": "Midnight Series, Vol. 1",
+      "archive": "music/covers/archived/019-midnight-series-vol-1-eef0223278.webp",
+      "source": "DistroKid original URL",
+      "bytes": 71234,
+      "sha256": "9ebb6bbd2ccd26fae1aef0815f203783fca5bd6c9ba789b40a6498c9fce231f2"
+    },
+    {
+      "title": "Midnight Syndicate",
+      "archive": "music/covers/archived/020-midnight-syndicate-7d7aa02740.webp",
+      "source": "DistroKid original URL",
+      "bytes": 189774,
+      "sha256": "d53f40d4a0cc87c1b4fef4162681027afdc378f34e94a0a50f95dd797456af49"
+    },
+    {
+      "title": "My Daddy's Birthday",
+      "archive": "music/covers/christmas-2026/my-daddys-birthday.webp",
+      "source": "local",
+      "bytes": 250206
+    },
+    {
+      "title": "O Come All Ye Faithful",
+      "archive": "music/covers/christmas-2026/o-come-all-ye-faithful.webp",
+      "source": "local",
+      "bytes": 219116
+    },
+    {
+      "title": "O Come, Let's Adore Him",
+      "archive": "music/covers/christmas-2026/o-come-lets-adore-him.webp",
+      "source": "local",
+      "bytes": 185438
+    },
+    {
+      "title": "O Peter",
+      "archive": "music/covers/archived/024-o-peter-7e0dc7219e.webp",
+      "source": "DistroKid original URL",
+      "bytes": 97994,
+      "sha256": "82218eb39941341041b34b075901e900523a4fd8492748bc41e3bff482d502d0"
+    },
+    {
+      "title": "Petty",
+      "archive": "music/covers/archived/025-petty-397009081a.webp",
+      "source": "DistroKid original URL",
+      "bytes": 144800,
+      "sha256": "a59f72e43d6d88cf0a3170c955206cecd92f74f8a1ab8b324c0e883db6379df3"
+    },
+    {
+      "title": "Requiem Of His Grace",
+      "archive": "music/covers/archived/026-requiem-of-his-grace-d11b5e6ae3.webp",
+      "source": "DistroKid original URL",
+      "bytes": 120688,
+      "sha256": "499b1f8c400065cd783ac306e656ddd34601f2f06f3fd8469eb5b09b015d21e2"
+    },
+    {
+      "title": "Rogue",
+      "archive": "music/covers/archived/027-rogue-fafe34d67b.webp",
+      "source": "DistroKid original URL",
+      "bytes": 97566,
+      "sha256": "e07525b314466bff42ae2017963f009793f1ffd79eac9f6125793efa75faa7aa"
+    },
+    {
+      "title": "Sanctuary",
+      "archive": "music/covers/archived/028-sanctuary-91e15fd675.webp",
+      "source": "DistroKid original URL",
+      "bytes": 114634,
+      "sha256": "a64922b6b3f85e6fcb54f6314d616bf9910f7176d5852e205593181400579293"
+    },
+    {
+      "title": "Silent Night",
+      "archive": "music/covers/christmas-2026/silent-night.webp",
+      "source": "local",
+      "bytes": 85672
+    },
+    {
+      "title": "Soul of Solomon",
+      "archive": "music/covers/archived/030-soul-of-solomon-5677460a49.webp",
+      "source": "DistroKid original URL",
+      "bytes": 56650,
+      "sha256": "ee37bcd079510d49478d07ecf73b6a543a6ddaa511a93ab245f360091670f103"
+    },
+    {
+      "title": "Stickay!",
+      "archive": "music/covers/archived/031-stickay-7460081c54.webp",
+      "source": "DistroKid original URL",
+      "bytes": 189086,
+      "sha256": "efe5453de2d09c1fb935aa541ed471f750976fbbc862b2d5bd5cf5c84cec483c"
+    },
+    {
+      "title": "Stinking Overthinking",
+      "archive": "music/covers/archived/032-stinking-overthinking-5c59e83afb.webp",
+      "source": "DistroKid original URL",
+      "bytes": 118268,
+      "sha256": "4a709890d61d808d5ab43b05524a18e8fad30316fc02c9ee24971c32d47c5be6"
+    },
+    {
+      "title": "Tasty (Tasty)",
+      "archive": "music/covers/archived/033-tasty-tasty-fdd1e818b4.webp",
+      "source": "DistroKid original URL",
+      "bytes": 230908,
+      "sha256": "23aee95e3c0a0223756406b66c26fff24ae6b6a9c0eda886cbbc58e66ac5468e"
+    },
+    {
+      "title": "The Darkest Knight",
+      "archive": "music/covers/archived/034-the-darkest-knight-406c57bfee.webp",
+      "source": "DistroKid original URL",
+      "bytes": 156606,
+      "sha256": "4daf5ff8353449a0403b018db43e341bcdba282eae41371f12d24f796892eaa7"
+    },
+    {
+      "title": "The Fire That Never Dies",
+      "archive": "music/covers/archived/035-the-fire-that-never-dies-c054af6a01.webp",
+      "source": "DistroKid original URL",
+      "bytes": 147598,
+      "sha256": "9f117cf05d7a3977eff4644e7af631250771d0f2ae52f242d9c5c59c137d8768"
+    },
+    {
+      "title": "The Girl (Black Curly Hair)",
+      "archive": "music/covers/archived/036-the-girl-black-curly-hair-cabd4a3b00.webp",
+      "source": "DistroKid original URL",
+      "bytes": 93446,
+      "sha256": "e9130689c2be010b4c8f197b2ac9ab72019ddc92394455c20b3f612e555859a8"
+    },
+    {
+      "title": "The Man Without Fear",
+      "archive": "music/covers/archived/037-the-man-without-fear-6577587ad8.webp",
+      "source": "DistroKid original URL",
+      "bytes": 138826,
+      "sha256": "8d35531428c46121b261e937b5f35aed4b0450aba4d4e0a5afff200737f385ab"
+    },
+    {
+      "title": "The Mask I Wear",
+      "archive": "music/covers/archived/038-the-mask-i-wear-863d54ea1e.webp",
+      "source": "DistroKid original URL",
+      "bytes": 84196,
+      "sha256": "34d87a6257768e766fd0fb3b3c9425ca0cededc229e4fa9edc833a8967b19714"
+    },
+    {
+      "title": "The Storm Of The Barbarian",
+      "archive": "music/covers/archived/039-the-storm-of-the-barbarian-bf35f7fa49.webp",
+      "source": "DistroKid original URL",
+      "bytes": 192888,
+      "sha256": "ad377931e7f0e25841a310d5bd0e3af381ad8c71c4e3cb57492cd9d40a658084"
+    },
+    {
+      "title": "The Trickster's Grin",
+      "archive": "music/covers/archived/040-the-trickster-s-grin-548d9d3291.webp",
+      "source": "DistroKid original URL",
+      "bytes": 153192,
+      "sha256": "62cb038477b4ef49742c8fdf05d088952a4fbbf3df47232be10c8756b59c49d6"
+    },
+    {
+      "title": "This Right Here by Echo Craft",
+      "archive": "music/covers/archived/041-this-right-here-by-echo-craft-5b5ad7db7e.webp",
+      "source": "DistroKid original URL",
+      "bytes": 269498,
+      "sha256": "4d52ae7a5d05abab21292f9938474eafa5087b367d51486e8a43c1796c9a5bb8"
+    },
+    {
+      "title": "Unstoppable (Say My Name)",
+      "archive": "music/covers/archived/042-unstoppable-say-my-name-1954f258db.webp",
+      "source": "DistroKid original URL",
+      "bytes": 144680,
+      "sha256": "a06fe53579bd9324f61213842c96dbe9daa97609988cc1d2b3a2c3c59990eb3b"
+    },
+    {
+      "title": "Wait Till It's Real",
+      "archive": "music/covers/archived/043-wait-till-it-s-real-066c968db0.webp",
+      "source": "DistroKid original URL",
+      "bytes": 177990,
+      "sha256": "81ed18e138f953237a3c2ff7373e2d0346a429ac1ba540cde1cb69ec4ec0e5eb"
+    },
+    {
+      "title": "Watcher (Strings Mix)",
+      "archive": "music/covers/archived/044-watcher-strings-mix-88e91d9243.webp",
+      "source": "DistroKid original URL",
+      "bytes": 153654,
+      "sha256": "f8d9a7a62acdcd21f81a4cae5b5656fbad3715537409313483a8a2f2bead91ad"
+    },
+    {
+      "title": "What A Time To Be Alive",
+      "archive": "music/covers/archived/045-what-a-time-to-be-alive-2c6091994e.webp",
+      "source": "DistroKid original URL",
+      "bytes": 51876,
+      "sha256": "821618f0859dcbfd4999d5bda7c84995ade9a861c36dbe1653927ed61067b46c"
+    },
+    {
+      "title": "What a Time to be Alive (UAB Mix)",
+      "archive": "music/covers/archived/046-what-a-time-to-be-alive-uab-mix-c667626336.webp",
+      "source": "DistroKid original URL",
+      "bytes": 197978,
+      "sha256": "e14b3d0bf6d1d57848715448b95debcbe6f180f6a19bc2f782c4460eb46cff5c"
+    },
+    {
+      "title": "Why You So Mean?",
+      "archive": "music/covers/archived/047-why-you-so-mean-388b475ddd.webp",
+      "source": "DistroKid original URL",
+      "bytes": 163872,
+      "sha256": "de880f0959fe79880f7a629b10bc0c8fbca5d2a55b141be4d9d4555e336cec52"
+    },
+    {
+      "title": "Wind it like a clock",
+      "archive": "music/covers/archived/048-wind-it-like-a-clock-5553cdc803.webp",
+      "source": "DistroKid original URL",
+      "bytes": 163182,
+      "sha256": "4a225a8974e50c67e3174a7dfd3a344802a33eaabd88eabefb272b74488a83b7"
+    },
+    {
+      "title": "Word-Fi: Psalms",
+      "archive": "music/covers/archived/049-word-fi-psalms-f204382d22.webp",
+      "source": "DistroKid original URL",
+      "bytes": 131046,
+      "sha256": "09175cc3ef3a19ce069875879d520140caaec444ebd8a1422957994d06ce6d2b"
+    },
+    {
+      "title": "Your Perspective",
+      "archive": "music/covers/your-perspective.webp",
+      "source": "local",
+      "bytes": 251332
+    }
+  ],
+  "errors": []
+}
