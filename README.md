@@ -53,6 +53,8 @@ These are **code-review observations only** and must not be represented as a fre
 
 - **2026-10-25 — Homepage outbound-link privacy:** Commit `50e84d846d65b181ce5645cea4413b10874f52ed` adds `rel="noopener noreferrer"` to 12 previously unprotected new-tab links and a `strict-origin-when-cross-origin` HTML referrer policy on the homepage. **Confirmed in GitHub source; live production response headers and browser behavior still require separate verification.** No checkout, Worker, downloads, catalog, or R2 code was changed.
 
+- **2026-10-25 — Cloudflare response headers:** Owner's Cloudflare Rules Overview screenshot confirms an **Active** Response Header Transform Rule named `Echo Craft Music - Security Headers`, scoped to hostname `echocraftmusic.com`. The rule was configured with `X-Content-Type-Options: nosniff`, `X-Frame-Options: SAMEORIGIN`, and `Referrer-Policy: strict-origin-when-cross-origin`. A prior Chrome screenshot separately showed HSTS `max-age=2592000`. **Cloudflare rule activation confirmed; final browser Network response-header check remains pending.** Do not create duplicate rules.
+
 ## Open items — do not mark these complete without evidence
 
 1. **Live Worker/source parity:** Record current deployed production Worker version and confirm what code it runs; distinguish deployed `/api/checkout` and `/api/order/...` from older sandbox/customer routes in GitHub.
