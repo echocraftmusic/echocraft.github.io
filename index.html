@@ -5097,6 +5097,25 @@ section.albums{padding:64px 0 56px;overflow-x:auto;position:relative}
 
     <script>
 
+        // Escape external YouTube metadata before inserting it into HTML.
+        function escapeVideoText(value) {
+            return String(value ?? '').replace(/[&<>"']/g, char => ({
+                '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+            })[char]);
+        }
+        function safeVideoId(value) {
+            return typeof value === 'string' && /^[A-Za-z0-9_-]{11}$/.test(value) ? value : '';
+        }
+        function safeVideoThumbnail(value) {
+            if (typeof value !== 'string') return '';
+            try {
+                const url = new URL(value);
+                return url.protocol === 'https:' &&
+                    ['i.ytimg.com', 'img.youtube.com'].includes(url.hostname) &&
+                    !url.username && !url.password && !url.port ? url.href : '';
+            } catch { return ''; }
+        }
+
         // LOAD LATEST ECHO CRAFT VIDEOS FROM videos.json
         function loadYouTubeVideos() {
             fetch('videos.json')
@@ -5107,13 +5126,15 @@ section.albums{padding:64px 0 56px;overflow-x:auto;position:relative}
                         
                         let videoHtml = '';
                         videoItems.forEach((video) => {
-                            const videoId = video.id.videoId;
-                            const title = video.snippet.title || 'Untitled Video';
-                            const thumbnail = video.snippet.thumbnails.high.url;
-                            const publishedAt = new Date(video.snippet.publishedAt).toLocaleDateString();
+                            const videoId = safeVideoId(video?.id?.videoId);
+                            const thumbnail = safeVideoThumbnail(video?.snippet?.thumbnails?.high?.url);
+                            if (!videoId || !thumbnail) return;
+                            const title = escapeVideoText(video?.snippet?.title || 'Untitled Video');
+                            const publishedDate = new Date(video?.snippet?.publishedAt);
+                            const publishedAt = Number.isNaN(publishedDate.getTime()) ? '' : publishedDate.toLocaleDateString();
                             
                             videoHtml += `
-                                <a href="https://www.youtube.com/watch?v=${videoId}" target="_blank" style="text-decoration: none; color: inherit; display: block; height: 100%;">
+                                <a href="https://www.youtube.com/watch?v=${videoId}" target="_blank" rel="noopener noreferrer" style="text-decoration: none; color: inherit; display: block; height: 100%;">
                                     <div class="video-card" style="height: 100%;">
                                         <div class="music-thumbnail">
                                             <img src="${thumbnail}" alt="${title}" loading="lazy">
