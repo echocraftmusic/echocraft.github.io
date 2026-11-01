@@ -103,7 +103,10 @@ html:is([data-site-theme="fall"],[data-site-theme="christmas"]) :is(a,button,inp
  html:is([data-site-theme="fall"],[data-site-theme="christmas"]) section.home{padding:80px 14px 28px}
  html:is([data-site-theme="fall"],[data-site-theme="christmas"]) .home-content{padding:25px 18px;border-radius:20px}
  html:is([data-site-theme="fall"],[data-site-theme="christmas"]) .hero-feature{padding:8px 6px}
- .seasonal-nativity{grid-template-columns:1fr;border-radius:20px}
+ .seasonal-nativity{grid-template-columns:minmax(0,1fr);border-radius:20px}
+ /* Mobile Safari: the desktop absolute crop can position the Nativity off-screen. */
+ .seasonal-nativity .nativity-scene{display:block;position:relative;width:100%;height:auto;aspect-ratio:auto;overflow:visible}
+ .seasonal-nativity .nativity-scene img{display:block;position:static;inset:auto;width:100%;max-width:100%;height:auto;object-fit:contain}
  .nativity-copy{padding:24px 20px}.nativity-copy h2{font-size:32px}
  html[data-site-theme="christmas"] body::before{background-position:80% center}
 }
